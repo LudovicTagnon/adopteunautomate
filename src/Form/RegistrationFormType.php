@@ -55,7 +55,7 @@ class RegistrationFormType extends AbstractType
                 'attr' => ['autocomplete' => 'vehicule'],
             ])
             ->add('genre', ChoiceType::class, [
-                'required' => true,
+                'required' => false,
                 'choices' => [
                     'Male' => 'male',
                     'Female' => 'female',
@@ -63,9 +63,8 @@ class RegistrationFormType extends AbstractType
                 ],
                 'expanded' => true,
                 'multiple' => false,
-                'placeholder' => 'Genre (optionnel)',
-            ])
 
+            ])
             ->add('autorisation_mail', CheckboxType::class, [
                 'required' => false,
                 'attr' => ['autocomplete' => 'autorisation_mail'],

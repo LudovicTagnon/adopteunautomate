@@ -30,6 +30,9 @@ class RegistrationController extends AbstractController
                 )
             );
 
+            var_dump($form->getData()); // debug statement
+            var_dump($user); // debug statement
+
             $entityManager->persist($user);
             $entityManager->flush();
             // do anything else you need here, like send an email
