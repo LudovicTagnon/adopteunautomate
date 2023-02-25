@@ -1,23 +1,28 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}Inscription{% endblock %}
 
 {% block body %}
     <div class="container py-5">
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="card">
-                    <div class="card-header">{{ 'Inscription'|trans }}</div>
-                    <div class="card-body">
+                    <div class="card-header" style="background-color: #007bff; color: #fff">{{ 'Inscription'|trans }}</div>
+                    <div class="card-body" style="background-color: #f8f9fa;">
                         {{ form_start(registrationForm) }}
-                        {{ form_row(registrationForm.email, { 'attr': {'class': 'form-control mb-3'} }) }}
+                        {{ form_row(registrationForm.email, { 'attr': {'class': 'form-control mb-3'}, 'label': 'Adresse e-mail' }) }}
                         {{ form_row(registrationForm.plainPassword, {
-                            label: 'Password',
+                            label: 'Mot de passe',
                             'attr': {'class': 'form-control mb-3'}
                         }) }}
-                        {{ form_row(registrationForm.agreeTerms, { 'label_attr': {'class': 'form-check-label'}, 'attr': {'class': 'form-check-input'} }) }}
+                        {{ form_row(registrationForm.agreeTerms, {
+                            'label': 'Accpeter les conditions d\'utilisations'|trans,
+                            'label_attr': {'class': 'form-check-label'},
+                            'attr': {'class': 'form-check-input'}
+                        }) }}
 
-                        <button type="submit" class="btn btn-primary">{{ 'S\'inscrire'|trans }}</button>
+
+                        <button type="submit" class="btn btn-primary" style="background-color: #007bff;">{{ 'S\'inscrire'|trans }}</button>
                         {{ form_end(registrationForm) }}
                     </div>
                 </div>
