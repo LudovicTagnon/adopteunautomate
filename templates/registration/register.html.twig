@@ -3,33 +3,74 @@
 {% block title %}Inscription{% endblock %}
 
 {% block body %}
-    <div class="container py-5">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header" style="background-color: #007bff; color: #fff">{{ 'Inscription'|trans }}</div>
-                    <div class="card-body" style="background-color: #f8f9fa;">
-                        {{ form_start(registrationForm) }}
-                        {{ form_row(registrationForm.email, { 'attr': {'class': 'form-control mb-3'}, 'label': 'Adresse e-mail' }) }}
-                        {{ form_row(registrationForm.plainPassword, {
-                            label: 'Mot de passe',
-                            'attr': {'class': 'form-control mb-3'}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header" style="background-color: #007bff; color: #fff">{{ 'Inscription'|trans }}</div>
+                <div class="card-body" style="background-color: #f8f9fa;">
+                    {{ form_start(registrationForm) }}
+                    {{ form_row(registrationForm.email, { 'attr': {'class': 'form-control mb-3'}, 'label': 'Adresse e-mail' }) }}
+                    {{ form_row(registrationForm.plainPassword, {
+                        label: 'Mot de passe',
+                        'attr': {'class': 'form-control mb-3'}
+                    }) }}
+                    {{ form_row(registrationForm.nom, { 'attr': {'class': 'form-control mb-3'}, 'label': 'Nom' }) }}
+                    {{ form_row(registrationForm.prenom, { 'attr': {'class': 'form-control mb-3'}, 'label': 'Prénom' }) }}
+                    {{ form_row(registrationForm.num_tel, { 'attr': {'class': 'form-control mb-3'}, 'label': 'Numéro de téléphone' }) }}
+                    <div class="form-group form-check">
+                        {{ form_widget(registrationForm.vehicule, {
+                            'label': 'Je possède un véhicule'|trans,
+                            'label_attr': {'class': 'form-check-label'},
+                            'attr': {'class': 'form-check-input'}
                         }) }}
-                        <div class="form-group form-check">
-                            {{ form_widget(registrationForm.agreeTerms, {
-                                'label': 'Accpeter les conditions d\'utilisations'|trans,
-                                'label_attr': {'class': 'form-check-label'},
-                                'attr': {'class': 'form-check-input'}
-                            }) }}
-                            {{ form_label(registrationForm.agreeTerms, null, {
-                                'label_attr': {'class': 'form-check-label'}
-                            }) }}
-                        </div>
-                        <button type="submit" class="btn btn-primary" style="background-color: #007bff;">{{ 'S\'inscrire'|trans }}</button>
-                        {{ form_end(registrationForm) }}
+                        {{ form_label(registrationForm.vehicule, null, {
+                            'label_attr': {'class': 'form-check-label'}
+                        }) }}
                     </div>
+                    <div class="form-group">
+                        {{ form_row(registrationForm.genre, {
+                            'required': true,
+                            'expanded': true,
+                            'multiple': false,
+                            'choices': {
+                                'male': 'Homme'|trans,
+                                'female': 'Femme'|trans,
+                                'other': 'Autre'|trans,
+                            },
+                            'choice_translation_domain': 'messages',
+                            'attr': {'class': 'form-check'}
+                        }) }}
+                    </div>
+                    <div class="form-group form-check">
+                        {{ form_widget(registrationForm.autorisation_mail, {
+                        'label': 'J\'autorise Adopte un Automate à m\'envoyer des e-mails'|trans,
+                        'label_attr': {'class': 'form-check-label'},
+                            'attr': {'class': 'form-check-input'}
+                        }) }}
+                        {{ form_label(registrationForm.autorisation_mail, null, {
+                            'label_attr': {'class': 'form-check-label'}
+                        }) }}
+                    </div>
+                    {{ form_row(registrationForm.fichier_photo, { 'attr': {'class': 'form-control mb-3'}, 'label': 'Photo de profil (optionnel)' }) }}
+                    <div class="form-group form-check">
+                        {{ form_widget(registrationForm.agreeTerms, {
+                            'label': 'Accpeter les conditions d\'utilisations'|trans,
+                            'label_attr': {'class': 'form-check-label'},
+                            'attr': {'class': 'form-check-input'}
+                        }) }}
+                        {{ form_label(registrationForm.agreeTerms, null, {
+                            'label_attr': {'class': 'form-check-label'}
+                        }) }}
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="background-color: #007bff;">{{ 'S\'inscrire'|trans }}</button>
+                    {{ form_end(registrationForm) }}
                 </div>
             </div>
         </div>
     </div>
+</div>
 {% endblock %}
+
+
+
