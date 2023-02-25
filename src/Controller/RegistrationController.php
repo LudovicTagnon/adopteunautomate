@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Utilisateurs;
 use App\Form\RegistrationFormType;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,30 +16,29 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class RegistrationController extends AbstractController
 {
     #[Route('/inscription', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager,ManagerRegistry $doctrine): Response
     {
         $user = new Utilisateurs();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
-            $user->setPassword(
-                $userPasswordHasher->hashPassword(
-                    $user,
-                    $form->get('plainPassword')->getData()
-                )
-            );
-
-            var_dump($form->getData()); // debug statement
-            var_dump($user); // debug statement
-
+            $entityManager = $doctrine->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
-            // do anything else you need here, like send an email
 
             return $this->redirectToRoute('app_home');
+        } else {
+            // print any form validation errors
+            $errors = $form->getErrors(true, false);
+            foreach ($errors as $error) {
+                foreach ($error as $e) {
+                    echo $e->getMessage() . "<br>";
+                }
+            }
         }
+
+
 
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),

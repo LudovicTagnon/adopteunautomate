@@ -42,10 +42,10 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
 
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(type="string", length=255, nullable=false)
+     * @Assert\NotBlank
      */
-    private ?string $prenom = "inconnu";
-
+    private $prenom;
 
     /**
      * @ORM\Column(type="string", length=20, options={"default": "Unknown"})
@@ -57,11 +57,9 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private ?bool $vehicule = false;
 
-    /**
-     * @ORM\Column(type="string", length=10, nullable=true)
-     * @Assert\Choice({"homme", "femme", "autre"})
-     */
+    #[ORM\Column(type: "string", length: 10, nullable: true)]
     private ?string $genre = null;
+
 
     /**
      * @ORM\Column(type="boolean")

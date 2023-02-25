@@ -29,19 +29,12 @@
                         }) }}
                     </div>
                     <div class="form-group">
-                        {{ form_row(registrationForm.genre, {
-                            'required': false,
-                            'expanded': true,
-                            'multiple': false,
-                            'choices': {
-                                'male': 'Homme'|trans,
-                                'female': 'Femme'|trans,
-                                'other': 'Autre'|trans,
-                            },
-                            'choice_translation_domain': 'messages',
-                            'attr': {'class': 'form-check'}
+                        {{ form_label(registrationForm.genre, 'Genre') }}
+                        {{ form_widget(registrationForm.genre, {
+                            'attr': {'class': 'form-control mb-3'}
                         }) }}
                     </div>
+
                     <div class="form-group form-check">
                         {{ form_widget(registrationForm.autorisation_mail, {
                         'label': 'J\'autorise Adopte un Automate à m\'envoyer des e-mails'|trans,
