@@ -7,8 +7,9 @@
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="card">
-                    <div class="card-body">
-                        <form method="post" class="form-signin">
+                    <div class="card-header" style="background-color: #007bff; color: #fff;">{{ 'Connexion'|trans }}</div>
+                    <div class="card-body" style="background-color: #f8f9fa;">
+                        <form method="post">
                             {% if error %}
                                 <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
                             {% endif %}
@@ -19,23 +20,27 @@
                                 </div>
                             {% endif %}
 
-                            <h1 class="h3 mb-3 font-weight-normal text-center">Veuillez vous connecter</h1>
-
-                            <div class="form-floating mb-3">
-                                <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" placeholder="Adresse e-mail" autocomplete="email" required autofocus>
-                                <label for="inputEmail">Adresse e-mail</label>
-                            </div>
-
-                            <div class="form-floating mb-3">
-                                <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Mot de passe" autocomplete="current-password" required>
-                                <label for="inputPassword">Mot de passe</label>
-                            </div>
+                            <label for="inputEmail">Adresse e-mail</label>
+                            <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
+                            <label for="inputPassword">Mot de passe</label>
+                            <input type="password" name="password" id="inputPassword" class="form-control mb-3" autocomplete="current-password" required>
 
                             <input type="hidden" name="_csrf_token"
                                    value="{{ csrf_token('authenticate') }}"
                             >
 
-                            <button class="w-100 btn btn-lg btn-primary" type="submit">
+                            {#
+                            Décommentez cette section et ajoutez une option remember_me ci-dessous votre firewall pour activer la fonctionnalité remember me.
+                            Voir https://symfony.com/doc/current/security/remember_me.html
+
+                            <div class="checkbox mb-3">
+                                <label>
+                                    <input type="checkbox" name="_remember_me"> Se souvenir de moi
+                                </label>
+                            </div>
+                            #}
+
+                            <button class="btn btn-lg btn-primary" type="submit" style="background-color: #007bff;">
                                 Se connecter
                             </button>
                         </form>
@@ -44,22 +49,4 @@
             </div>
         </div>
     </div>
-{% endblock %}
-
-{% block stylesheets %}
-    {{ parent() }}
-    <style>
-        body {
-            background-color: #f5f5f5;
-        }
-        .form-signin {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
-        }
-        h1 {
-            color: #007bff;
-        }
-    </style>
 {% endblock %}
