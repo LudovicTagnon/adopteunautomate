@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Affichage de tous les groupes{% endblock %}
+{#// PROB7MES de LIENS ET PB de CLE ETRANGERE #}
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+
+    <div class = "container mt-4">
+
+    </div>
+
+    <h1>Les groupes: ✅</h1>
+
+    <div class="container">
+        {# flash message si succes#}
+        {% for message in app.flashes('succes')  %}
+            <div class= "alert alert-success mt-4">
+                {{message}}
+            </div>
+        {% endfor  %}
+    </div>
+
+    <div class="container">
+        <h2> La liste pour un administrateur </h2>
+        <table class= "table table-hover">
+            <thead>
+            <tr>
+                <th scope="col"> Numéro </th>
+                <th scope="col"> Intitulé </th>
+                <th scope="col"> Créateur </th>
+                <th scope="col"> Edition </th>
+                <th scope="col"> Suppression </th>
+
+            </tr>
+            </thead>
+            <tbody>
+            {% for groupe in groupes %}
+                <tr class="table-primary">
+                    <td>{{groupe.getId()}} </td>
+                    <td>
+                        <a href = "{{ path('app_groupes.edit', {id:groupe.id})}}" class= "btn btn-info" >Modifier</a>
+                    </td>
+                    <td>
+                        <a href = "{{ path('app_groupes.delete', {id:groupe.id})}}" class= "btn btn-warning" >Supprimer</a>
+                    </td>
+                </tr>
+            {% endfor %}
+
+            <tbody>
+        </table>
+        This friendly message is coming from:
+        <ul>
+            <li>Your controller at <code><a href="{{ 'C:/xampp/adopteautomate/src/Controller/GroupesController.php'|file_link(0) }}">src/Controller/GroupesController.php</a></code></li>
+            <li>Your template at <code><a href="{{ 'C:/xampp/adopteautomate/templates/groupes/index.html.twig'|file_link(0) }}">templates/groupes/index.html.twig</a></code></li>
+        </ul>
+    </div>
+
+
+    {% endblock %}

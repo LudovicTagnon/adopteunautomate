@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Creation de groupe {% endblock %}
+{#// PROB7MES de LIENS ET PB de CLE ETRANGERE #}
+{% block body %}
+    <style>
+        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    </style>
+
+
+
+    <div class="example-wrapper">
+        <h1>Les groupes: ✅</h1>
+
+        <h2> La création d'un groupe par un administrateur </h2>
+
+        {{ form_start(form) }}
+
+        <div class= 'form-group'>
+            {{ form_label(form.nom_groupe)}}
+            {{ form_widget(form.nom_groupe)}}
+            <div>
+                {{form_errors(form.nom_groupe)}}
+            </div>
+        </div>
+        {#  essai de mettre le champ "Utilisateurs }
+    <div class= 'form-group'>
+        {{ form_label(form.utilisateurs)}}
+        {{ form_widget(form.utilisateurs)}}
+        <div>
+            {{form_errors(form.utilisateurs)}}
+        </div>
+    </div>
+{#}
+        <div class= 'form-group'>
+            {{ form_row(form.submit)}}
+
+        </div>
+
+        {{ form_end(form) }}
+
+        This friendly message is coming from:
+        <ul>
+            <li>Your controller at <code><a href="{{ 'C:/xampp/adopteautomate/src/Controller/GroupesController.php'|file_link(0) }}">src/Controller/GroupesController.php</a></code></li>
+            <li>Your template at <code><a href="{{ 'C:/xampp/adopteautomate/templates/groupes/index.html.twig'|file_link(0) }}">templates/groupes/index.html.twig</a></code></li>
+        </ul>
+    </div>
+{% endblock %}
