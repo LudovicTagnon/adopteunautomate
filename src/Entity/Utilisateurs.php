@@ -36,24 +36,24 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @ORM\Column(type="string", length=50, options={"default": "Unknown"})
+     * @ORM\Column(type="string", length=50, nullable=true, options={"default": "inconnu"})
      */
     private ?string $nom = "inconnu";
 
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255, nullable=true, options={"default": "inconnu"})
      * @Assert\NotBlank
      */
     private $prenom;
 
     /**
-     * @ORM\Column(type="string", length=20, options={"default": "Unknown"})
+     * @ORM\Column(type="string", length=20, nullable=true, options={"default": "Unknown"})
      */
     private ?string $num_tel = "Unknown";
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean"), options={"default": 0})
      */
     private ?bool $vehicule = false;
 
