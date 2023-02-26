@@ -35,57 +35,40 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->id;
     }
 
-    /**
-     * @ORM\Column(type="string", length=50, nullable=true, options={"default": "inconnu"})
-     */
-    private ?string $nom = "inconnu";
+    #[ORM\Column(type: "string", length: 50, nullable: true, options: ["default" => "inconnu"])]
+    private ?string $nom;
 
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true, options={"default": "inconnu"})
-     * @Assert\NotBlank
-     */
+    #[ORM\Column(type: "string", length: 255, nullable: true, options: ["default" => "inconnu"])]
+    #[Assert\NotBlank]
     private $prenom;
 
-    /**
-     * @ORM\Column(type="string", length=20, nullable=true, options={"default": "Unknown"})
-     */
-    private ?string $num_tel = "Unknown";
 
-    /**
-     * @ORM\Column(type="boolean"), options={"default": 0})
-     */
-    private ?bool $vehicule = false;
+    #[ORM\Column(type: "string", length: 20, nullable: true, options: ["default" => "Unknown"])]
+    private ?string $num_tel;
+
+    #[ORM\Column(type: "boolean", options: ["default" => 0])]
+    private ?bool $vehicule;
 
     #[ORM\Column(type: "string", length: 10, nullable: true)]
     private ?string $genre = null;
 
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private ?bool $autorisation_mail = false;
+    #[ORM\Column(type: "boolean")]
+    private ?bool $autorisation_mail;
 
-    /**
-     * @ORM\Column(type="blob", nullable=true)
-     */
-    private $fichier_photo = null;
+    #[ORM\Column(type: "blob", nullable: true)]
+    private $fichier_photo;
 
-    /**
-     * @ORM\Column(type="integer")
-     * @Assert\PositiveOrZero
-     */
+    #[ORM\Column(type: "integer")]
+    #[Assert\PositiveOrZero]
     private ?int $cumul_notes = 0;
 
-    /**
-     * @ORM\Column(type="integer")
-     * @Assert\PositiveOrZero
-     */
+    #[ORM\Column(type: "integer")]
+    #[Assert\PositiveOrZero]
     private ?int $nb_notes = 0;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: "boolean")]
     private ?bool $compte_actif = true;
 
     #[ORM\OneToMany(mappedBy: 'utilisateurs', targetEntity: Groupes::class, orphanRemoval: true)]
