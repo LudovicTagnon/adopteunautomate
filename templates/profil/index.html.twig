@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+{% set bool = user.getVehicule %} <!-- booléen possède voiture ou non --!>
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <h1 class ="center">Mon compte</h1>
     <div class="profil">
@@ -11,11 +12,11 @@
         <li>Email : {{ user.email }}</li>
         <li>Voiture : <div class="radio-group">
                         <label>
-                            <input type="radio" name="option" value="true">
+                            <input type="radio" name="option" value="true" {% if bool %}checked{% endif %}>
                                 Oui
                         </label>
                         <label>
-                            <input type="radio" name="option" value="false">
+                            <input type="radio" name="option" value="false" {% if not bool %}checked{% endif %}>
                                 Non
                         </label>
                         </div>
