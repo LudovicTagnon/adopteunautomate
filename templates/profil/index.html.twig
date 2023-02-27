@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Profil utilisateur</h1>
+    <ul>
+        <li>Nom d'utilisateur : {{ user.getPrenom() }}</li>
+        <li>Email : {{ user.email }}</li>
+        <li>Nom complet : {{ user.getNom() }}</li>
+        <!-- Ajoutez d'autres informations de l'utilisateur ici -->
+    </ul>
+{% endblock %}
