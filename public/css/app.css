@@ -1,0 +1,52 @@
+h1.center{
+    text-align: center;
+}
+
+div.profil{
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100vh;
+    text-align: left;
+    padding-top: 0;
+}
+
+ul{
+    margin : 0;
+    padding: 0;
+}
+
+/* Style pour le groupe de boutons radio */
+.radio-group {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+  
+  /* Style pour chaque bouton radio */
+  .radio-group label {
+    margin-right: 20px;
+  }
+  
+  /* Style pour la case à cocher */
+  .radio-group input[type="radio"] {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+    margin-right: 10px;
+  }
+  
+  /* Style pour la case à cocher activée */
+  .radio-group input[type="radio"]:checked {
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+  
+  /* Style pour le texte */
+  .radio-group label span {
+    font-size: 16px;
+    color: #333;
+  }
+  

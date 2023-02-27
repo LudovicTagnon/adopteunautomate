@@ -1,11 +1,27 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Profil utilisateur</h1>
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <h1 class ="center">Mon compte</h1>
+    <div class="profil">
     <ul>
-        <li>Nom d'utilisateur : {{ user.getPrenom() }}</li>
+        <li>Nom : {{ user.getNom() }}</li>
+        <li>Prénom : {{user.getPrenom}}</li>
+        <li>Num Tél : {{user.getNumTel}}</li>
         <li>Email : {{ user.email }}</li>
-        <li>Nom complet : {{ user.getNom() }}</li>
-        <!-- Ajoutez d'autres informations de l'utilisateur ici -->
+        <li>Voiture : <div class="radio-group">
+                        <label>
+                            <input type="radio" name="option" value="true">
+                                Oui
+                        </label>
+                        <label>
+                            <input type="radio" name="option" value="false">
+                                Non
+                        </label>
+                        </div>
+        </li>
+        
+        
     </ul>
+    </div>
 {% endblock %}
