@@ -23,10 +23,10 @@ Maybe you can mention me or this repo in the acknowledgements too
   <a href="">
     <img src="https://gitlab.univ-lorraine.fr/antunes26u/adopteunautomate/-/commits/main" alt="last update" />
   </a>
-  <a href="https://gitlab.univ-lorraine.fr/rosio1u/adopteautomate/-/forks">
+  <a href="https://gitlab.univ-lorraine.fr/antunes26u/adopteunautomate/-/forks">
     <img src="https://img.shields.io/github/forks/Louis3797/awesome-readme-template" alt="forks" />
   </a>
-  <a href="https://gitlab.univ-lorraine.fr/rosio1u/adopteautomate/-/starrers">
+  <a href="https://gitlab.univ-lorraine.fr/antunes26u/adopteunautomate/-/starrers">
     <img src="https://img.shields.io/github/stars/Louis3797/awesome-readme-template" alt="stars" />
   </a>
   <!-- <a href="https://github.com/Louis3797/awesome-readme-template/issues/">
@@ -171,6 +171,19 @@ php -r "if (hash_file('sha384', 'composer-setup.php') === '55ce33d7678c5a6110855
 php composer-setup.php
 php -r "unlink('composer-setup.php');"
 ```
+
+Then update the composer : 
+```bash 
+composer update
+```
+Create the database
+```bash
+php bin/console doctrine:database:create
+```
+```bash
+php bin/console make:migration
+php bin/console doctrine:migrations:migrate
+```
 And you are ready ! 
 
 
@@ -194,7 +207,7 @@ To run tests, run the following command
 Clone the project
 
 ```bash
-  git clone https://gitlab.univ-lorraine.fr/rosio1u/adopteautomate.git
+  git clone https://gitlab.univ-lorraine.fr/antunes26u/adopteunautomate.git
 ```
 
 
