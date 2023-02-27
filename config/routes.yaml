@@ -6,4 +6,4 @@ controllers:
 
 profil: 
     path : /profil
-    controller : App\Controller\ProfilController::index
+    controller : App\Controller\ProfilController::editProfile
