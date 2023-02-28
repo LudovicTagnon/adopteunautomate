@@ -50,3 +50,23 @@ ul{
     color: #333;
   }
   
+
+/* Bouton enregistrer modif */
+.buttonok {
+  font-family: arial;
+  font-weight: bold;
+  color: #000000 !important;
+  font-size: 14px;
+  text-shadow: 1px 1px 0px #33ADFF;
+  box-shadow: 1px 1px 1px #000000;
+  padding: 10px 25px;
+  border-radius: 10px;
+  border: 2px solid #000000;
+  background: #63B8EE;
+}
+.buttonok:hover {
+  color: #FFFFFF !important;
+  background: #38BDFF;
+}
+
+
