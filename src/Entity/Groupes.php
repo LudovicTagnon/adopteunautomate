@@ -25,7 +25,7 @@ class Groupes
 
 
     #[ORM\Column(length: 50)]
-    private ?string $nom = null;
+    private ?string $nom_groupe = null;
 
     #[ORM\Column(length: 255)]
     private ?string $description = null;
@@ -40,14 +40,14 @@ class Groupes
         return $this->id;
     }
 
-    public function getNom(): ?string
+    public function getNomGroupe(): ?string
     {
-        return $this->nom;
+        return $this->nom_groupe;
     }
 
-    public function setNom(string $nom): self
+    public function setNomGroupe(string $nom_groupe): self
     {
-        $this->nom = $nom;
+        $this->nom_groupe = $nom_groupe;
 
         return $this;
     }
