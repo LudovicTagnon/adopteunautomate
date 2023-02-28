@@ -41,19 +41,8 @@ class UserProfileFormType extends AbstractType
                 ],
                 'required' => true,
             ])
-            ->add('oldPassword',PasswordType::class,[
-                'label' => 'Ancien mot de passe',
-                'mapped' => false,
-                'constraints' => [
-                    new NotBlank(),
-                    new Length([
-                    'min' => 6,
-                    'minMessage' => 'Your password should be at least {{ limit }} characters',
-                    // max length allowed by Symfony for security reasons
-                    'max' => 4096,])
-                    ],
-            ])
-            ->add('oldPassword', PasswordType::class, [
+    
+            /*->add('oldPassword', PasswordType::class, [
                 'label' => 'Ancien mot de passe',
                 'mapped' => false,
                 'constraints' => [
@@ -65,8 +54,8 @@ class UserProfileFormType extends AbstractType
                         'max' => 4096,
                     ]),
                 ],
-            ])
-            ->add('password', RepeatedType::class, [
+            ])*/
+            ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'mapped' => false,
                 'required' => true,
@@ -82,7 +71,8 @@ class UserProfileFormType extends AbstractType
                         'max' => 4096,
                     ]),
                 ],
-            ])   
+            ])
+   
         ;
     }
 
