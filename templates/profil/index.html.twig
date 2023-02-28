@@ -1,11 +1,15 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    <link rel="stylesheet" href="{{asset('css/app.css')}}">
 
-
-    <h1>Modifier le profil de </h1>
+    <h1 class='center'>Modifier mon profil</h1>
+    <div class='profil'>
     {{form_start(form)}}
         {{form_widget(form)}}
-        <button type="submit">Enregistrer</button>
+        <div class='profil'>
+        <button class="buttonok" type="submit">Enregistrer</button>
+        </div>
     {{form_end(form)}}
+    </div>
 {% endblock %}
