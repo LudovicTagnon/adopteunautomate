@@ -21,35 +21,20 @@ class UserProfileFormType extends AbstractType
     {
         $builder
             ->add('email',EmailType::class)
-            ->add('prenom',TextType::class,['required' => true,
-            'attr' => ['autocomplete' => 'nom'],
-            'constraints' => [
-                new Assert\Regex([
-                    'pattern' => '/^[A-Za-z\s\-]+$/',
-                    'message' => 'Le nom ne doit contenir que des caractères alphabétiques, des espaces et des tirets.',
-                ]),
-            ],
-            ])
+            ->add('prenom',TextType::class)
             ->add('nom',TextType::class,[
                 'required' => true,
                 'attr' => ['autocomplete' => 'nom'],
                 'constraints' => [
                     new Assert\Regex([
                         'pattern' => '/^[A-Za-z\s\-]+$/',
-                        'message' => 'Le prenom ne doit contenir que des caractères alphabétiques, des espaces et des tirets.',
+                        'message' => 'Le nom ne doit contenir que des caractères alphabétiques, des espaces et des tirets.',
                     ]),
                 ],
             ])
-            
             ->add('num_tel',TextType::class,[
                 'required' => true,
                 'attr' => ['autocomplete' => 'num_tel'],
-                'constraints' => [
-                    new Assert\Regex([
-                        'pattern' => '/^0[1-9](\d{2}){4}$/',
-                        'message' => 'Le numéro de téléphone doit être un numéro de téléphone français.',
-                    ]),
-                ],
             ])
             ->add('vehicule',CheckboxType::class,[
                 'required' => false,
