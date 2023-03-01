@@ -18,13 +18,12 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Config\Security\PasswordHasherConfig;
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\Security\Core\Security;
 
 
 
 class ProfilController extends AbstractController
 {
-    #[Security("is_granted('ROLE_USER') and user === client")]
     #[Route('/profil', name: 'profil')]
     public function index(): Response
     {
@@ -38,12 +37,13 @@ class ProfilController extends AbstractController
 
     public function editProfile(Request $request,EntityManagerInterface $entityManager, ManagerRegistry $doctrine, UserPasswordHasherInterface $userPasswordHasher):Response
     {
-        
         $user = $this->getUser(); //on obtient user connecté
         $form = $this->createForm(UserProfileFormType::class,$user); //creation formulaire avec données user
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
+            $user = $form->getData();
+            $user->setPassword($userPasswordHasher->hashPassword($user, $form->get('plainPassword')->getData()));
             $entityManager = $doctrine->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
