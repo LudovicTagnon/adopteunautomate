@@ -43,6 +43,7 @@ class ProfilController extends AbstractController
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $user = $form->getData();
+            $user->setFichierPhoto($form->get('fichier_photo')->getData());
             $oldpassword = $form->get('oldPassword')->getData();
             if(!$userPasswordHasher->isPasswordValid($user,$oldpassword)){
                 $form->get('oldPassword')->addError(new FormError('Le mot de passe actuel est incorrect.'));

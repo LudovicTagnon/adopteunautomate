@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
@@ -40,6 +41,12 @@ class UserProfileFormType extends AbstractType
                     'Other' => 'autre',
                 ],
                 'required' => true,
+            ])
+
+            ->add('fichier_photo', FileType::class, [
+                'required' => false,
+                'mapped' => false,
+                'attr' => ['autocomplete' => 'fichier_photo'],
             ])
     
             ->add('oldPassword', PasswordType::class, [
