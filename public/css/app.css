@@ -111,6 +111,74 @@ ul{
   background-color: #0069d9;
   border-color: #0062cc;
 }
+/* style the main password field */
+#form_password_first {
+  margin-bottom: 0;
+}
+
+/* style the repeated password field */
+#form_password_second {
+  margin-top: 0;
+}
+
+/* Style the label that wraps the checkbox */
+.checkbox-label {
+  display: block;
+  position: relative;
+  padding-left: 30px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 18px;
+  user-select: none;
+}
+
+/* Hide the default checkbox input */
+.checkbox-label input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Create a custom checkbox */
+.checkbox-label .checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 24px;
+  width: 24px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Style the checked state of the custom checkbox */
+.checkbox-label input:checked + .checkmark {
+  background-color: #2196F3;
+  border-color: #2196F3;
+}
+
+/* Create a checkmark icon */
+.checkbox-label .checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark icon when the checkbox is checked */
+.checkbox-label input:checked + .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark icon */
+.checkbox-label .checkmark:after {
+  left: 8px;
+  top: 3px;
+  width: 6px;
+  height: 12px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+}
+
 
 
 
