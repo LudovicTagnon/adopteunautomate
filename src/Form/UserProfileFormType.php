@@ -14,6 +14,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class UserProfileFormType extends AbstractType
 {
@@ -21,18 +22,41 @@ class UserProfileFormType extends AbstractType
     {
         $builder
             ->add('email',EmailType::class)
-            ->add('prenom',TextType::class)
+            ->add('prenom',TextType::class,[
+                'required' => true,
+                'attr' => ['autocomplete' => 'nom'],
+                'constraints' => [
+                    new Assert\Regex([
+                        'pattern' => '/^[A-Za-z\s\-]+$/',
+                        'message' => 'Le nom ne doit contenir que des caractères alphabétiques, des espaces et des tirets.',
+                    ]),
+                ],
+            ])
             ->add('nom',TextType::class,[
                 'required' => true,
                 'attr' => ['autocomplete' => 'nom'],
+                'constraints' => [
+                    new Assert\Regex([
+                        'pattern' => '/^[A-Za-z\s\-]+$/',
+                        'message' => 'Le nom ne doit contenir que des caractères alphabétiques, des espaces et des tirets.',
+                    ]),
+                ],
+                
             ])
             ->add('num_tel',TextType::class,[
                 'required' => true,
                 'attr' => ['autocomplete' => 'num_tel'],
+               
             ])
             ->add('vehicule',CheckboxType::class,[
                 'required' => false,
                 'attr' => ['autocomplete' => 'vehicule'],
+                'constraints' => [
+                    new Assert\Regex([
+                        'pattern' => '/^0[1-9](\d{2}){4}$/',
+                        'message' => 'Le numéro de téléphone doit être un numéro de téléphone français.',
+                    ]),
+                ],
             ])
             ->add('genre', ChoiceType::class, [
                 'choices' => [
