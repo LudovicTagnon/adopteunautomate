@@ -42,7 +42,7 @@ class UserProfileFormType extends AbstractType
                 'required' => true,
             ])
     
-            /*->add('oldPassword', PasswordType::class, [
+            ->add('oldPassword', PasswordType::class, [
                 'label' => 'Ancien mot de passe',
                 'mapped' => false,
                 'constraints' => [
@@ -54,7 +54,7 @@ class UserProfileFormType extends AbstractType
                         'max' => 4096,
                     ]),
                 ],
-            ])*/
+            ])
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'mapped' => false,
