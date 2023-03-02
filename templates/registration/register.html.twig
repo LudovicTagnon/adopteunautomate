@@ -10,14 +10,14 @@
                 <div class="card-header" style="background-color: #007bff; color: #fff">{{ 'Inscription'|trans }}</div>
                 <div class="card-body" style="background-color: #f8f9fa;">
                     {{ form_start(registrationForm) }}
-                    {{ form_row(registrationForm.email, { 'attr': {'class': 'form-control mb-3'}, 'label': 'Adresse e-mail' }) }}
+                    {{ form_row(registrationForm.email, { 'attr': {'class': 'form-control mb-3'}, 'label': 'Adresse e-mail *' }) }}
                     {{ form_row(registrationForm.plainPassword, {
-                        label: 'Mot de passe',
+                        label: 'Mot de passe *',
                         'attr': {'class': 'form-control mb-3'}
                     }) }}
-                    {{ form_row(registrationForm.nom, { 'attr': {'class': 'form-control mb-3'}, 'label': 'Nom' }) }}
-                    {{ form_row(registrationForm.prenom, { 'attr': {'class': 'form-control mb-3'}, 'label': 'Prénom' }) }}
-                    {{ form_row(registrationForm.num_tel, { 'attr': {'class': 'form-control mb-3'}, 'label': 'Numéro de téléphone' }) }}
+                    {{ form_row(registrationForm.nom, { 'attr': {'class': 'form-control mb-3'}, 'label': 'Nom *' }) }}
+                    {{ form_row(registrationForm.prenom, { 'attr': {'class': 'form-control mb-3'}, 'label': 'Prénom *' }) }}
+                    {{ form_row(registrationForm.num_tel, { 'attr': {'class': 'form-control mb-3'}, 'label': 'Numéro de téléphone *' }) }}
                     <div class="form-group form-check">
                         {{ form_widget(registrationForm.vehicule, {
                             'label': 'Je possède un véhicule'|trans,
@@ -29,7 +29,7 @@
                         }) }}
                     </div>
                     <div class="form-group">
-                        {{ form_label(registrationForm.genre, 'Genre') }}
+                        {{ form_label(registrationForm.genre, 'Genre *') }}
                         {{ form_widget(registrationForm.genre, {
                             'attr': {'class': 'form-control mb-3'}
                         }) }}
@@ -59,6 +59,7 @@
                     <button type="submit" class="btn btn-primary" style="background-color: #007bff;">{{ 'S\'inscrire'|trans }}</button>
                     {{ form_end(registrationForm) }}
                 </div>
+                <div class="required-fields">* Les champs sont obligatoires</div>
             </div>
         </div>
     </div>
