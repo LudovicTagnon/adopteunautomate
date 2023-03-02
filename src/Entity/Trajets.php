@@ -2,9 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\TrajetsRepository;
+#use Assert\Choice;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\TrajetsRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TrajetsRepository::class)]
 class Trajets
@@ -15,25 +17,38 @@ class Trajets
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
-    private ?string $etat = null;
+    #liste limitéé
+    #[Assert\Choice(['ouvert', 'bloqué', 'terminé', 'annulé '])]
+    private ?string $etat = 'ouvert';
 
+    # 24h de délai
     #[ORM\Column]
+    #[Assert\GreaterThan('tomorrow')]
     private ?\DateTimeImmutable $T_depart = null;
 
+    // arrivée après le départ
     #[ORM\Column(nullable: true)]
+    #[Assert\GreaterThan('$T_depart')]
     private ?\DateTimeImmutable $T_arrivee = null;
 
     #[ORM\Column(nullable: true)]
+    #[Assert\PositiveOrZero]
     private ?float $prix = null;
 
+    # voyages en voiture: moins de 8 passagers
     #[ORM\Column]
+    #[Assert\Range(min: 1, max: 8)]
     private ?int $nb_passager_max = null;
 
+    # places prises: entre 0 et nb_passager_max
     #[ORM\Column]
-    private ?int $nb_passager_courant = null;
+    #[Assert\PositiveOrZero]
+    #[Assert\LessThanOrEqual('$nb_passager_max')]
+    private ?int $nb_passager_courant = 0;
 
+    # le voyage est public a priori
     #[ORM\Column]
-    private ?bool $public = null;
+    private ?bool $public = true;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $renseignement = null;
