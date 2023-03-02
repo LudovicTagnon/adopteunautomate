@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UtilisateursRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -73,6 +75,14 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\OneToMany(mappedBy: 'utilisateurs', targetEntity: Groupes::class, orphanRemoval: true)]
     private $groupes;
+
+    #[ORM\OneToMany(mappedBy: 'publie', targetEntity: Trajets::class)]
+    private Collection $trajets;
+
+    public function __construct()
+    {
+        $this->trajets = new ArrayCollection();
+    }
 
     public function getEmail(): ?string
     {
@@ -253,6 +263,36 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
     public function setCompteActif(?bool $compte_actif): self
     {
         $this->compte_actif = $compte_actif;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Trajets>
+     */
+    public function getTrajets(): Collection
+    {
+        return $this->trajets;
+    }
+
+    public function addTrajet(Trajets $trajet): self
+    {
+        if (!$this->trajets->contains($trajet)) {
+            $this->trajets->add($trajet);
+            $trajet->setPublie($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTrajet(Trajets $trajet): self
+    {
+        if ($this->trajets->removeElement($trajet)) {
+            // set the owning side to null (unless already changed)
+            if ($trajet->getPublie() === $this) {
+                $trajet->setPublie(null);
+            }
+        }
 
         return $this;
     }

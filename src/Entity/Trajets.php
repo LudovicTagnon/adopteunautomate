@@ -53,6 +53,10 @@ class Trajets
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $renseignement = null;
 
+    #[ORM\ManyToOne(inversedBy: 'trajets')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Utilisateurs $publie = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -150,6 +154,18 @@ class Trajets
     public function setRenseignement(?string $renseignement): self
     {
         $this->renseignement = $renseignement;
+
+        return $this;
+    }
+
+    public function getPublie(): ?Utilisateurs
+    {
+        return $this->publie;
+    }
+
+    public function setPublie(?Utilisateurs $publie): self
+    {
+        $this->publie = $publie;
 
         return $this;
     }
