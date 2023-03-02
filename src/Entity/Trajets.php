@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\TrajetsRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TrajetsRepository::class)]
@@ -24,6 +25,18 @@ class Trajets
 
     #[ORM\Column(nullable: true)]
     private ?float $prix = null;
+
+    #[ORM\Column]
+    private ?int $nb_passager_max = null;
+
+    #[ORM\Column]
+    private ?int $nb_passager_courant = null;
+
+    #[ORM\Column]
+    private ?bool $public = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $renseignement = null;
 
     public function getId(): ?int
     {
@@ -74,6 +87,54 @@ class Trajets
     public function setPrix(?float $prix): self
     {
         $this->prix = $prix;
+
+        return $this;
+    }
+
+    public function getNbPassagerMax(): ?int
+    {
+        return $this->nb_passager_max;
+    }
+
+    public function setNbPassagerMax(int $nb_passager_max): self
+    {
+        $this->nb_passager_max = $nb_passager_max;
+
+        return $this;
+    }
+
+    public function getNbPassagerCourant(): ?int
+    {
+        return $this->nb_passager_courant;
+    }
+
+    public function setNbPassagerCourant(int $nb_passager_courant): self
+    {
+        $this->nb_passager_courant = $nb_passager_courant;
+
+        return $this;
+    }
+
+    public function isPublic(): ?bool
+    {
+        return $this->public;
+    }
+
+    public function setPublic(bool $public): self
+    {
+        $this->public = $public;
+
+        return $this;
+    }
+
+    public function getRenseignement(): ?string
+    {
+        return $this->renseignement;
+    }
+
+    public function setRenseignement(?string $renseignement): self
+    {
+        $this->renseignement = $renseignement;
 
         return $this;
     }
