@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Groupes;
 use App\Form\GroupesType;
-use App\Entity\Utilisateurs;
 use App\Repository\GroupesRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +17,7 @@ class GroupesController extends AbstractController
     public function index(GroupesRepository $repository): Response
     {
         $groupes = $repository->findBy(
-            ['id'=> $this->getUser()]
+            ['createur'=> $this->getUser()]
         );
 
         return $this->render('groupes/index.html.twig', [
@@ -30,11 +29,21 @@ class GroupesController extends AbstractController
     public function new(Request $request, EntityManagerInterface $manager): Response
     {
         $groupe = new Groupes();
-        $form = $this->createForm(GroupesType::class, $groupe);
+        /*$utilisateursDisponibles = $manager->createQueryBuilder()
+            ->select('u')
+            ->from(Utilisateurs::class, 'u')
+            ->where('u.id != :userId')
+            ->andWhere('u NOT IN (SELECT u.nom FROM Utilisateurs u)')
+            ->setParameter('userId', $this->getUser())
+            ->orderBy('u.nom', 'ASC')
+            ->getQuery();*/
+        
+        $form = $this->createForm(GroupesType::class, $groupe,);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $groupe = $form->getData();
+            $groupe->setCreateur($this->getUser());
             $manager->persist($groupe);
             $manager->flush();
 
@@ -43,7 +52,7 @@ class GroupesController extends AbstractController
                 'Votre groupe a été créé avec succès!'
             );
 
-            return $this->redirectToRoute('security_homepage');
+            return $this->redirectToRoute('app_groupes.index');
         }
 
         return $this->render('groupes/new.html.twig', [

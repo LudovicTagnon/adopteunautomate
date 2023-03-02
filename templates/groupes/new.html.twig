@@ -22,26 +22,24 @@
                 {{form_errors(form.nom_groupe)}}
             </div>
         </div>
-        {#  essai de mettre le champ "Utilisateurs }
-    <div class= 'form-group'>
-        {{ form_label(form.utilisateurs)}}
-        {{ form_widget(form.utilisateurs)}}
-        <div>
-            {{form_errors(form.utilisateurs)}}
+        <div class= 'form-group'>
+            {{ form_label(form.description)}}
+            {{ form_widget(form.description,{'attr':{'value':'Aucune description'}})}}
         </div>
-    </div>
-{#}
+        <div class='form-group'>
+            <div>
+                <!--{//{form_label(form.utilisateurs)}}-->
+                <!--{//{form_widget(form.utilisateurs)}}-->
+            </div>
+            <div>
+                
+            </div>
+        </div>
         <div class= 'form-group'>
             {{ form_row(form.submit)}}
 
         </div>
 
         {{ form_end(form) }}
-
-        This friendly message is coming from:
-        <ul>
-            <li>Your controller at <code><a href="{{ 'C:/xampp/adopteautomate/src/Controller/GroupesController.php'|file_link(0) }}">src/Controller/GroupesController.php</a></code></li>
-            <li>Your template at <code><a href="{{ 'C:/xampp/adopteautomate/templates/groupes/index.html.twig'|file_link(0) }}">templates/groupes/index.html.twig</a></code></li>
-        </ul>
     </div>
 {% endblock %}

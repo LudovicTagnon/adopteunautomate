@@ -4,23 +4,39 @@ namespace App\Form;
 
 use Assert\Length;
 use App\Entity\Groupes;
+use App\Entity\Utilisateurs;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use App\Repository\UtilisateursRepository;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+
 class GroupesType extends AbstractType
 {
+    private UtilisateursRepository $utilisateursRepository;
+    private $security;
+
+    public function __construct(UtilisateursRepository $utilisateursRepository, Security $security)
+    {
+        $this->utilisateursRepository = $utilisateursRepository;
+        $this->security = $security;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        // pb avec le caratère composite de "utilisateur" -> on le supprime
-        // on crée un groupe sans utilisateur
-        // mise en forme à 35min/1h16 de CRUD
+        $user = $this->security->getUser();
+
+        $utilisateursDisponibles = 
+        $utilisateursAjoutes = // récupérez les utilisateurs déjà ajoutés
+
         $builder
             ->add('nom_groupe' , TextType::class, [
                 'attr' => [
@@ -28,49 +44,62 @@ class GroupesType extends AbstractType
                     'minlength' => '1',
                     'maxlength' => '50'
                 ],
-                'label' => 'Nom du groupe   :',
+                'label' => 'Nom du groupe*   :',
                 'label_attr' => [
                     'class' => 'form-label mt-4'
                 ],
                 'constraints' => [
                     new Assert\Length( ['min' => 1, 'max' => 50] ),
-                    new Assert\NotBlank(message: 'This value should not be blank')
+                    new Assert\NotBlank(message: 'Ce champs est obligatoire')
                 ]
 
             ])
+            ->add('description', TextType::class, [
+                'attr' => [
+                    'class' => 'form_control',
+                    'minlength' => '0',
+                    'maxlength' => '500',
+                ],
+                'label' => 'Description :',
+                'label_attr' =>[
+                    'class' => 'form-label mt-4'
+                ],
+                'required' => false
+            ])
 
-            // problème rencontré: les nom des forms sont liés aux entités par
-            // symfony .
-            /*
-            -> add ('utilisateurs', EntityType::class,
-             [
-                */
-            //'class' => UserType::class
-            //'class' => UtilisateuUrs::class
-            /*
-            ,
-            'query_builder' => function (UtilisateursRepository $er){
-                return $er ->createQueryBuilder('u')
-                 ->orderBy('u.mail', 'ASC');
-            },
-            'label' => "Les utilisateurs",
-            'label_attr' => [
-                'class' => 'form-label mt-4'
-            ],
-            'choice_label' => 'mail',
-            'multiple' => true,
-            'expanded' => true */
-            /*
-    ]
-    )*/
+            /*->add('utilisateurs', EntityType::class, [
+                'class' => Utilisateurs::class,
+                'query_builder' => function (EntityRepository $er) use ($user){
+                    return $er->createQueryBuilder('u')
+                        ->where('u.id != :userId')
+                        ->setParameter('userId', $user->getUserIdentifier())
+                        ->orderBy('u.nom', 'ASC');
+                },
+                'label' => 'Utilisateurs concernées : ',
+                'expanded' => true,
+                'multiple' => true,
+                'choice_label' => 'nom',
+            ])*/
+                
+            /*->add('utilisateurs_disponibles', ChoiceType::class, [
+                'choices' => $utilisateursDisponibles,
+                'multiple' => true,
+                'expanded' => true,
+                'label' => 'Utilisateurs disponibles',
+            ])
+            ->add('utilisateurs_ajoutes', ChoiceType::class, [
+                'choices' => $utilisateursAjoutes,
+                'multiple' => true,
+                'expanded' => true,
+                'label' => 'Utilisateurs ajoutés',
+            ])*/
 
             ->add('submit', SubmitType::class, [
                 'attr' => [
                     'class' => 'btn btn-primary mt-4'
                 ],
-                'label' => 'Créer un groupe'
+                'label' => 'Créer le groupe'
             ]);
-        //->add('utilisateurs')
 
     }
 
@@ -78,6 +107,7 @@ class GroupesType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Groupes::class,
+            'user' => null,
         ]);
     }
 }

@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use App\Entity\Utilisateurs;
 use App\Repository\GroupesRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -14,30 +13,38 @@ class Groupes
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private ?int $id_groupe = null;
 
-    #[ORM\ManyToOne(targetEntity: Utilisateurs::class, inversedBy: 'groupes')]
-    #[ORM\JoinColumn(nullable: false, onDelete: "CASCADE")]
-    private $utilisateurs;
-
-
-
-
+    #[ORM\ManyToOne(targetEntity: Utilisateurs::class)]
+    private Utilisateurs $createur;
 
     #[ORM\Column(length: 50)]
     private ?string $nom_groupe = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: false)]
     private ?string $description = null;
+
+    #[ORM\ManyToMany(mappedBy:'groupes',targetEntity: Utilisateurs::class,cascade:["persist","remove"])]
+    private Collection $utilisateurs;
 
     public function __construct()
     {
-        $this->utilisateurs = new ArrayCollection();
+        $this->utilisateurs = new \Doctrine\Common\Collections\ArrayCollection();;
     }
 
     public function getId(): ?int
     {
-        return $this->id;
+        return $this->id_groupe;
+    }
+
+    public function getCreateur(): ?int
+    {
+        return $this->createur;
+    }
+
+    public function setCreateur(Utilisateurs $id_Createur): void
+    {
+        $this->createur = $id_Createur;
     }
 
     public function getNomGroupe(): ?string
@@ -67,7 +74,7 @@ class Groupes
     /**
      * @return Collection|Utilisateurs[]
      */
-    public function getUtilisateurs(): ?Collection
+    public function getUtilisateurs(): Collection
     {
         return $this->utilisateurs;
     }
@@ -80,18 +87,14 @@ class Groupes
 
         return $this;
     }
+
     public function removeUtilisateur(Utilisateurs $utilisateur): self
-    {
-        $this->utilisateurs->removeElement($utilisateur);
+        {
+        if ($this->utilisateurs->contains($utilisateur)) {
+            $this->utilisateurs->removeElement($utilisateur);
+        }
 
-        return $this;
-    }
-
-    public function setUtilisateurs(?Utilisateurs $utilisateurs): self
-    {
-        $this->utilisateurs = $utilisateurs;
-
-        return $this;
+    return $this;
     }
 
 }
