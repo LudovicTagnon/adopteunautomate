@@ -5,10 +5,11 @@ namespace App\Controller;
 use App\Entity\Trajets;
 use App\Form\TrajetsType;
 use App\Repository\TrajetsRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/trajets')]
 class TrajetsController extends AbstractController
@@ -16,16 +17,16 @@ class TrajetsController extends AbstractController
     #[Route('/', name: 'app_trajets_index', methods: ['GET'])]
     public function index(TrajetsRepository $trajetsRepository): Response
     {
-        $trajets = $trajetsRepository->findBy(['id'=> $this->getUser()]);
+        $trajets = $trajetsRepository->findBy(['publie'=> $this->getUser()]);
 
         return $this->render('trajets/index.html.twig', [
             'trajets' => $trajets
         ]);
     }
 
-    /*
+    
     #[Route('/new', name: 'app_trajets_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, TrajetsRepository $trajetsRepository): Response
+    public function new(Request $request, EntityManagerInterface $manager ): Response
     {
         $trajet = new Trajets();
         $form = $this->createForm(TrajetsType::class, $trajet);
@@ -47,12 +48,12 @@ class TrajetsController extends AbstractController
             return $this->redirectToRoute('app_trajets_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('trajets/new.html.twig', [
+        return $this->render('trajets/new.html.twig', [
             'trajet' => $trajet,
             'form' => $form,
         ]);
     }
-    */
+    
 
     #[Route('/{id}', name: 'app_trajets_show', methods: ['GET'])]
     public function show(Trajets $trajet): Response
@@ -62,7 +63,7 @@ class TrajetsController extends AbstractController
         ]);
     }
 
-    /*
+    
     #[Route('/{id}/edit', name: 'app_trajets_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Trajets $trajet, TrajetsRepository $trajetsRepository): Response
     {
@@ -75,14 +76,14 @@ class TrajetsController extends AbstractController
             return $this->redirectToRoute('app_trajets_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('trajets/edit.html.twig', [
+        return $this->render('trajets/edit.html.twig', [
             'trajet' => $trajet,
             'form' => $form,
         ]);
     }
-    */
+    
 
-    /*
+    
     #[Route('/{id}', name: 'app_trajets_delete', methods: ['POST'])]
     public function delete(Request $request, Trajets $trajet, TrajetsRepository $trajetsRepository): Response
     {
@@ -92,5 +93,5 @@ class TrajetsController extends AbstractController
 
         return $this->redirectToRoute('app_trajets_index', [], Response::HTTP_SEE_OTHER);
     }
-    */
+    
 }

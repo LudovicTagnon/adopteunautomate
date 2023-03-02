@@ -6,6 +6,8 @@ use App\Entity\Trajets;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+
 
 class TrajetsType extends AbstractType
 {
@@ -20,7 +22,7 @@ class TrajetsType extends AbstractType
             ->add('nb_passager_courant')
             ->add('public')
             ->add('renseignement')
-            ->add('publie')
+           // ->add('publie', UtilisateursType::class)
         ;
     }
 
