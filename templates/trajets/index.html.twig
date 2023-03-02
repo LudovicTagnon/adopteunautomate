@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste de vos trajets{% endblock %}
+
+{% block body %}
+    <h1>Liste de vos trajets</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Etat</th>
+                <th>Date de départ</th>
+                <th>Date d'arrivee</th>
+                <th>Prix</th>
+                <th>Nb de passager</th>
+                <th>Places restantes</th>
+                <th>Public</th>
+                <th>Renseignements</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for trajet in trajets %}
+            <tr>
+                <td>{{ trajet.id }}</td>
+                <td>{{ trajet.etat }}</td>
+                <td>{{ trajet.TDepart ? trajet.TDepart|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ trajet.TArrivee ? trajet.TArrivee|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ trajet.prix }}</td>
+                <td>{{ trajet.nbPassagerMax }}</td>
+                <td>{{ trajet.nbPassagerMax - trajet.nbPassagerCourant }}</td>
+                <td>{{ trajet.public ? 'Yes' : 'No' }}</td>
+                <td>{{ trajet.renseignement }}</td>
+                <td>
+                    <a href="{{ path('app_trajets_show', {'id': trajet.id}) }}">show</a>
+                    <a href="{{ path('app_trajets_edit', {'id': trajet.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="10">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_trajets_new') }}">Create new</a>
+{% endblock %}
