@@ -5,5 +5,7 @@ controllers:
     type: attribute
 
 profil: 
-    path : /profil
-    controller : App\Controller\ProfilController::editProfile
+    path : /profil/
+    controller : App\Controller\ProfilController::index
+    
+

@@ -35,6 +35,7 @@ class ProfilController extends AbstractController
         ]);
     }
 
+    #[Route('/profil/modifier', name: 'modif_profil')]
     public function editProfile(Request $request,EntityManagerInterface $entityManager, ManagerRegistry $doctrine, UserPasswordHasherInterface $userPasswordHasher):Response
     {
         $user = $this->getUser(); //on obtient user connecté
@@ -54,12 +55,12 @@ class ProfilController extends AbstractController
     
                 $this->addFlash('success', 'Profil modifié avec succès !');
     
-                return $this->redirectToRoute('profil');
+                return $this->redirectToRoute('profil/');
 
             }
         }
 
-        return $this->render('profil/index.html.twig', ['form' => $form->createView(),]);
+        return $this->render('profil/modifierProfile.html.twig', ['form' => $form->createView(),]);
     }
 
 
