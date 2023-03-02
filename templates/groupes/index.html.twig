@@ -14,7 +14,7 @@
 
     </div>
 
-    <h1>Les groupes: ✅</h1>
+    <h1>Les groupes:</h1>
 
     <div class="container">
         {# flash message si succes#}
@@ -26,38 +26,36 @@
     </div>
 
     <div class="container">
-        <h2> La liste pour un administrateur </h2>
-        <table class= "table table-hover">
-            <thead>
-            <tr>
-                <th scope="col"> Numéro </th>
-                <th scope="col"> Intitulé </th>
-                <th scope="col"> Créateur </th>
-                <th scope="col"> Edition </th>
-                <th scope="col"> Suppression </th>
-
-            </tr>
+        <table class= "table table-hover" style="vertical-align:middle; text-align:center;" width="100%">
+            <thead style="width=80px;"> <!-- Tête du tableau -->
+                <tr>
+                    <th scope="col"> Intitulé </th>
+                    <th scope="col"> Description </th>
+                    <th scope="col"> Edition </th>
+                </tr>
             </thead>
-            <tbody>
-            {% for groupe in groupes %}
+            <tbody> <!-- TCorps du tableau -->
+                <!-- Affichage des groupes de l'utilisateur -->
+                {% for groupe in groupes %}
                 <tr class="table-primary">
-                    <td>{{groupe.getId()}} </td>
+                    <td>{{groupe.getNomGroupe()}}</td>
+                     <td>{{groupe.getDescription()}}</td>
                     <td>
                         <a href = "{{ path('app_groupes.edit', {id:groupe.id})}}" class= "btn btn-info" >Modifier</a>
-                    </td>
-                    <td>
                         <a href = "{{ path('app_groupes.delete', {id:groupe.id})}}" class= "btn btn-warning" >Supprimer</a>
                     </td>
                 </tr>
-            {% endfor %}
+                {% endfor %}
+
+
+                <!-- Bouton permettant de créer un nouveau groupe --> 
+                <td colspan="4">
+                    Créer un groupe
+                    <button>+</button>
+                </td>
 
             <tbody>
         </table>
-        This friendly message is coming from:
-        <ul>
-            <li>Your controller at <code><a href="{{ 'C:/xampp/adopteautomate/src/Controller/GroupesController.php'|file_link(0) }}">src/Controller/GroupesController.php</a></code></li>
-            <li>Your template at <code><a href="{{ 'C:/xampp/adopteautomate/templates/groupes/index.html.twig'|file_link(0) }}">templates/groupes/index.html.twig</a></code></li>
-        </ul>
     </div>
 
 

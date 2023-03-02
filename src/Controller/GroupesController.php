@@ -17,7 +17,9 @@ class GroupesController extends AbstractController
     #[Route('/groupes', name: 'app_groupes.index')]
     public function index(GroupesRepository $repository): Response
     {
-        $groupes = $repository->findAll();
+        $groupes = $repository->findBy(
+            ['id'=> $this->getUser()]
+        );
 
         return $this->render('groupes/index.html.twig', [
             'groupes' => $groupes
