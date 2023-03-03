@@ -27,6 +27,7 @@ class RegistrationController extends AbstractController
             $entityManager = $doctrine->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
+            $this->addFlash('success', 'Vous êtes inscrits ! Vous pouvez désormais vous connecter!');
 
             return $this->redirectToRoute('app_home');
         } else {
