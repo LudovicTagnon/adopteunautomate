@@ -63,6 +63,28 @@ class ProfilController extends AbstractController
         return $this->render('profil/modifierProfile.html.twig', ['form' => $form->createView(),]);
     }
 
+    #[Route('/profil/supprimer', name: 'supprimer_profil')]
+    public function deleteUser(Request $request, EntityManagerInterface $entityManager, ManagerRegistry $doctrine, UserPasswordHasherInterface $userPasswordHasher): Response 
+{ 
+    // Obtenir l'utilisateur connecté 
+    $user = $this->getUser(); 
+
+    // Vérifiez le mot de passe actuel 
+    //$oldpassword = $request->request->get('oldPassword'); 
+    //if(!$userPasswordHasher->isPasswordValid($user, $oldpassword)) {
+      //  $this->addFlash('error','Le mot de passe actuel est incorrect.'); 
+       // return $this->redirectToRoute('profil/'); 
+    //} else {
+        // Supprimez l'utilisateur et enregistrez les modifications 
+        $entityManager = $doctrine->getManager(); 
+        $entityManager->remove($user); 
+        $entityManager->flush(); 
+        $this->addFlash('success', 'Profil supprimé avec succès !'); 
+        $request->getSession()->invalidate();
+        $this->container->get('security.token_storage')->setToken(null);
+        return $this->redirectToRoute('app_home'); // Redirect to homepage
+}
+
 
    
 }
