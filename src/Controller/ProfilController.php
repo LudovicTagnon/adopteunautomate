@@ -64,27 +64,19 @@ class ProfilController extends AbstractController
     }
 
     #[Route('/profil/supprimer', name: 'supprimer_profil')]
-    public function deleteUser(Request $request, EntityManagerInterface $entityManager, ManagerRegistry $doctrine, UserPasswordHasherInterface $userPasswordHasher): Response 
-{ 
-    // Obtenir l'utilisateur connecté 
-    $user = $this->getUser(); 
+    public function desactivateUser(Request $request, EntityManagerInterface $entityManager, ManagerRegistry $doctrine, UserPasswordHasherInterface $userPasswordHasher): Response 
+    { 
+        // Obtenir l'utilisateur connecté 
+        $user = $this->getUser(); 
+        $user->setCompteActif(false); //on passe à faux pour désactiver le compte
+        $entityManager->flush();
 
-    // Vérifiez le mot de passe actuel 
-    //$oldpassword = $request->request->get('oldPassword'); 
-    //if(!$userPasswordHasher->isPasswordValid($user, $oldpassword)) {
-      //  $this->addFlash('error','Le mot de passe actuel est incorrect.'); 
-       // return $this->redirectToRoute('profil/'); 
-    //} else {
-        // Supprimez l'utilisateur et enregistrez les modifications 
-        $entityManager = $doctrine->getManager(); 
-        $entityManager->remove($user); 
-        $entityManager->flush(); 
-        $this->addFlash('success', 'Profil supprimé avec succès !'); 
+        $this->addFlash('success', 'Profil désactivé avec succès !'); 
         $request->getSession()->invalidate();
         $this->container->get('security.token_storage')->setToken(null);
         return $this->redirectToRoute('app_home'); // Redirect to homepage
-}
-
+    }
+    
 
    
 }
