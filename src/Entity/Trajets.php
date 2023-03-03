@@ -28,7 +28,7 @@ class Trajets
 
     // arrivée après le départ
     #[ORM\Column(nullable: true)]
-    #[Assert\GreaterThan('$T_depart')]
+    //#[Assert\GreaterThan('$T_depart')]
     private ?\DateTimeImmutable $T_arrivee = null;
 
     #[ORM\Column(nullable: true)]
@@ -43,7 +43,7 @@ class Trajets
     # places prises: entre 0 et nb_passager_max
     #[ORM\Column]
     #[Assert\PositiveOrZero]
-    #[Assert\LessThanOrEqual('$nb_passager_max')]
+    //#[Assert\LessThanOrEqual('$nb_passager_max')]
     private ?int $nb_passager_courant = 0;
 
     # le voyage est public a priori
