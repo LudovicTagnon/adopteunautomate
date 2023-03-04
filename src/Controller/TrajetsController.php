@@ -17,6 +17,7 @@ class TrajetsController extends AbstractController
     #[Route('/', name: 'app_trajets_index', methods: ['GET'])]
     public function index(TrajetsRepository $trajetsRepository): Response
     {
+        // resctriction à l'utilisateur logué en cours
         $trajets = $trajetsRepository->findBy(['publie'=> $this->getUser()]);
 
         return $this->render('trajets/index.html.twig', [
@@ -37,6 +38,10 @@ class TrajetsController extends AbstractController
             // $trajetsRepository->save($trajet, true);
             $trajet = $form->getData();
             $trajet->setPublie($this->getUser());
+            // transformation en DateTimeImmutable
+            $trajet->setEtat('ouvert');
+            $trajet->setTDepart($trajet->getTDepart()->toImmutable());
+            $trajet->setTArrivee($trajet->getTArrivee()->toImmutable());  
             $manager->persist($trajet);
             $manager->flush();
 
