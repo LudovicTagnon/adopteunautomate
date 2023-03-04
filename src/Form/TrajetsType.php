@@ -3,21 +3,23 @@
 namespace App\Form;
 
 use App\Entity\Trajets;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Security\Core\Security;
-
-use App\Repository\UtilisateursRepository;
+use ConvertirFormatDate;
 use Doctrine\DBAL\Types\BooleanType;
+
+use Symfony\Component\Form\AbstractType;
+use App\Repository\UtilisateursRepository;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeImmutableType;
-
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeImmutableType;
 
 class TrajetsType extends AbstractType
 {
@@ -35,20 +37,27 @@ class TrajetsType extends AbstractType
     {
         //$user = $this->security->getUser();
         $tomorrow = new \DateTime('tomorrow');
+        $demain = new \DateTime('+24 hours');
 
         $builder
             //->add('etat')
             ->add('T_depart', DateTimeType::class, [
+                //'input_format' => 'Y-m-d H:i:s',
+               // 'model_timezone' => 'UTC',
                 'widget' => 'single_text',
-                'label' => 'Jour et heure de départ * :   ',
+                'label' => 'Jour et heure de départ :   ',
                 // début par défaut: lendemain de la saisie
-                'data' => $tomorrow
+                'data' => $demain,
+              // 'date_format' => new ConvertirFormatDate()
             ])
+            //->get('T_depart')
+            //->addModelTransformer(new ConvertirFormatDate())
            // ->add('T_depart')
             ->add('T_arrivee', DateTimeType::class, [
                 'widget' => 'single_text',
                 'required'   => false,
                 'label' => 'Jour et heure d\'arrivée    :      '
+              //  'date_format' => new ConvertirFormatDate()
                 ])
             //->add('T_arrivee')    
             ->add('prix', IntegerType::class,[
@@ -73,8 +82,12 @@ class TrajetsType extends AbstractType
             'label' => 'Créer le trajet'
              ])
              */
-
+            
+            //->get('T_arrivee')
+            //->addModelTransformer(new ConvertirFormatDate());
         ;
+
+        
     }
 
     public function configureOptions(OptionsResolver $resolver): void

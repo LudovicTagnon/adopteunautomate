@@ -40,8 +40,8 @@ class TrajetsController extends AbstractController
             $trajet->setPublie($this->getUser());
             // transformation en DateTimeImmutable
             $trajet->setEtat('ouvert');
-            $trajet->setTDepart($trajet->getTDepart()->toImmutable());
-            $trajet->setTArrivee($trajet->getTArrivee()->toImmutable());  
+           // $trajet->setTDepart($trajet->getTDepart()->toImmutable());
+           // $trajet->setTArrivee($trajet->getTArrivee()->toImmutable());  
             $manager->persist($trajet);
             $manager->flush();
 

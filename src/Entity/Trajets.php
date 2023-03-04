@@ -6,8 +6,11 @@ namespace App\Entity;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\TrajetsRepository;
+use Symfony\Component\Validator\Constraints\DateTime;
+//use Symfony\Component\Validator\Constraints\DateTimeImmutable;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Monolog\DateTimeImmutable;
 
 #[ORM\Entity(repositoryClass: TrajetsRepository::class)]
 class Trajets
@@ -111,6 +114,7 @@ class Trajets
         return $this;
     }
 
+    
     public function getTArrivee(): ?\DateTimeImmutable
     {
         return $this->T_arrivee;
