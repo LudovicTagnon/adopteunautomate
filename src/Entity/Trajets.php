@@ -7,10 +7,33 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\TrajetsRepository;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 #[ORM\Entity(repositoryClass: TrajetsRepository::class)]
 class Trajets
 {
+    /**
+     * @Assert\Callback(callback="validateAttributes")
+     * Controle de la validité du nombre de passagers courants
+     */
+    public function validateAttributes(ExecutionContextInterface $context, $payload)
+    {
+        $nbPassagerCourant = $this->getNbPassagerCourant();
+        $nbPassagerMax = $this->getNbPassagerMax();
+
+        if ($nbPassagerCourant >= $nbPassagerMax) {
+            $context->buildViolation('Le nombre de passagers courant doit être inférieur au nombre de passagers maximal.')
+                ->atPath('nbPassagersCourant')
+                ->addViolation();
+        }
+    }
+
+    //public function setLessthan(): void
+    //{
+    //    $this->nb_passager_courant <$this->nb_passager_max;
+    //}
+
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -43,7 +66,9 @@ class Trajets
     # places prises: entre 0 et nb_passager_max
     #[ORM\Column]
     #[Assert\PositiveOrZero]
-    //#[Assert\LessThanOrEqual('$nb_passager_max')]
+    //#[Assert\PositiveOrZero($nb_passager_max - $nb_passager_courant)]
+    //#[Assert\Range(min: 0, max: $this.$nb_passager_max)]
+    //#[Assert\LessThanOrEqual('$this.$nb_passager_max')]
     private ?int $nb_passager_courant = 0;
 
     # le voyage est public a priori
