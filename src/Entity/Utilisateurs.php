@@ -57,7 +57,7 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: "boolean")]
     private ?bool $autorisation_mail;
 
-    #[ORM\Column(type: "blob", nullable: true)]
+    #[ORM\Column(type: "string", nullable: true)]
     private $fichier_photo;
 
     #[ORM\Column(type: "integer")]

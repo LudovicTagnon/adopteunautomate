@@ -21,6 +21,15 @@
         {% else %}
                  <li>Autorisation de notification mail : Non</li>
         {% endif %}
+        <li>Photo de profil :</li>
+        {% if user.getFichierPhoto() is not null %}
+            <li><img src="{{ asset('uploads/' ~ user.getFichierPhoto()) }}" alt="Profile picture" style="border-radius: 50%; width: 100px; height: 100px;"></li>
+        {% else %}
+            <li>Aucune photo de profil</li>
+        {% endif %}
+        <a href="{{ path('modif_profil') }}">
+            <button class="btn btn-primary">Modifier mon profil</button>
+        </a>
 <a href="{{ path('modif_profil') }}">
   <button class="btn btn-primary">Modifier mon profil</button> 
 </a>

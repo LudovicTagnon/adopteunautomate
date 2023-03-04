@@ -95,7 +95,7 @@ class RegistrationFormType extends AbstractType
                 'required' => false,
                 'attr' => ['autocomplete' => 'autorisation_mail'],
             ])
-            ->add('fichier_photo', FileType::class, [
+            ->add('imageFile', FileType::class, [
                 'required' => false,
                 'mapped' => false,
                 'attr' => ['autocomplete' => 'fichier_photo'],
