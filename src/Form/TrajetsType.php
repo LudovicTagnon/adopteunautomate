@@ -29,12 +29,12 @@ class TrajetsType extends AbstractType
         //$user = $this->security->getUser();
 
         $builder
-            ->add('etat')
+            //->add('etat')
             ->add('T_depart')
             ->add('T_arrivee')
             ->add('prix')
             ->add('nb_passager_max')
-            ->add('nb_passager_courant')
+            //->add('nb_passager_courant')
             ->add('public')
             ->add('renseignement')
            // ->add('publie', UtilisateursType::class)

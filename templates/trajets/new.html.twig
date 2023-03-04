@@ -15,13 +15,17 @@
 
          {{ form_start(form) }}
 
-        <div class= 'form-group'>
+       
+        {#   Champ inutile à la création - le trajet est forcément de statut ouvert
+            <div class= 'form-group'>
             {{ form_label(form.etat)}}
             {{ form_widget(form.etat)}}
             <div>
                 {{form_errors(form.etat)}}
             </div>
-        </div>
+            </div>
+            #}
+        
         <div class= 'form-group'>
             {{ form_label(form.T_depart)}}
             {{ form_widget(form.T_depart)}}
@@ -52,6 +56,9 @@
             </div>
         </div>
 
+        {# exclure l'attribut 'nb_passager_courant' #}
+        {#    {{ form_row(form.nb_passager_courant, {'mapped': false}) }}   #} 
+
         <div class= 'form-group'>
             {{ form_label(form.public)}}
             {{ form_widget(form.public)}}
@@ -68,9 +75,13 @@
             </div>
         </div>
 
-        
+         <div class= 'form-group'>
+             {{ form_widget(form) }}
+             </br>
+                 <button class= "btn btn-info">{{ button_label|default('Enregistrer') }}</button>
+        </div>
 
-        {{ include('trajets/_form.html.twig') }}
+        {{ form_end(form) }}
         </br>
         <a href="{{ path('app_trajets_index') }}" class= "btn btn-info">Retour à la liste de vos trajets</a>
     </div>
