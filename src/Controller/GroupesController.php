@@ -94,7 +94,7 @@ class GroupesController extends AbstractController
                 'Ce groupe n\'a pas été trouvé.'
             );
 
-            return $this->redirectToRoute('app_groupes.index');
+            return $this->redirectToRoute('app_groupes.group');
         }
 
         $manager->remove($groupe);
@@ -105,6 +105,6 @@ class GroupesController extends AbstractController
             'Ce groupe a été supprimé avec succès.'
         );
 
-        return $this->redirectToRoute('app_groupes.index');
+        return $this->redirectToRoute('app_groupes.group');
     }
 }

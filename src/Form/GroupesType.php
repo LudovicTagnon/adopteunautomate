@@ -65,40 +65,6 @@ class GroupesType extends AbstractType
                     'class' => 'form-label mt-4'
                 ],
                 'required' => false
-            ])
-
-            /*->add('utilisateurs', EntityType::class, [
-                'class' => Utilisateurs::class,
-                'query_builder' => function (EntityRepository $er) use ($user){
-                    return $er->createQueryBuilder('u')
-                        ->where('u.id != :userId')
-                        ->setParameter('userId', $user->getUserIdentifier())
-                        ->orderBy('u.nom', 'ASC');
-                },
-                'label' => 'Utilisateurs concernées : ',
-                'expanded' => true,
-                'multiple' => true,
-                'choice_label' => 'nom',
-            ])*/
-                
-            /*->add('utilisateurs_disponibles', ChoiceType::class, [
-                'choices' => $utilisateursDisponibles,
-                'multiple' => true,
-                'expanded' => true,
-                'label' => 'Utilisateurs disponibles',
-            ])
-            ->add('utilisateurs_ajoutes', ChoiceType::class, [
-                'choices' => $utilisateursAjoutes,
-                'multiple' => true,
-                'expanded' => true,
-                'label' => 'Utilisateurs ajoutés',
-            ])*/
-
-            ->add('submit', SubmitType::class, [
-                'attr' => [
-                    'class' => 'btn btn-primary mt-4'
-                ],
-                'label' => 'Créer le groupe'
             ]);
 
     }

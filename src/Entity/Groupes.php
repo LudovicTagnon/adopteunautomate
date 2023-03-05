@@ -71,36 +71,15 @@ class Groupes
 
         return $this;
     }
-
-    /**
-     * @return Collection|Utilisateurs[]
-    */
+    
     public function getUtilisateurs(): Collection
     {
-        return $this->utilisateurs;
+        return $this->estDans;
     }
 
     public function getNbUtilisateurs(): int
     {
-        return count($this->utilisateurs);
-    }
-
-    public function addUtilisateur(Utilisateurs $utilisateur): self
-    {
-        if (!$this->utilisateurs->contains($utilisateur)) {
-            $this->utilisateurs[] = $utilisateur;
-        }
-
-        return $this;
-    }
-
-    public function removeUtilisateur(Utilisateurs $utilisateur): self
-        {
-        if ($this->utilisateurs->contains($utilisateur)) {
-            $this->utilisateurs->removeElement($utilisateur);
-        }
-
-    return $this;
+        return count($this->estDans);
     }
 
 }

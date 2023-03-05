@@ -13,9 +13,7 @@
     <!-- Test -->
 
     <div class="example-wrapper">
-        <h1>Les groupes: modification ✅</h1>
-
-        <h2> La modification d'un groupe (par un administrateur?)  </h2>
+        <h1>Modification du groupe : </h1>
 
         {{ form_start(form) }}
         <div class="form-group">
@@ -25,9 +23,13 @@
                 {{ form_errors(form.nom_groupe) }}
             </div>
         </div>
-
-        <button type="submit" class="btn btn-primary">Enregistrer</button>
-
+        <div class= 'form-group'>
+            {{ form_label(form.description)}}
+            {{ form_widget(form.description,{'attr':{'value':'Aucune description'}})}}
+        </div>
+        <div class= 'form-group'>
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+        </div>
         {{ form_end(form) }}
 
 
