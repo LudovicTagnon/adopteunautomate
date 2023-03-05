@@ -34,6 +34,22 @@ class EstDansController extends AbstractController
 
         return new Response('L\'utilisateur ' . $utilisateur->getNom() . ' a été ajouté au groupe ' . $groupe->getNom());
     }
+
+    #[Route("/groupes/edition/supprimer/{groupeId}/{utilisateurId}", name:"app_groupes.supprimer_utilisateur")]
+    public function supprimerUtilisateurDuGroupe(EntityManagerInterface $manager, int $groupeId, int $utilisateurId): Response
+    {
+        $estDansRepository = $manager->getRepository(EstDans::class);
+        $estDans = $estDansRepository->findOneBy(['groupes' => $groupeId, 'utilisateurs' => $utilisateurId]);
+
+        if (!$estDans) {
+            throw $this->createNotFoundException('L\'utilisateur n\'est pas dans le groupe.');
+        }
+
+        $manager->remove($estDans);
+        $manager->flush();
+
+        return new Response('L\'utilisateur a été retiré du groupe.');
+    }
 }
 
 ?>

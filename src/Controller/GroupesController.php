@@ -59,8 +59,9 @@ class GroupesController extends AbstractController
     #[Route('/groupes/edition/{id}', name: 'app_groupes.edit', methods: ['GET', 'POST'])]
     public function edit(Groupes $groupe, Request $request, EntityManagerInterface $manager): Response
     {
+        $current_user = $this->getUser();
         $utilisateurs = $manager->getRepository(Utilisateurs::class)->findAll();
-        $utilisateursDejaDedans = $manager->getRepository(EstDans::class)->findAll();
+        $utilisateursDejaDedans = $manager->getRepository(EstDans::class)->findAllUtilisateur($groupe);
         $form = $this->createForm(GroupesType::class, $groupe);
 
         $form->handleRequest($request);
@@ -80,6 +81,7 @@ class GroupesController extends AbstractController
         return $this->render('groupes/edit_group.html.twig', [
             'form' => $form->createView(),
             'groupe' => $groupe,
+            'utilisateur_actuel' => $current_user,
             'utilisateurs' => $utilisateurs,
             'utilisateursDejaDedans' => $utilisateursDejaDedans,
         ]);
