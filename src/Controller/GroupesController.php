@@ -3,6 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Groupes;
+use App\Entity\Utilisateurs;
+use App\Entity\EstDans;
+use App\Repository\EstDansRepository;
 use App\Form\GroupesType;
 use App\Repository\GroupesRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -14,6 +17,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class GroupesController extends AbstractController
 {
     #[Route('/groupes', name: 'app_groupes.group')]
+
     public function index(GroupesRepository $repository): Response
     {
         $groupes = $repository->findBy(
@@ -29,14 +33,6 @@ class GroupesController extends AbstractController
     public function new(Request $request, EntityManagerInterface $manager): Response
     {
         $groupe = new Groupes();
-        /*$utilisateursDisponibles = $manager->createQueryBuilder()
-            ->select('u')
-            ->from(Utilisateurs::class, 'u')
-            ->where('u.id != :userId')
-            ->andWhere('u NOT IN (SELECT u.nom FROM Utilisateurs u)')
-            ->setParameter('userId', $this->getUser())
-            ->orderBy('u.nom', 'ASC')
-            ->getQuery();*/
         
         $form = $this->createForm(GroupesType::class, $groupe,);
 
@@ -63,6 +59,8 @@ class GroupesController extends AbstractController
     #[Route('/groupes/edition/{id}', name: 'app_groupes.edit', methods: ['GET', 'POST'])]
     public function edit(Groupes $groupe, Request $request, EntityManagerInterface $manager): Response
     {
+        $utilisateurs = $manager->getRepository(Utilisateurs::class)->findAll();
+        $utilisateursDejaDedans = $manager->getRepository(EstDans::class)->findAll();
         $form = $this->createForm(GroupesType::class, $groupe);
 
         $form->handleRequest($request);
@@ -81,7 +79,9 @@ class GroupesController extends AbstractController
 
         return $this->render('groupes/edit_group.html.twig', [
             'form' => $form->createView(),
-            'groupe' => $groupe
+            'groupe' => $groupe,
+            'utilisateurs' => $utilisateurs,
+            'utilisateursDejaDedans' => $utilisateursDejaDedans,
         ]);
     }
 

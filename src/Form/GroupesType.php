@@ -34,8 +34,8 @@ class GroupesType extends AbstractType
     {
         $user = $this->security->getUser();
 
-        $utilisateursDisponibles = 
-        $utilisateursAjoutes = // récupérez les utilisateurs déjà ajoutés
+        //$utilisateursDisponibles = 
+        //$utilisateursAjoutes = // récupérez les utilisateurs déjà ajoutés
 
         $builder
             ->add('nom_groupe' , TextType::class, [

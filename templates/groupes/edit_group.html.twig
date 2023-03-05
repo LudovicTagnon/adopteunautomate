@@ -27,6 +27,32 @@
             {{ form_label(form.description)}}
             {{ form_widget(form.description,{'attr':{'value':'Aucune description'}})}}
         </div>
+        <div class= 'form-group' style='display:flex;'>
+            <div class= 'users_viewer'> <!-- Utilisateurs disponibles-->
+                {% for utilisateur in utilisateurs %}
+                    {% if utilisateur not in groupe.utilisateurs %}
+                        <li>{{ utilisateur.nom }} {{ utilisateur.prenom }} 
+                            <button type="button" class="btn btn-success mb-2" name="ajouter" value="{{ utilisateur.id }}" onclick="ajouterUtilisateurGroupe({{ utilisateur.id }}, {{ groupe.id }})">+</button>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class= 'users_viewer'> <!-- Utilisateurs déjà dans le groupe-->
+                {% for utilisateur in utilisateursDejaDedans %}
+                    <li>{{ utilisateur.nomUtilisateur }} {{ utilisateur.prenomUtilisateur }}
+                        <button type="button" class="btn btn-danger mb-2" name="retirer" value="{{ utilisateur.idUtilisateur }}">-</button>
+                    </li>
+                {% endfor %}
+            </div>
+
+            <script>
+                function ajouterUtilisateurGroupe(utilisateurId, groupeId) {
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('GET', '{{ path('app_groupes.ajouter_utilisateur', { groupeId: '__groupeId__' , utilisateurId: '__utilisateurId__' }) }}'.replace('__utilisateurId__', utilisateurId).replace('__groupeId__', groupeId), true);
+                    xhr.send();
+                }
+            </script>
+        </div>
         <div class= 'form-group'>
             <button type="submit" class="btn btn-primary">Enregistrer</button>
         </div>
