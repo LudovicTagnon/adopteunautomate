@@ -3,7 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\VillesRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Form\FormTypeInterface;
 
 #[ORM\Entity(repositoryClass: VillesRepository::class)]
 class Villes
@@ -19,11 +22,23 @@ class Villes
     #[ORM\Column(nullable: true)]
     private ?int $CP = null;
 
-    #[ORM\OneToOne(mappedBy: 'demarre_de', cascade: ['persist', 'remove'])]
-    private ?Trajets $depart_de = null;
+    #[ORM\OneToMany(mappedBy: 'demarre_a', targetEntity: Trajets::class)]
+    private Collection $demarrant;
 
-    #[ORM\OneToOne(mappedBy: 'arrive_a', cascade: ['persist', 'remove'])]
-    private ?Trajets $arrivee_de = null;
+    #[ORM\OneToMany(mappedBy: 'arrive_a', targetEntity: Trajets::class)]
+    private Collection $arrivant;
+
+    public function __construct()
+    {
+        $this->demarrant = new ArrayCollection();
+        $this->arrivant = new ArrayCollection();
+    }
+
+    //#[ORM\OneToOne(mappedBy: 'demarre_de', cascade: ['persist', 'remove'])]
+    //private ?Trajets $depart_de = null;
+
+    //#[ORM\OneToOne(mappedBy: 'arrive_a', cascade: ['persist', 'remove'])]
+    //private ?Trajets $arrivee_de = null;
 
 
     public function getId(): ?int
@@ -54,7 +69,7 @@ class Villes
 
         return $this;
     }
-
+/*
     public function getDepartDe(): ?Trajets
     {
         return $this->depart_de;
@@ -88,5 +103,65 @@ class Villes
 
         return $this;
     }
+*/
 
+/**
+ * @return Collection<int, Trajets>
+ */
+public function getDemarrant(): Collection
+{
+    return $this->demarrant;
+}
+
+public function addDemarrant(Trajets $demarrant): self
+{
+    if (!$this->demarrant->contains($demarrant)) {
+        $this->demarrant->add($demarrant);
+        $demarrant->setDemarreA($this);
+    }
+
+    return $this;
+}
+
+public function removeDemarrant(Trajets $demarrant): self
+{
+    if ($this->demarrant->removeElement($demarrant)) {
+        // set the owning side to null (unless already changed)
+        if ($demarrant->getDemarreA() === $this) {
+            $demarrant->setDemarreA(null);
+        }
+    }
+
+    return $this;
+}
+
+/**
+ * @return Collection<int, Trajets>
+ */
+public function getArrivant(): Collection
+{
+    return $this->arrivant;
+}
+
+public function addArrivant(Trajets $arrivant): self
+{
+    if (!$this->arrivant->contains($arrivant)) {
+        $this->arrivant->add($arrivant);
+        $arrivant->setArriveA($this);
+    }
+
+    return $this;
+}
+
+public function removeArrivant(Trajets $arrivant): self
+{
+    if ($this->arrivant->removeElement($arrivant)) {
+        // set the owning side to null (unless already changed)
+        if ($arrivant->getArriveA() === $this) {
+            $arrivant->setArriveA(null);
+        }
+    }
+
+    return $this;
+}
 }

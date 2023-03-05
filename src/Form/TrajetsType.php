@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Trajets;
+use App\Entity\Villes;
 use ConvertirFormatDate;
 use Doctrine\DBAL\Types\BooleanType;
 
@@ -17,9 +18,11 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-
+use Symfony\Component\Form\Extension\Core\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeImmutableType;
+use Symfony\Component\Form\FormTypeInterface;
 
 class TrajetsType extends AbstractType
 {
@@ -45,14 +48,27 @@ class TrajetsType extends AbstractType
                 'widget' => 'single_text',
                 'label' => 'Jour et heure de départ :   '
             ])
-           
             ->add('T_arrivee', DateTimeType::class, [
                 'widget' => 'single_text',
                 'required'   => false,
                 'label' => 'Jour et heure d\'arrivée    :      '
-              //  'date_format' => new ConvertirFormatDate()
-                ])
-            //->add('T_arrivee')    
+            ])   
+
+            ->add('demarrea', TextType::class, [
+                'label' => 'Ville de départ * :   ',
+               // 'widget' => 'single_text',
+               // 'class' => Villes::class,
+               // 'choice_label' => 'nom_ville'
+                
+            ])   
+            ->add('arrivea', TextType::class, [
+                'label' => 'Ville d\'arrivee * :   ',
+              //  'widget' => 'single_text',
+               // 'class' => Villes::class,
+               // 'choice_label' => 'nom_ville'
+               
+            ])   
+
             ->add('prix', IntegerType::class,[
                 'required'   => false,
                 'label' => 'Prix par passager :     '
@@ -60,24 +76,13 @@ class TrajetsType extends AbstractType
             ->add('nb_passager_max', IntegerType::class,[
                 'label' => 'Nombre de places * :   '
             ])
-            //->add('nb_passager_courant')
+
             ->add('public')
             ->add('renseignement', TextareaType::class, [
                 'required'   => false,
                 'label' => 'Informations additionnelles :   '
             ])
-           // ->add('publie', UtilisateursType::class)
-           /*
-           ->add('submit', SubmitType::class, [
-            'attr' => [
-                'class' => 'btn btn-primary mt-4'
-            ],
-            'label' => 'Créer le trajet'
-             ])
-             */
-            
-            //->get('T_arrivee')
-            //->addModelTransformer(new ConvertirFormatDate());
+           
         ;
 
         

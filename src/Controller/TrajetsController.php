@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Trajets;
+use App\Entity\Utilisateurs;
 use App\Form\TrajetsType;
 use App\Repository\TrajetsRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,18 +18,26 @@ class TrajetsController extends AbstractController
     #[Route('/', name: 'app_trajets_index', methods: ['GET'])]
     public function index(TrajetsRepository $trajetsRepository): Response
     {
-        // resctriction à l'utilisateur logué en cours
+        
+        // restriction à l'utilisateur logué en cours
         $trajets = $trajetsRepository->findBy(['publie'=> $this->getUser()]);
-
+        // restriction à l'utilisateur qui a un véhicule - ne fonctionne pas, le User n'a pas d'attribut véhicule
+       //if ($this->getUser()->getVehicule() ){
         return $this->render('trajets/index.html.twig', [
             'trajets' => $trajets
         ]);
+        //}
+        //else 
+        //return $this->redirectToRoute('app_trajets_index', [], Response::HTTP_SEE_OTHER);
     }
 
     
     #[Route('/new', name: 'app_trajets_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $manager ): Response
     {
+        // retriction à ajouter: l'utilisateur doit avoir un véhicule
+        //        TODO    
+
         $trajet = new Trajets();
         $form = $this->createForm(TrajetsType::class, $trajet);
         $form->handleRequest($request);
