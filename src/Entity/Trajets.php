@@ -85,6 +85,14 @@ class Trajets
     #[ORM\JoinColumn(nullable: false)]
     private ?Utilisateurs $publie = null;
 
+    #[ORM\OneToOne(inversedBy: 'depart_de', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Villes $demarre_de = null;
+
+    #[ORM\OneToOne(inversedBy: 'arrivee_de', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Villes $arrive_a = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -198,4 +206,29 @@ class Trajets
 
         return $this;
     }
+
+    public function getDemarreDe(): ?Villes
+    {
+        return $this->demarre_de;
+    }
+
+    public function setDemarreDe(Villes $demarre_de): self
+    {
+        $this->demarre_de = $demarre_de;
+
+        return $this;
+    }
+
+    public function getArriveA(): ?Villes
+    {
+        return $this->arrive_a;
+    }
+
+    public function setArriveA(Villes $arrive_a): self
+    {
+        $this->arrive_a = $arrive_a;
+
+        return $this;
+    }
+
 }
