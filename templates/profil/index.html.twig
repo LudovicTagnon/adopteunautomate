@@ -4,6 +4,9 @@
 {% block body %}
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <h1 class ="center">Mon compte</h1>
+    <div class ="photo">
+      <img src="{{ asset('uploads/' ~ user.getFichierPhoto()) }}" alt="Profile picture" style="margin-left :30%;margin-bottom:40px;border-radius: 50%; width: 100px; height: 100px;">
+    </div>
     <div class="profil">
     <ul>
         <li>Nom : {{ user.getNom() }}</li>
@@ -21,21 +24,17 @@
         {% else %}
                  <li>Autorisation de notification mail : Non</li>
         {% endif %}
-        <li>Photo de profil :</li>
         {% if user.getFichierPhoto() is not null %}
-            <li><img src="{{ asset('uploads/' ~ user.getFichierPhoto()) }}" alt="Profile picture" style="border-radius: 50%; width: 100px; height: 100px;"></li>
+          <li>Photo de profil : Oui</li>
         {% else %}
-            <li>Aucune photo de profil</li>
+            <li>Photo de profil : Aucune photo de profil</li>
         {% endif %}
         <a href="{{ path('modif_profil') }}">
             <button class="btn btn-primary">Modifier mon profil</button>
         </a>
-<a href="{{ path('modif_profil') }}">
-  <button class="btn btn-primary">Modifier mon profil</button> 
-</a>
-<a href="{{ path('supprimer_profil') }}">
-  <button class="btn btn-danger" onclick="return confirm('Êtes-vous sûr(e) de vouloir désactiver votre profil ? Cette action est irréversible !');">Désactiver mon profil</button> 
-</a>
+        <a href="{{ path('supprimer_profil') }}">
+          <button class="btn btn-danger" onclick="return confirm('Êtes-vous sûr(e) de vouloir désactiver votre profil ? Cette action est irréversible !');">Désactiver mon profil</button> 
+        </a>
     </ul>
     </div>
 {% endblock %}
