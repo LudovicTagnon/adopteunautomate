@@ -31,6 +31,7 @@
                 <tr>
                     <th scope="col"> Intitulé </th>
                     <th scope="col"> Description </th>
+                    <th scope="col"> Personnes </th>
                     <th scope="col"> Edition </th>
                 </tr>
             </thead>
@@ -39,7 +40,8 @@
                 {% for groupe in groupes %}
                 <tr class="table-primary">
                     <td>{{groupe.getNomGroupe()}}</td>
-                     <td>{{groupe.getDescription()}}</td>
+                    <td>{{groupe.getDescription()}}</td>
+                    <td>{//{groupe.getNbUtilisateurs}}</td>
                     <td>
                         <a href = "{{ path('app_groupes.edit', {id:groupe.id})}}" class= "btn btn-info" >Modifier</a>
                         <a href = "{{ path('app_groupes.delete', {id:groupe.id})}}" class= "btn btn-warning" >Supprimer</a>

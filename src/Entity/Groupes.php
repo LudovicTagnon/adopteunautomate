@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Entity\Utilisateurs;
 use App\Repository\GroupesRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -13,7 +14,7 @@ class Groupes
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id_groupe = null;
+    private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: Utilisateurs::class)]
     private Utilisateurs $createur;
@@ -24,17 +25,17 @@ class Groupes
     #[ORM\Column(length: 255, nullable: false)]
     private ?string $description = null;
 
-    #[ORM\ManyToMany(mappedBy:'groupes',targetEntity: Utilisateurs::class,cascade:["persist","remove"])]
-    private Collection $utilisateurs;
+    #[ORM\OneToMany(mappedBy: 'groupes', targetEntity: EstDans::class)]
+    protected $estDans;
 
     public function __construct()
     {
-        $this->utilisateurs = new \Doctrine\Common\Collections\ArrayCollection();;
+        $this->estDans = new ArrayCollection();;
     }
 
     public function getId(): ?int
     {
-        return $this->id_groupe;
+        return $this->id;
     }
 
     public function getCreateur(): ?int
@@ -73,10 +74,15 @@ class Groupes
 
     /**
      * @return Collection|Utilisateurs[]
-     */
+    */
     public function getUtilisateurs(): Collection
     {
         return $this->utilisateurs;
+    }
+
+    public function getNbUtilisateurs(): int
+    {
+        return count($this->utilisateurs);
     }
 
     public function addUtilisateur(Utilisateurs $utilisateur): self

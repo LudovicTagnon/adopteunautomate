@@ -13,14 +13,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class GroupesController extends AbstractController
 {
-    #[Route('/groupes', name: 'app_groupes.index')]
+    #[Route('/groupes', name: 'app_groupes.group')]
     public function index(GroupesRepository $repository): Response
     {
         $groupes = $repository->findBy(
             ['createur'=> $this->getUser()]
         );
 
-        return $this->render('groupes/index.html.twig', [
+        return $this->render('groupes/group.html.twig', [
             'groupes' => $groupes
         ]);
     }
@@ -52,10 +52,10 @@ class GroupesController extends AbstractController
                 'Votre groupe a été créé avec succès!'
             );
 
-            return $this->redirectToRoute('app_groupes.index');
+            return $this->redirectToRoute('app_groupes.group');
         }
 
-        return $this->render('groupes/new.html.twig', [
+        return $this->render('groupes/new_group.html.twig', [
             'form' => $form->createView()
         ]);
     }
@@ -76,10 +76,10 @@ class GroupesController extends AbstractController
                 'Votre groupe a été modifié avec succès!'
             );
 
-            return $this->redirectToRoute('app_groupes.index');
+            return $this->redirectToRoute('app_groupes.group');
         }
 
-        return $this->render('groupes/edit.html.twig', [
+        return $this->render('groupes/edit_group.html.twig', [
             'form' => $form->createView(),
             'groupe' => $groupe
         ]);
