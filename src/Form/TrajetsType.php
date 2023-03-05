@@ -42,17 +42,10 @@ class TrajetsType extends AbstractType
         $builder
             //->add('etat')
             ->add('T_depart', DateTimeType::class, [
-                //'input_format' => 'Y-m-d H:i:s',
-               // 'model_timezone' => 'UTC',
                 'widget' => 'single_text',
-                'label' => 'Jour et heure de départ :   ',
-                // début par défaut: lendemain de la saisie
-                'data' => $demain,
-              // 'date_format' => new ConvertirFormatDate()
+                'label' => 'Jour et heure de départ :   '
             ])
-            //->get('T_depart')
-            //->addModelTransformer(new ConvertirFormatDate())
-           // ->add('T_depart')
+           
             ->add('T_arrivee', DateTimeType::class, [
                 'widget' => 'single_text',
                 'required'   => false,

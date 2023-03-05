@@ -50,12 +50,12 @@ class Trajets
     # 24h de délai
     #[ORM\Column]
     #[Assert\GreaterThan('tomorrow')]
-    private ?\DateTimeImmutable $T_depart = null;
+    private ?\DateTime $T_depart = null;
 
     // arrivée après le départ
     #[ORM\Column(nullable: true)]
     //#[Assert\GreaterThan('$T_depart')]
-    private ?\DateTimeImmutable $T_arrivee = null;
+    private ?\DateTime $T_arrivee = null;
 
     #[ORM\Column(nullable: true)]
     #[Assert\PositiveOrZero]
@@ -102,12 +102,12 @@ class Trajets
         return $this;
     }
 
-    public function getTDepart(): ?\DateTimeImmutable
+    public function getTDepart(): ?\DateTime
     {
         return $this->T_depart;
     }
 
-    public function setTDepart(\DateTimeImmutable $T_depart): self
+    public function setTDepart(\DateTime $T_depart): self
     {
         $this->T_depart = $T_depart;
 
@@ -115,12 +115,12 @@ class Trajets
     }
 
     
-    public function getTArrivee(): ?\DateTimeImmutable
+    public function getTArrivee(): ?\DateTime
     {
         return $this->T_arrivee;
     }
 
-    public function setTArrivee(?\DateTimeImmutable $T_arrivee): self
+    public function setTArrivee(?\DateTime $T_arrivee): self
     {
         $this->T_arrivee = $T_arrivee;
 

@@ -37,11 +37,10 @@ class TrajetsController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             // $trajetsRepository->save($trajet, true);
             $trajet = $form->getData();
+            // champs remplis d'office:
             $trajet->setPublie($this->getUser());
-            // transformation en DateTimeImmutable
             $trajet->setEtat('ouvert');
-           // $trajet->setTDepart($trajet->getTDepart()->toImmutable());
-           // $trajet->setTArrivee($trajet->getTArrivee()->toImmutable());  
+
             $manager->persist($trajet);
             $manager->flush();
 
