@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Trajets;
+use App\Entity\Villes;
 use App\Entity\Utilisateurs;
 use App\Form\TrajetsType;
 use App\Repository\TrajetsRepository;
@@ -45,12 +46,20 @@ class TrajetsController extends AbstractController
         
         if ($form->isSubmitted() && $form->isValid()) {
             // $trajetsRepository->save($trajet, true);
+            $ville= new Villes();
+            $ville ->setnom_ville('Ville_de_depart');
+            printf($ville->getnom_ville());
+
+            $ville= new Villes();
+            $ville ->setnom_ville('Ville_arrivee');
+
             $trajet = $form->getData();
             // champs remplis d'office:
             $trajet->setPublie($this->getUser());
             $trajet->setEtat('ouvert');
 
             $manager->persist($trajet);
+            $manager->persist($ville);
             $manager->flush();
 
             $this->addFlash(

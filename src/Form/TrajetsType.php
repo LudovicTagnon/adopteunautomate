@@ -15,14 +15,16 @@ use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\EntityType;
+//use Symfony\Component\Form\Extension\Core\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeImmutableType;
 use Symfony\Component\Form\FormTypeInterface;
+
+// ajout en ligne de commande: composer require doctrine/doctrine-bundle
 
 class TrajetsType extends AbstractType
 {
@@ -53,21 +55,34 @@ class TrajetsType extends AbstractType
                 'required'   => false,
                 'label' => 'Jour et heure d\'arrivée    :      '
             ])   
+           
+            ->add('Ville_de_depart', VillesType::class, [
+                'mapped' => false, // Do not map this field to an entity property
+                'label' => 'Ville de départ    :      '
+            ])
 
-            ->add('demarrea', TextType::class, [
+            ->add('Ville_arrivee', VillesType::class, [
+                'mapped' => false, // Do not map this field to an entity property
+                'label' => 'Ville d\'arrivée    :      '
+            ])
+            /*
+            ->add('demarrea', EntityType::class, [
                 'label' => 'Ville de départ * :   ',
+                'class' => 'App\Entity\Villes'
                // 'widget' => 'single_text',
                // 'class' => Villes::class,
                // 'choice_label' => 'nom_ville'
                 
             ])   
-            ->add('arrivea', TextType::class, [
+            ->add('arrivea', EntityType::class, [
                 'label' => 'Ville d\'arrivee * :   ',
+                'class' => 'App\Entity\Villes'
               //  'widget' => 'single_text',
                // 'class' => Villes::class,
                // 'choice_label' => 'nom_ville'
                
-            ])   
+            ])  
+            */ 
 
             ->add('prix', IntegerType::class,[
                 'required'   => false,

@@ -46,12 +46,12 @@ class Villes
         return $this->id;
     }
 
-    public function getNomVille(): ?string
+    public function getnom_ville(): ?string
     {
         return $this->nom_ville;
     }
 
-    public function setNomVille(string $nom_ville): self
+    public function setnom_ville(string $nom_ville): self
     {
         $this->nom_ville = $nom_ville;
 
@@ -164,4 +164,10 @@ public function removeArrivant(Trajets $arrivant): self
 
     return $this;
 }
+
+public function __toString()
+{
+    return $this->nom_ville;
+}
+
 }

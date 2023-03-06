@@ -49,10 +49,10 @@
                     <td>{{ trajet.etat }}</td>
                     <td>{{ trajet.TDepart ? trajet.TDepart|date('Y-m-d H:i') : '' }}</td>
                     <td>{{ trajet.TArrivee ? trajet.TArrivee|date('Y-m-d H:i') : '' }}</td>
-                    {#
+                    
                     <td>{{ trajet.demarrea.nom_ville }}</td>
-                    <td>{{ trajet.arriveea.nom_ville }}</td>
-                    #}
+                     <td>{{ trajet.arrivea.nom_ville }}</td>
+                    
                     <td>{{ trajet.prix }}</td>
                     <td>{{ trajet.nbPassagerMax }}</td>
                     <td>{{ trajet.nbPassagerMax - trajet.nbPassagerCourant }}</td>
