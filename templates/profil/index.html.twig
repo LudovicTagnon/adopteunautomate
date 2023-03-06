@@ -63,10 +63,13 @@
     {{form_start(form_mdp)}}
     {{ form_errors(form_mdp) }}
          <div class="form-group">
+        {{form_errors(form_mdp.oldPassword)}}
         {{ form_label(form_mdp.oldPassword, 'Ancien mot de passe') }}
         {{ form_widget(form_mdp.oldPassword, {'attr': {'class': 'form-control'}}) }}
+        {{form_errors(form_mdp.plainPassword.first)}}
         {{ form_label(form_mdp.plainPassword.first, 'Nouveau mot de passe') }}
         {{ form_widget(form_mdp.plainPassword.first, {'attr': {'class': 'form-control'}}) }}
+        {{form_errors(form_mdp.plainPassword.second)}}
         {{ form_label(form_mdp.plainPassword.second, 'Confirmer mot de passe') }}
         {{ form_widget(form_mdp.plainPassword.second, {'attr': {'class': 'form-control'}}) }}
         {{ form_errors(form_mdp)}}

@@ -79,8 +79,16 @@ class ProfilController extends AbstractController
                 return $this->redirectToRoute('profil');
 
             }
+        }else{
+            //TODO : afficher les messages d'erreurs du form mot de passe
+            $errors = $form->getErrors(true, false);
+            foreach ($errors as $error) {
+                foreach ($error as $e) {
+                    echo $e->getMessage() . "<br>";
+                }
+            }
         }
-        //TODO : afficher les messages d'erreurs du form mot de passe
+        
 
         return $this->render('profil/index.html.twig', [
             'form' => $form->createView(),

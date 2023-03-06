@@ -21,7 +21,16 @@ class UserProfileFormType extends AbstractType
     {
         $builder
             ->add('email',EmailType::class)
-            ->add('prenom',TextType::class)
+            ->add('prenom',TextType::class,[
+                'required' => true,
+                'attr' => ['autocomplete' => 'prenom'],
+                'constraints' => [
+                    new Assert\Regex([
+                        'pattern' => '/^[A-Za-z\s\-]+$/',
+                        'message' => 'Le prénom ne doit contenir que des caractères alphabétiques, des espaces et des tirets.',
+                    ]),
+                ],
+            ])
             ->add('nom',TextType::class,[
                 'required' => true,
                 'attr' => ['autocomplete' => 'nom'],
