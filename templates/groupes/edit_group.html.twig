@@ -40,7 +40,11 @@
         </div>
         <div class= 'form-group'>
             {{ form_label(form.description)}}
-            {{ form_widget(form.description,{'attr':{'value':'Aucune description'}})}}
+            {% if form.description != "Aucune description"%}
+                {{ form_widget(form.description, {'value': groupe.description}) }}            
+             {% else %}
+                {{ form_widget(form.description,{'attr':{'value':'Aucune description'}})}}
+            {% endif %}
         </div>
         <div class= 'form-group' style='display:flex;'>
             <div class= 'users_viewer'> <!-- Utilisateurs disponibles-->

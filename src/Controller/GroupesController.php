@@ -98,6 +98,9 @@ class GroupesController extends AbstractController
 
             return $this->redirectToRoute('app_groupes.group');
         }
+        foreach ($groupe->getUtilisateurs() as $membre) {//on parcout les membres du groupe que l'on supprime
+            $manager->remove($membre);//on les supprime du groupe qui va être supprimé
+        }
 
         $manager->remove($groupe);
         $manager->flush();

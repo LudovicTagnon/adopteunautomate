@@ -44,6 +44,7 @@ class EstDansController extends AbstractController
         if (!$estDans) {
             throw $this->createNotFoundException('L\'utilisateur n\'est pas dans le groupe.');
         }
+        
 
         $manager->remove($estDans);
         $manager->flush();
