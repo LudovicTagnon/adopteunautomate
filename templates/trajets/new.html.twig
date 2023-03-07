@@ -77,7 +77,15 @@
                 {{form_errors(form.nb_passager_max)}}
             </div>
         </div>
-
+{#
+        <div class= 'form-group'>
+            {{ form_label(form.demarrea)}}
+            {{ form_widget(form.demarrea)}}
+            <div>
+                {{form_errors(form.demarrea)}}
+            </div>
+        </div>
+#}
         {# exclure l'attribut 'nb_passager_courant' #}
         {#    {{ form_row(form.nb_passager_courant, {'mapped': false}) }}   #} 
 

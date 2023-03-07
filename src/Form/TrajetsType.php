@@ -59,6 +59,9 @@ class TrajetsType extends AbstractType
             ->add('demarrea', VillesType::class, [
               //  'mapped' => false, // Do not map this field to an entity property
                 'label' => '  Ville de Départ:  '
+              //'class' => 'App\Entity\Villes',
+              //'choice_label' => 'demarrea',
+              //'required' => true,
             ])
 
             ->add('arrivea', VillesType::class, [
