@@ -11,6 +11,7 @@ use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Monolog\DateTimeImmutable;
+use App\Entity\Villes;
 
 #[ORM\Entity(repositoryClass: TrajetsRepository::class)]
 class Trajets

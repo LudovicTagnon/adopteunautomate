@@ -56,14 +56,14 @@ class TrajetsType extends AbstractType
                 'label' => 'Jour et heure d\'arrivée    :      '
             ])   
            
-            ->add('Ville_de_depart', VillesType::class, [
-                'mapped' => false, // Do not map this field to an entity property
-                'label' => 'Ville de départ    :      '
+            ->add('demarrea', VillesType::class, [
+              //  'mapped' => false, // Do not map this field to an entity property
+                'label' => '  Ville de Départ:  '
             ])
 
-            ->add('Ville_arrivee', VillesType::class, [
-                'mapped' => false, // Do not map this field to an entity property
-                'label' => 'Ville d\'arrivée    :      '
+            ->add('arrivea', VillesType::class, [
+             //   'mapped' => false, // Do not map this field to an entity property
+                'label' => '   Ville d\' Arrivée :      '
             ])
             /*
             ->add('demarrea', EntityType::class, [

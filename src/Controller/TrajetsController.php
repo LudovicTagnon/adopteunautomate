@@ -16,6 +16,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 #[Route('/trajets')]
 class TrajetsController extends AbstractController
 {
+    
+
     #[Route('/', name: 'app_trajets_index', methods: ['GET'])]
     public function index(TrajetsRepository $trajetsRepository): Response
     {
@@ -38,20 +40,20 @@ class TrajetsController extends AbstractController
     {
         // retriction à ajouter: l'utilisateur doit avoir un véhicule
         //        TODO    
-
+        $user = $this->getUser();
         $trajet = new Trajets();
+        $villedepart= new Villes();
+        $villearrivee= new Villes();
         $form = $this->createForm(TrajetsType::class, $trajet);
         $form->handleRequest($request);
 
         
         if ($form->isSubmitted() && $form->isValid()) {
             // $trajetsRepository->save($trajet, true);
-            $ville= new Villes();
-            $ville ->setnom_ville('Ville_de_depart');
-            printf($ville->getnom_ville());
-
-            $ville= new Villes();
-            $ville ->setnom_ville('Ville_arrivee');
+           
+            $villedepart ->setnom_ville($form->getData()['demarrea']);
+                    
+            $villearrivee ->setnom_ville($form->getData()['arrivea']);
 
             $trajet = $form->getData();
             // champs remplis d'office:
@@ -59,7 +61,8 @@ class TrajetsController extends AbstractController
             $trajet->setEtat('ouvert');
 
             $manager->persist($trajet);
-            $manager->persist($ville);
+            $manager->persist($villedepart);
+            $manager->persist($villearrivee);
             $manager->flush();
 
             $this->addFlash(
@@ -73,6 +76,7 @@ class TrajetsController extends AbstractController
         return $this->render('trajets/new.html.twig', [
             'trajet' => $trajet,
             'form' => $form,
+            'user' => $user,
         ]);
     }
     

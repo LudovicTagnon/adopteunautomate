@@ -4,6 +4,10 @@
 
 {% block body %}
 
+    {% if user.vehicule %}
+        <!-- contenu de la page -->
+    
+
     <style>
         .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
         .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
@@ -41,7 +45,7 @@
                 {{form_errors(form.T_arrivee)}}
             </div>
         </div>
-   {#
+   
         <div class= 'form-group'>
             {{ form_label(form.demarrea)}}
             {{ form_widget(form.demarrea)}}
@@ -57,7 +61,7 @@
                 {{form_errors(form.arrivea)}}
             </div>
         </div>
-#}
+
         <div class= 'form-group'>
             {{ form_label(form.prix)}}
             {{ form_widget(form.prix)}}
@@ -103,4 +107,10 @@
         </br>
         <a href="{{ path('app_trajets_index') }}" class= "btn btn-info">Retour à la liste de vos trajets</a>
     </div>
+
+
+    {% else %}
+        <p>Vous devez posséder une voiture pour accéder à cette page.</p>
+    {% endif %}
+    
 {% endblock %}
