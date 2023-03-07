@@ -41,6 +41,8 @@ class RegistrationFormType extends AbstractType
                         'max' => 4096,
                     ]),
                 ],
+                'label' => 'Mot de passe *',
+                'label_attr' => ['class' => 'required-field'],
             ])
             ->add('nom', TextType::class, [
                 'required' => true,
@@ -51,6 +53,7 @@ class RegistrationFormType extends AbstractType
                         'message' => 'Le nom ne doit contenir que des caractères alphabétiques, des espaces et des tirets.',
                     ]),
                 ],
+                'label_attr' => ['class' => 'required-field'],
             ])
             ->add('prenom', TextType::class, [
                 'required' => true,
@@ -61,6 +64,7 @@ class RegistrationFormType extends AbstractType
                         'message' => 'Le nom ne doit contenir que des caractères alphabétiques, des espaces et des tirets.',
                     ]),
                 ],
+                'label_attr' => ['class' => 'required-field'],
             ])
             ->add('num_tel', TextType::class, [
                 'required' => true,
@@ -71,10 +75,12 @@ class RegistrationFormType extends AbstractType
                         'message' => 'Le numéro de téléphone doit être un numéro de téléphone français.',
                     ]),
                 ],
+                'label_attr' => ['class' => 'required-field'],
             ])
             ->add('vehicule', CheckboxType::class, [
                 'required' => false,
                 'attr' => ['autocomplete' => 'vehicule'],
+                'label_attr' => ['class' => 'required-field'],
             ])
             ->add('genre', ChoiceType::class, [
                 'choices' => [
@@ -83,6 +89,7 @@ class RegistrationFormType extends AbstractType
                     'Other' => 'autre',
                 ],
                 'required' => true,
+                'label_attr' => ['class' => 'required-field'],
             ])
             ->add('autorisation_mail', CheckboxType::class, [
                 'required' => false,

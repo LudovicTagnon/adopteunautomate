@@ -21,7 +21,16 @@ class UserProfileFormType extends AbstractType
     {
         $builder
             ->add('email',EmailType::class)
-            ->add('prenom',TextType::class)
+            ->add('prenom',TextType::class,[
+                'required' => true,
+                'attr' => ['autocomplete' => 'prenom'],
+                'constraints' => [
+                    new Assert\Regex([
+                        'pattern' => '/^[A-Za-z\s\-]+$/',
+                        'message' => 'Le prénom ne doit contenir que des caractères alphabétiques, des espaces et des tirets.',
+                    ]),
+                ],
+            ])
             ->add('nom',TextType::class,[
                 'required' => true,
                 'attr' => ['autocomplete' => 'nom'],
@@ -47,37 +56,6 @@ class UserProfileFormType extends AbstractType
                     'Other' => 'autre',
                 ],
                 'required' => true,
-            ])
-    
-            ->add('oldPassword', PasswordType::class, [
-                'label' => 'Ancien mot de passe',
-                'mapped' => false,
-                'constraints' => [
-                    new NotBlank(),
-                    new Length([
-                        'min' => 6,
-                        'minMessage' => 'Your password should be at least {{ limit }} characters',
-                        // max length allowed by Symfony for security reasons
-                        'max' => 4096,
-                    ]),
-                ],
-            ])
-            ->add('plainPassword', RepeatedType::class, [
-                'type' => PasswordType::class,
-                'mapped' => false,
-                'required' => true,
-                'invalid_message' => 'Les mots de passe ne correspondent pas',
-                'first_options' => ['label' => 'Nouveau mot de passe'],
-                'second_options' => ['label' => 'Confirmez votre mot de passe'],
-                'constraints' => [
-                    new NotBlank(),
-                    new Length([
-                        'min' => 6,
-                        'minMessage' => 'Your password should be at least {{ limit }} characters',
-                        // max length allowed by Symfony for security reasons
-                        'max' => 4096,
-                    ]),
-                ],
             ])
    
         ;
