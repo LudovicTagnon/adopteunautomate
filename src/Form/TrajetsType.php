@@ -18,7 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-//use Symfony\Component\Form\Extension\Core\Type\EntityType;
+// use Symfony\Component\Form\Extension\Core\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeImmutableType;
@@ -54,9 +54,18 @@ class TrajetsType extends AbstractType
                 'widget' => 'single_text',
                 'required'   => false,
                 'label' => 'Jour et heure d\'arrivée    :      '
-            ])   
-           
-            ->add('demarrea', VillesType::class, [
+            ]) 
+            ->add('demarrea', EntityType::class, [
+                'class' => Villes::class,
+                'choice_label' => 'nomVille',
+                'label' => 'Ville de départ'
+            ])
+            ->add('arrivea', EntityType::class, [
+                'class' => Villes::class,
+                'choice_label' => 'nomVille',
+                'label' => "Ville d''arrivée"
+            ])
+            /* ->add('demarrea', VillesType::class, [
               //  'mapped' => false, // Do not map this field to an entity property
                 'label' => '  Ville de Départ:  '
               //'class' => 'App\Entity\Villes',
@@ -67,7 +76,7 @@ class TrajetsType extends AbstractType
             ->add('arrivea', VillesType::class, [
              //   'mapped' => false, // Do not map this field to an entity property
                 'label' => '   Ville d\' Arrivée :      '
-            ])
+            ]) */
             /*
             ->add('demarrea', EntityType::class, [
                 'label' => 'Ville de départ * :   ',

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Symfony\Component\VarDumper\VarDumper;
 use App\Entity\Trajets;
 use App\Entity\Villes;
 use App\Entity\Utilisateurs;
@@ -55,9 +56,12 @@ class TrajetsController extends AbstractController
             //On récupère les données du formulaire
             $trajet = $form->getData();
 
-           //On vérifie d'abord si les villes existent déjà dans la base de donnée
-            $villeDepart = $manager->getRepository(Villes::class)->findOneBy(['nom_ville' => $form->get('demarrea')->getData()]);
-            $villeArrivee = $manager->getRepository(Villes::class)->findOneBy(['nom_ville' => $form->get('arrivea')->getData()]);
+            //On vérifie d'abord si les villes existent déjà dans la base de donnée
+            // var_dump($form->get('demarrea')->getData());
+            $villeDepart = $manager->getRepository(Villes::class)->find(['id' => $form->getData()->getDemarreA()]);
+            $villeArrivee = $manager->getRepository(Villes::class)->find(['id' => $form->getData()->getArriveA()]);
+            $trajet->setArriveA($villeArrivee);
+            $trajet->setDemarreA($villeDepart);
 
             //Si elles existent, on ne les créer pas mais on récupère l'id de celle déjà existante
             //Sinon je la crée
