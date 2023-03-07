@@ -2,7 +2,10 @@
 
 namespace App\Entity;
 
+<<<<<<< HEAD
 use DateTime;
+=======
+>>>>>>> Création de l'entité Notification
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
@@ -22,11 +25,14 @@ class Notification
     #[ORM\Column]
     private ?\DateTime $createdAt;
 
+<<<<<<< HEAD
     #[ORM\ManyToOne(inversedBy: 'notifications')]
     private ?Utilisateurs $user = null;
 
 
     // GETTERS AND SETTERS 
+=======
+>>>>>>> Création de l'entité Notification
     public function getId(): ?int
     {
         return $this->id;
@@ -46,6 +52,7 @@ class Notification
     {
         return $this->createdAt;
     }
+<<<<<<< HEAD
 
     public function setMessage(?String $string): self
     {
@@ -72,5 +79,7 @@ class Notification
 
         return $this;
     }
+=======
+>>>>>>> Création de l'entité Notification
 }
 ?>
