@@ -24,26 +24,22 @@ class TrajetsController extends AbstractController
         
         // restriction à l'utilisateur logué en cours
         $trajets = $trajetsRepository->findBy(['publie'=> $this->getUser()]);
-        // restriction à l'utilisateur qui a un véhicule - ne fonctionne pas, le User n'a pas d'attribut véhicule
-       //if ($this->getUser()->getVehicule() ){
+       
         return $this->render('trajets/index.html.twig', [
             'trajets' => $trajets
         ]);
-        //}
-        //else 
-        //return $this->redirectToRoute('app_trajets_index', [], Response::HTTP_SEE_OTHER);
+      
     }
 
     
     #[Route('/new', name: 'app_trajets_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $manager ): Response
     {
-        // retriction à ajouter: l'utilisateur doit avoir un véhicule
-        //        TODO    
+        
         $user = $this->getUser();
         $trajet = new Trajets();
-        $villedepart= new Villes();
-        $villearrivee= new Villes();
+        //$villedepart= new Villes();
+        //$villearrivee= new Villes();
         $form = $this->createForm(TrajetsType::class, $trajet);
         $form->handleRequest($request);
 
@@ -51,18 +47,26 @@ class TrajetsController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             // $trajetsRepository->save($trajet, true);
            
-            $villedepart ->setnom_ville($form->getData()['demarrea']);
+           // $villedepart ->setnom_ville($form->getData()['demarrea']);
                     
-            $villearrivee ->setnom_ville($form->getData()['arrivea']);
+           // $villearrivee ->setnom_ville($form->getData()['arrivea']);
 
             $trajet = $form->getData();
+
+            $villeDepart = new Villes();
+            $villeArrivee = new Villes();
+            $villeDepart->setNomVille($form->get('demarrea')->getData());
+            $villeArrivee->setNomVille($form->get('arrivea')->getData());
+
             // champs remplis d'office:
             $trajet->setPublie($this->getUser());
             $trajet->setEtat('ouvert');
 
+            $manager->persist($villeDepart);
+            $manager->persist($villeArrivee);
+
             $manager->persist($trajet);
-            $manager->persist($villedepart);
-            $manager->persist($villearrivee);
+
             $manager->flush();
 
             $this->addFlash(

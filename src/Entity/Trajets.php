@@ -13,6 +13,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Monolog\DateTimeImmutable;
 use App\Entity\Villes;
 
+
 #[ORM\Entity(repositoryClass: TrajetsRepository::class)]
 class Trajets
 {
@@ -82,15 +83,15 @@ class Trajets
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $renseignement = null;
 
-    #[ORM\ManyToOne(inversedBy: 'trajets')]
+    #[ORM\ManyToOne(inversedBy: 'trajets',)]
     #[ORM\JoinColumn(nullable: false)]
     private ?Utilisateurs $publie = null;
 
-    #[ORM\ManyToOne(inversedBy: 'demarrant')]
+    #[ORM\ManyToOne(inversedBy: 'demarrant', cascade:["persist"])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Villes $demarrea = null;
 
-    #[ORM\ManyToOne(inversedBy: 'arrivant')]
+    #[ORM\ManyToOne(inversedBy: 'arrivant', cascade:["persist"])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Villes $arrivea = null;
 /*
@@ -264,5 +265,15 @@ public function setArriveA(?Villes $arrivea): self
 
     return $this;
 }
+
+public function addDepart(Villes $ville): self
+    {
+        if (!$this->demarrea->contains($ville)) {
+            $this->demarrea = $ville;
+            $ville->addDemarrant($this);
+        }
+
+        return $this;
+    }
 
 }

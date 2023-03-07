@@ -46,12 +46,12 @@ class Villes
         return $this->id;
     }
 
-    public function getnom_ville(): ?string
+    public function getnomVille(): ?string
     {
         return $this->nom_ville;
     }
 
-    public function setnom_ville(string $nom_ville): self
+    public function setnomVille(string $nom_ville): self
     {
         $this->nom_ville = $nom_ville;
 
