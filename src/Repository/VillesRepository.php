@@ -39,6 +39,18 @@ class VillesRepository extends ServiceEntityRepository
         }
     }
 
+    public function findAllCity(): array
+    {
+        //$villeRepository = $this->getEntityManager()->getRepository(Ville::class);
+        $savedCity = $this->findAll();
+
+        $cities = [];
+        foreach($savedCity as $cityItem){
+            $cities[] = $cityItem->getNom_Ville();
+        }
+        return $cities;
+    }
+
 //    /**
 //     * @return Villes[] Returns an array of Villes objects
 //     */

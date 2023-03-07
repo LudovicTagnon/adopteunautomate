@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Form\FormTypeInterface;
 
 #[ORM\Entity(repositoryClass: VillesRepository::class)]
+#[ORM\UniqueConstraint(name: "ville_unique", columns: ["nom_ville"])]
 class Villes
 {
     #[ORM\Id]

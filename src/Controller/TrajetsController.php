@@ -51,19 +51,33 @@ class TrajetsController extends AbstractController
                     
            // $villearrivee ->setnom_ville($form->getData()['arrivea']);
 
+
+            //On récupère les données du formulaire
             $trajet = $form->getData();
 
-            $villeDepart = new Villes();
-            $villeArrivee = new Villes();
-            $villeDepart->setNomVille($form->get('demarrea')->getData());
-            $villeArrivee->setNomVille($form->get('arrivea')->getData());
+           //On vérifie d'abord si les villes existent déjà dans la base de donnée
+            $villeDepart = $manager->getRepository(Villes::class)->findOneBy(['nom_ville' => $form->get('demarrea')->getData()]);
+            $villeArrivee = $manager->getRepository(Villes::class)->findOneBy(['nom_ville' => $form->get('arrivea')->getData()]);
+
+            //Si elles existent, on ne les créer pas mais on récupère l'id de celle déjà existante
+            //Sinon je la crée
+            /*if (!$villeDepart) {
+                $villeDepart = new Villes();
+                $villeDepart->setNomVille($form->get('demarrea')->getData());
+                $manager->persist($villeDepart);
+                $manager->flush();
+            }
+        
+            if (!$villeArrivee) {
+                $villeArrivee = new Villes();
+                $villeArrivee->setNomVille($form->get('arrivea')->getData());
+                $manager->persist($villeArrivee);
+                $manager->flush();
+            }*/
 
             // champs remplis d'office:
             $trajet->setPublie($this->getUser());
             $trajet->setEtat('ouvert');
-
-            $manager->persist($villeDepart);
-            $manager->persist($villeArrivee);
 
             $manager->persist($trajet);
 
