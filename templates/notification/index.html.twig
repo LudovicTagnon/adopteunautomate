@@ -18,7 +18,23 @@
     </ul>
     <ul>
         {% for notification in notifications %}
-            <li>{{ notification.getMessage() }}</li>
+            <li>
+            {{ notification.getMessage() }}
+
+            {% if not notification.isRead() %}
+                    <form method="post" action="{{ path('notification_mark_as_read', {'id': notification.getId()}) }}" method="POST">
+                        <input type="hidden" name="_method" value="PUT">
+                        <input type="hidden" name="_token" value="{{ csrf_token('read_notification') }}">
+                        <input type="hidden" name="isRead" value="true"> 
+                        <button type="submit">Marquer comme lu</button>
+                    </form>
+                    <form method="post" action="{{ path('delete_notification', {'notification': notification}) }}">
+                        <button type="submit">delete</button>
+                    </form>
+                {% endif %}
+
+            </li>
+            
         {% endfor %}
     </ul>
 </div>

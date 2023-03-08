@@ -72,5 +72,12 @@ class Notification
 
         return $this;
     }
+
+    public function setIsRead(?bool $valeur): self
+    {
+        $this->isRead = $valeur;
+
+        return $this;
+    }
 }
 ?>
