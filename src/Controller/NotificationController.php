@@ -10,9 +10,11 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Notification;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 class NotificationController extends AbstractController
 {
     #[Route('/notification', name: 'app_notification')]
+    #[IsGranted('ROLE_USER')]
     public function index(NotificationService $notificationService): Response
     {
         $notifications = $notificationService->getNotifications($this->getUser());
