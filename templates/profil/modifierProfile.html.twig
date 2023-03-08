@@ -2,6 +2,9 @@
 {% block title %}Modification de profil{% endblock %}
 {% block body %}
     <link rel="stylesheet" href="{{asset('css/app.css')}}">
+{% if form.imageFile.vars.errors|length %}
+    <div class="alert alert-danger">{{ form.imageFile.vars.errors|first.message }}</div>
+{% endif %}
 
     <h1 class='center'>Modifier mon profil</h1>
     <div class="container py-5">
@@ -46,6 +49,8 @@
         <div class="form-group">
         {{ form_label(form.imageFile, 'Photo de profil') }}
         {{ form_widget(form.imageFile, {'attr': {'class': 'form-control'}}) }}
+        <small class="form-text text-muted">Seuls les fichiers PNG ou JPG sont acceptés.</small>
+
         </div>
         
         
