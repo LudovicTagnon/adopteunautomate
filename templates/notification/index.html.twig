@@ -24,10 +24,10 @@
                 <form action="{{ path('app_mark_notification_as_read', {'id': notification.getId()}) }}" method="post" style="display:inline;">
                     <button type="submit" class="btn btn-primary">Marquer comme lu</button>
                 </form>
-                <a  href="{{ path('app_supprimer_notif', {'id': notification.getId()}) }}">
-                <button class="btn btn-danger" >Supprimer la notification</button> 
-                </a>
             {% endif %}
+            <a  href="{{ path('app_supprimer_notif', {'id': notification.getId()}) }}">
+            <button class="btn btn-danger" >Supprimer la notification</button> 
+            </a>
         </div>
         {% endfor %}
     </ul>
