@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
@@ -39,6 +40,20 @@ class Notification
     public function getCreatedAt(): ?\DateTime
     {
         return $this->createdAt;
+    }
+
+    public function setMessage(?String $string): self
+    {
+        $this->message = $string;
+        return $this;
+    }
+
+    
+
+    public function setCreatedAt(?DateTime $date): self
+    {
+        $this->createdAt = $date;
+        return $this;
     }
 }
 ?>

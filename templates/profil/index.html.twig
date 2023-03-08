@@ -2,62 +2,10 @@
 
 {% block title %}Consultation de profil{% endblock %}
 {% block body %}
-<<<<<<< HEAD
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <h1 class ="center">Mon compte</h1>
     <div class ="photo">
       <img src="{{ asset('uploads/' ~ user.getFichierPhoto()) }}" alt="Profile-picture" style="margin-left :30%;margin-bottom:40px;border-radius: 50%; width: 100px; height: 100px;">
-=======
-    <link rel="stylesheet" href="{{asset('css/app.css')}}">
-
-    <h1 class='center'>Modifier mon profil</h1>
-    <div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header" style="background-color: #007bff; color: #fff">{{ 'Modification'|trans }}</div>
-                <div class="card-body" style="background-color: #f8f9fa;">
-    {{form_start(form)}}
-    {{ form_errors(form) }}
-        {# EMAIL #} 
-        <div class="form-group">
-            {{ form_label(form.email, 'Adresse Mail') }}
-            {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
-        </div>
-        {# NOM #}
-        <div class="form-group">
-        {{ form_label(form.nom, 'Nom') }}
-        {{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
-        </div>
-        {# PRENOM #}
-        <div class="form-group">
-        {{ form_label(form.prenom, 'Prénom') }}
-        {{ form_widget(form.prenom, {'attr': {'class': 'form-control'}}) }}
-        </div>
-        {# NUM_TEL #}
-        <div class="form-group">
-        {{ form_label(form.num_tel, 'Numéro de téléphone') }}
-        {{ form_widget(form.num_tel, {'attr': {'class': 'form-control'}}) }}
-        </div>
-        {# VOITURE #}
-        <div class="form-group">
-        {{ form_label(form.vehicule, 'Voiture') }}
-        {{ form_widget(form.vehicule, {'attr': {'class': 'form-control'}}) }}
-        </div>
-        {# GENRE #}
-        <div class="form-group">
-        {{ form_label(form.genre, 'Genre') }}
-        {{ form_widget(form.genre, {'attr': {'class': 'form-control'}}) }}
-        </div>
-        {# PHOTO #}
-        
-        <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
-    {{form_end(form)}}
-    </div>
-    </div>
-    </div>
-    </div>
->>>>>>> origin/main
     </div>
     <div class="profil">
     <ul>
@@ -89,42 +37,8 @@
         </a>
     </ul>
     </div>
-<<<<<<< HEAD
-{% endblock %}
-=======
 
 
-    <div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header" style="background-color: #007bff; color: #fff">{{ 'Mot de passe'|trans }}</div>
-                <div class="card-body" style="background-color: #f8f9fa;">
-    {{form_start(form_mdp)}}
-    {{ form_errors(form_mdp) }}
-         <div class="form-group">
-        {{form_errors(form_mdp.oldPassword)}}
-        {{ form_label(form_mdp.oldPassword, 'Ancien mot de passe') }}
-        {{ form_widget(form_mdp.oldPassword, {'attr': {'class': 'form-control'}}) }}
-        {{form_errors(form_mdp.plainPassword.first)}}
-        {{ form_label(form_mdp.plainPassword.first, 'Nouveau mot de passe') }}
-        {{ form_widget(form_mdp.plainPassword.first, {'attr': {'class': 'form-control'}}) }}
-        {{form_errors(form_mdp.plainPassword.second)}}
-        {{ form_label(form_mdp.plainPassword.second, 'Confirmer mot de passe') }}
-        {{ form_widget(form_mdp.plainPassword.second, {'attr': {'class': 'form-control'}}) }}
-        {{ form_errors(form_mdp)}}
-        </div>
-
-     
-        
-        <button type="submit" class="btn btn-primary">Modifier le mot de passe</button>
-    {{form_end(form_mdp)}}
-    </div>
-    </div>
-    </div>
-    </div>
-    </div>
-    </div>
+    
     
 {% endblock %}
->>>>>>> origin/main
