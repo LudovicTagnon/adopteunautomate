@@ -1,6 +1,13 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Consultation de profil{% endblock %}
 {% block body %}
+<<<<<<< HEAD
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <h1 class ="center">Mon compte</h1>
+    <div class ="photo">
+      <img src="{{ asset('uploads/' ~ user.getFichierPhoto()) }}" alt="Profile-picture" style="margin-left :30%;margin-bottom:40px;border-radius: 50%; width: 100px; height: 100px;">
+=======
     <link rel="stylesheet" href="{{asset('css/app.css')}}">
 
     <h1 class='center'>Modifier mon profil</h1>
@@ -44,17 +51,74 @@
         </div>
         {# PHOTO #}
         
-        {# MDP #}
-        <div class="form-group">
-        {{ form_label(form.oldPassword, 'Ancien mot de passe') }}
-        {{ form_widget(form.oldPassword, {'attr': {'class': 'form-control'}}) }}
-        {{ form_label(form.plainPassword.first, 'Nouveau mot de passe') }}
-        {{ form_widget(form.plainPassword.first, {'attr': {'class': 'form-control'}}) }}
-        {{ form_label(form.plainPassword.second, 'Confirmer mot de passe') }}
-        {{ form_widget(form.plainPassword.second, {'attr': {'class': 'form-control'}}) }}
-        </div>
         <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
     {{form_end(form)}}
+    </div>
+    </div>
+    </div>
+    </div>
+>>>>>>> origin/main
+    </div>
+    <div class="profil">
+    <ul>
+        <li>Nom : {{ user.getNom() }}</li>
+        <li>Prénom : {{user.getPrenom}}</li>
+        <li>Numéro de Téléphone : {{user.getNumTel}}</li>
+        <li>Email : {{ user.email }}</li>
+        {% if user.vehicule == 1 %}
+            <li>Voiture :   Oui   </li>
+        {% else %}
+            <li>Voiture :   Non   </li>
+        {% endif %}
+        <li>Genre : {{ user.genre }}</li>
+        {% if user.getAutorisationMail() == 1 %}
+                <li>Autorisation de notification mail : Oui</li>
+        {% else %}
+                 <li>Autorisation de notification mail : Non</li>
+        {% endif %}
+        {% if user.getFichierPhoto() is not null %}
+          <li>Photo de profil : Oui</li>
+        {% else %}
+            <li>Photo de profil : Aucune photo de profil</li>
+        {% endif %}
+        <a href="{{ path('modif_profil') }}">
+            <button class="btn btn-primary">Modifier mon profil</button>
+        </a>
+        <a href="{{ path('supprimer_profil') }}">
+          <button class="btn btn-danger" onclick="return confirm('Êtes-vous sûr(e) de vouloir désactiver votre profil ? Cette action est irréversible !');">Désactiver mon profil</button> 
+        </a>
+    </ul>
+    </div>
+<<<<<<< HEAD
+{% endblock %}
+=======
+
+
+    <div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header" style="background-color: #007bff; color: #fff">{{ 'Mot de passe'|trans }}</div>
+                <div class="card-body" style="background-color: #f8f9fa;">
+    {{form_start(form_mdp)}}
+    {{ form_errors(form_mdp) }}
+         <div class="form-group">
+        {{form_errors(form_mdp.oldPassword)}}
+        {{ form_label(form_mdp.oldPassword, 'Ancien mot de passe') }}
+        {{ form_widget(form_mdp.oldPassword, {'attr': {'class': 'form-control'}}) }}
+        {{form_errors(form_mdp.plainPassword.first)}}
+        {{ form_label(form_mdp.plainPassword.first, 'Nouveau mot de passe') }}
+        {{ form_widget(form_mdp.plainPassword.first, {'attr': {'class': 'form-control'}}) }}
+        {{form_errors(form_mdp.plainPassword.second)}}
+        {{ form_label(form_mdp.plainPassword.second, 'Confirmer mot de passe') }}
+        {{ form_widget(form_mdp.plainPassword.second, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form_mdp)}}
+        </div>
+
+     
+        
+        <button type="submit" class="btn btn-primary">Modifier le mot de passe</button>
+    {{form_end(form_mdp)}}
     </div>
     </div>
     </div>
@@ -63,3 +127,4 @@
     </div>
     
 {% endblock %}
+>>>>>>> origin/main

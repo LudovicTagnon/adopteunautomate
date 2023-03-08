@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Groupes;
-use App\Form\GroupesType;
 use App\Entity\Utilisateurs;
+use App\Entity\EstDans;
+use App\Repository\EstDansRepository;
+use App\Form\GroupesType;
 use App\Repository\GroupesRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,12 +16,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class GroupesController extends AbstractController
 {
-    #[Route('/groupes', name: 'app_groupes.index')]
+    #[Route('/groupes', name: 'app_groupes.group')]
+
     public function index(GroupesRepository $repository): Response
     {
-        $groupes = $repository->findAll();
+        $groupes = $repository->findBy(
+            ['createur'=> $this->getUser()]
+        );
 
-        return $this->render('groupes/index.html.twig', [
+        return $this->render('groupes/group.html.twig', [
             'groupes' => $groupes
         ]);
     }
@@ -28,11 +33,13 @@ class GroupesController extends AbstractController
     public function new(Request $request, EntityManagerInterface $manager): Response
     {
         $groupe = new Groupes();
-        $form = $this->createForm(GroupesType::class, $groupe);
+        
+        $form = $this->createForm(GroupesType::class, $groupe,);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $groupe = $form->getData();
+            $groupe->setCreateur($this->getUser());
             $manager->persist($groupe);
             $manager->flush();
 
@@ -41,10 +48,10 @@ class GroupesController extends AbstractController
                 'Votre groupe a été créé avec succès!'
             );
 
-            return $this->redirectToRoute('security_homepage');
+            return $this->redirectToRoute('app_groupes.group');
         }
 
-        return $this->render('groupes/new.html.twig', [
+        return $this->render('groupes/new_group.html.twig', [
             'form' => $form->createView()
         ]);
     }
@@ -52,6 +59,9 @@ class GroupesController extends AbstractController
     #[Route('/groupes/edition/{id}', name: 'app_groupes.edit', methods: ['GET', 'POST'])]
     public function edit(Groupes $groupe, Request $request, EntityManagerInterface $manager): Response
     {
+        $current_user = $this->getUser();
+        $utilisateurs = $manager->getRepository(Utilisateurs::class)->findAll();
+        $utilisateursDejaDedans = $manager->getRepository(EstDans::class)->findAllUtilisateur($groupe);
         $form = $this->createForm(GroupesType::class, $groupe);
 
         $form->handleRequest($request);
@@ -65,12 +75,15 @@ class GroupesController extends AbstractController
                 'Votre groupe a été modifié avec succès!'
             );
 
-            return $this->redirectToRoute('app_groupes.index');
+            return $this->redirectToRoute('app_groupes.group');
         }
 
-        return $this->render('groupes/edit.html.twig', [
+        return $this->render('groupes/edit_group.html.twig', [
             'form' => $form->createView(),
-            'groupe' => $groupe
+            'groupe' => $groupe,
+            'utilisateur_actuel' => $current_user,
+            'utilisateurs' => $utilisateurs,
+            'utilisateursDejaDedans' => $utilisateursDejaDedans,
         ]);
     }
 
@@ -83,7 +96,10 @@ class GroupesController extends AbstractController
                 'Ce groupe n\'a pas été trouvé.'
             );
 
-            return $this->redirectToRoute('app_groupes.index');
+            return $this->redirectToRoute('app_groupes.group');
+        }
+        foreach ($groupe->getUtilisateurs() as $membre) {//on parcout les membres du groupe que l'on supprime
+            $manager->remove($membre);//on les supprime du groupe qui va être supprimé
         }
 
         $manager->remove($groupe);
@@ -94,6 +110,6 @@ class GroupesController extends AbstractController
             'Ce groupe a été supprimé avec succès.'
         );
 
-        return $this->redirectToRoute('app_groupes.index');
+        return $this->redirectToRoute('app_groupes.group');
     }
 }

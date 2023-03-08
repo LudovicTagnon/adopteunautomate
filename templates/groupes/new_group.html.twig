@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Creation de groupe {% endblock %}
+{#// PROB7MES de LIENS ET PB de CLE ETRANGERE #}
+{% block body %}
+    <style>
+        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    </style>
+
+
+
+    <div class="example-wrapper">
+        <h1>Les groupes:</h1>
+
+        {{ form_start(form) }}
+
+        <div class= 'form-group'>
+            {{ form_label(form.nom_groupe)}}
+            {{ form_widget(form.nom_groupe)}}
+            <div>
+                {{form_errors(form.nom_groupe)}}
+            </div>
+        </div>
+        <div class= 'form-group'>
+            {{ form_label(form.description)}}
+            {{ form_widget(form.description,{'attr':{'value':'Aucune description'}})}}
+        </div>
+        <div class='form-group'>
+            <div>
+                <!--{//{form_label(form.utilisateurs)}}-->
+                <!--{//{form_widget(form.utilisateurs)}}-->
+            </div>
+            <div>
+                
+            </div>
+        </div>
+        <div class= 'form-group'>
+            <button type="submit" class="btn btn-primary">Créer le groupe</button>
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

@@ -3,7 +3,13 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
-
 profil: 
+<<<<<<< HEAD
+    path : /profil/
+    controller : App\Controller\ProfilController::index
+    
+=======
     path : /profil
     controller : App\Controller\ProfilController::editProfile
+>>>>>>> origin/main
+

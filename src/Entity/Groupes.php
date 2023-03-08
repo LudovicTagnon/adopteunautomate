@@ -16,28 +16,36 @@ class Groupes
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity: Utilisateurs::class, inversedBy: 'groupes')]
-    #[ORM\JoinColumn(nullable: false, onDelete: "CASCADE")]
-    private $utilisateurs;
-
-
-
-
+    #[ORM\ManyToOne(targetEntity: Utilisateurs::class)]
+    private Utilisateurs $createur;
 
     #[ORM\Column(length: 50)]
     private ?string $nom_groupe = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: false)]
     private ?string $description = null;
+
+    #[ORM\OneToMany(mappedBy: 'groupes', targetEntity: EstDans::class)]
+    protected $estDans;
 
     public function __construct()
     {
-        $this->utilisateurs = new ArrayCollection();
+        $this->estDans = new ArrayCollection();;
     }
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getCreateur(): ?int
+    {
+        return $this->createur;
+    }
+
+    public function setCreateur(Utilisateurs $id_Createur): void
+    {
+        $this->createur = $id_Createur;
     }
 
     public function getNomGroupe(): ?string
@@ -63,35 +71,15 @@ class Groupes
 
         return $this;
     }
-
-    /**
-     * @return Collection|Utilisateurs[]
-     */
-    public function getUtilisateurs(): ?Collection
+    
+    public function getUtilisateurs(): Collection
     {
-        return $this->utilisateurs;
+        return $this->estDans;
     }
 
-    public function addUtilisateur(Utilisateurs $utilisateur): self
+    public function getNbUtilisateurs(): int
     {
-        if (!$this->utilisateurs->contains($utilisateur)) {
-            $this->utilisateurs[] = $utilisateur;
-        }
-
-        return $this;
-    }
-    public function removeUtilisateur(Utilisateurs $utilisateur): self
-    {
-        $this->utilisateurs->removeElement($utilisateur);
-
-        return $this;
-    }
-
-    public function setUtilisateurs(?Utilisateurs $utilisateurs): self
-    {
-        $this->utilisateurs = $utilisateurs;
-
-        return $this;
+        return count($this->estDans);
     }
 
 }
