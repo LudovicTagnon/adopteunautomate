@@ -95,7 +95,7 @@ class ProfilController extends AbstractController
             $user = $form_mdp->getData();
             $oldpassword = $form_mdp->get('oldPassword')->getData();
             if(!$userPasswordHasher->isPasswordValid($user,$oldpassword)){
-                $form_mdp->get('oldPassword')->addError(new FormError('Le mot de passe actuel est incorrect.'));
+                $form_mdp->get('oldPassword')->addError(new FormError('Ancien mot de passe est incorrect.'));
             }else {
                 $user->setPassword($userPasswordHasher->hashPassword($user, $form_mdp->get('plainPassword')->getData()));
                 $entityManager = $doctrine->getManager();
