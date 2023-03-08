@@ -1,0 +1,94 @@
+{% extends 'base.html.twig' %}
+
+
+{#// PROB7MES de LIENS ET PB de CLE ETRANGERE #}
+{% block title %}Creation de groupe {% endblock %}
+
+{% block body %}
+    <style>
+        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+
+        .users_viewer{
+            min-height: 500px;
+            width: 45%;
+            margin: 2%;
+            padding: 10px;
+            display: inline-block;
+            vertical-align:middle;
+            border: 2px solid grey;
+            border-radius: 5%;
+        }
+
+        .users_viewer li{
+            list-style-type: none;
+        }
+    </style>
+
+    <!-- Test -->
+
+    <div class="example-wrapper">
+        <h1>Modification du groupe : </h1>
+
+        {{ form_start(form) }}
+        <div class="form-group">
+            {{ form_label(form.nom_groupe) }}
+            {{ form_widget(form.nom_groupe) }}
+            <div>
+                {{ form_errors(form.nom_groupe) }}
+            </div>
+        </div>
+        <div class= 'form-group'>
+            {{ form_label(form.description)}}
+            {% if form.description != "Aucune description"%}
+                {{ form_widget(form.description, {'value': groupe.description}) }}            
+             {% else %}
+                {{ form_widget(form.description,{'attr':{'value':'Aucune description'}})}}
+            {% endif %}
+        </div>
+        <div class= 'form-group' style='display:flex;'>
+            <div class= 'users_viewer'> <!-- Utilisateurs disponibles-->
+                {% for utilisateur in utilisateurs %}
+                    {% if utilisateur not in utilisateursDejaDedans %}
+                        {% if utilisateur != utilisateur_actuel %}
+                            <li>{{ utilisateur.nom }} {{ utilisateur.prenom }} 
+                                <button type="button" class="btn btn-success mb-2" name="ajouter" value="{{ utilisateur.id }}" onclick="ajouterUtilisateurGroupe({{ utilisateur.id }}, {{ groupe.id }})">+</button>
+                            </li>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class= 'users_viewer'> <!-- Utilisateurs déjà dans le groupe-->
+                {% for utilisateur in utilisateursDejaDedans %}
+                    <li>{{ utilisateur.nom }} {{ utilisateur.prenom}}
+                        <button type="button" class="btn btn-danger mb-2" name="retirer" value="{{ utilisateur.id }}" onclick="supprimerUtilisateurGroupe({{ utilisateur.id }}, {{ groupe.id }})">-</button>
+                    </li>
+                {% endfor %}
+            </div>
+
+            <script>
+                function ajouterUtilisateurGroupe(utilisateurId, groupeId) {
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('GET', '{{ path('app_groupes.ajouter_utilisateur', { groupeId: '__groupeId__' , utilisateurId: '__utilisateurId__' }) }}'.replace('__utilisateurId__', utilisateurId).replace('__groupeId__', groupeId), true);
+                    xhr.send();
+                    location.reload();
+                }
+                function supprimerUtilisateurGroupe(utilisateurId, groupeId) {
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('GET', '{{ path('app_groupes.supprimer_utilisateur', { groupeId: '__groupeId__' , utilisateurId: '__utilisateurId__' }) }}'.replace('__utilisateurId__', utilisateurId).replace('__groupeId__', groupeId), true);
+                    xhr.send();
+                    location.reload();
+                }
+            </script>
+        </div>
+        <div class= 'form-group'>
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+        </div>
+        {{ form_end(form) }}
+
+
+    </div>
+
+{% endblock %}
+
+
