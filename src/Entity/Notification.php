@@ -22,6 +22,11 @@ class Notification
     #[ORM\Column]
     private ?\DateTime $createdAt;
 
+    #[ORM\ManyToOne(inversedBy: 'notifications')]
+    private ?Utilisateurs $user = null;
+
+
+    // GETTERS AND SETTERS 
     public function getId(): ?int
     {
         return $this->id;
@@ -53,6 +58,18 @@ class Notification
     public function setCreatedAt(?DateTime $date): self
     {
         $this->createdAt = $date;
+        return $this;
+    }
+
+    public function getUser(): ?Utilisateurs
+    {
+        return $this->user;
+    }
+
+    public function setUser(?Utilisateurs $user): self
+    {
+        $this->user = $user;
+
         return $this;
     }
 }

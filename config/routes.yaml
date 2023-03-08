@@ -7,4 +7,7 @@ profil:
     path : /profil/
     controller : App\Controller\ProfilController::index
     
+notification:
+    path: /notification/
+    controller : App\Controller\NotificationController:index
 
