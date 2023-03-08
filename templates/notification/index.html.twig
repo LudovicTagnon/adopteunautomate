@@ -9,16 +9,18 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/home/max/cours/adopteauto/adopteunautomate/src/Controller/NotificationController.php'|file_link(0) }}">src/Controller/NotificationController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/home/max/cours/adopteauto/adopteunautomate/templates/notification/index.html.twig'|file_link(0) }}">templates/notification/index.html.twig</a></code></li>
-    </ul>
+    <h1>Notifications</h1>
     <ul>
         {% for notification in notifications %}
+        <div class="notifications">
             <li>{{ notification.getMessage() }}</li>
+            <a href="/#">
+            <button class="btn btn-primary">Marque comme lu</button>
+            </a>
+            <a  href="{{ path('app_supprimer_notif', {'id': notification.getId()}) }}">
+            <button class="btn btn-danger" >Supprimer la notification</button> 
+            </a>
+        </div>
         {% endfor %}
     </ul>
 </div>
