@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Trajets;
+use App\Entity\Utilisateurs;
 use App\Entity\Villes;
 use ConvertirFormatDate;
 use Doctrine\DBAL\Types\BooleanType;
@@ -43,6 +44,7 @@ class TrajetsType extends AbstractType
         //$user = $this->security->getUser();
         $tomorrow = new \DateTime('tomorrow');
         $demain = new \DateTime('+24 hours');
+        $user = new Utilisateurs();
 
         $builder
             //->add('etat')
@@ -65,6 +67,10 @@ class TrajetsType extends AbstractType
                 'choice_label' => 'nomVille',
                 'label' => "Ville d''arrivée"
             ])
+
+
+
+
             /* ->add('demarrea', VillesType::class, [
               //  'mapped' => false, // Do not map this field to an entity property
                 'label' => '  Ville de Départ:  '
@@ -77,6 +83,10 @@ class TrajetsType extends AbstractType
              //   'mapped' => false, // Do not map this field to an entity property
                 'label' => '   Ville d\' Arrivée :      '
             ]) */
+
+
+
+
             /*
             ->add('demarrea', EntityType::class, [
                 'label' => 'Ville de départ * :   ',
