@@ -10,7 +10,17 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        // Ajout de la ville de Nancy
+        $fichierVillesFrance = "src/Donnees/villesFrance3.csv";
+        $villesFrance=file($fichierVillesFrance);
+        foreach ($villesFrance as $numligne=>$villeFrance) {
+            $ville = new Villes();
+            $villeCP = explode(",",$villeFrance);
+            $ville->setNomVille($villeCP[1]);
+            $ville->setCP((int)$villeCP[0]);
+            $manager->persist($ville);
+            $manager->flush();
+        }
+        /* // Ajout de la ville de Nancy
         $ville = new Villes();
         $ville->setNomVille("Nancy");
         $ville->setCP(54000);
@@ -21,6 +31,6 @@ class AppFixtures extends Fixture
         $ville->setNomVille("Metz");
         $ville->setCP(57000);
         $manager->persist($ville);
-        $manager->flush();
+        $manager->flush(); */
     }
 }
