@@ -7,3 +7,4 @@ controllers:
 profil: 
     path : /profil
     controller : App\Controller\ProfilController::editProfile
+
