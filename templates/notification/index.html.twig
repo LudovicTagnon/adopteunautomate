@@ -16,5 +16,10 @@
         <li>Your controller at <code><a href="{{ '/home/max/cours/adopteauto/adopteunautomate/src/Controller/NotificationController.php'|file_link(0) }}">src/Controller/NotificationController.php</a></code></li>
         <li>Your template at <code><a href="{{ '/home/max/cours/adopteauto/adopteunautomate/templates/notification/index.html.twig'|file_link(0) }}">templates/notification/index.html.twig</a></code></li>
     </ul>
+    <ul>
+        {% for notification in notifications %}
+            <li>{{ notification.getMessage() }}</li>
+        {% endfor %}
+    </ul>
 </div>
 {% endblock %}

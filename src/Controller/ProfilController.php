@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Notification;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,6 +16,8 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
 use App\Entity\Utilisateurs;
 use App\Form\PassProfileFormType;
+use App\Service\NotificationService;
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Config\Security\PasswordHasherConfig;
@@ -38,7 +41,7 @@ class ProfilController extends AbstractController
     }
 
     #[Route('/profil/modifier', name: 'modif_profil')]
-    public function editProfile(Request $request,EntityManagerInterface $entityManager, ManagerRegistry $doctrine, UserPasswordHasherInterface $userPasswordHasher):Response
+    public function editProfile(Request $request,EntityManagerInterface $entityManager, ManagerRegistry $doctrine, UserPasswordHasherInterface $userPasswordHasher, NotificationService $notificationService):Response
     {
         $user = $this->getUser(); //on obtient user connecté
         $form = $this->createForm(UserProfileFormType::class,$user); //creation formulaire avec données user
@@ -59,9 +62,20 @@ class ProfilController extends AbstractController
             $user->setFichierPhoto($newFilename);
         }
             $user = $form->getData();
+            //envoi de notifications pour la modif de compte
+            $notifs = $notificationService->addNotification("test de notifs", $user);
+            $notification = new Notification();
+            $message = "test";
+            $notification->setMessage($message);
+            $notification->setUser($user);
+            $notification->setCreatedAt(new \DateTime());
+            $user->addNotification($notification);
+            $entityManager->persist($notification);
+            $entityManager->flush();
             $entityManager = $doctrine->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
+            
 
             $this->addFlash('success', 'Profil modifié avec succès !');
 
@@ -102,11 +116,14 @@ class ProfilController extends AbstractController
                 }
             }
         }
+
+        $notifications = $notificationService->getNotifications($user);
         
 
         return $this->render('profil/modifierProfile.html.twig', [
             'form' => $form->createView(),
             'form_mdp' => $form_mdp->createView(),
+            'notifications' => $notifications,
         ]);
     }
 

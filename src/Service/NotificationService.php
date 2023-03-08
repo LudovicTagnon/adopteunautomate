@@ -4,6 +4,7 @@
 namespace App\Service;
 
 use App\Entity\Notification;
+use App\Entity\Utilisateurs;
 use Doctrine\ORM\EntityManagerInterface;
 
 
@@ -27,7 +28,7 @@ class NotificationService
         $this->entityManager->flush();
     }
 
-    public function getNotifications($user)
+    public function getNotifications(Utilisateurs $user)
     {
         return $this->entityManager->getRepository(Notification::class)->findBy([
             'user' => $user,
