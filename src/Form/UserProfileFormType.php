@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-
+use Symfony\Component\Validator\Constraints\File;
 
 class UserProfileFormType extends AbstractType
 {
@@ -63,6 +63,15 @@ class UserProfileFormType extends AbstractType
                 'required' => false,
                 'mapped' => false,
                 'attr' => ['autocomplete' => 'fichier_photo'],
+                'constraints' => [
+                    new File([
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/png',
+                        ],
+                        'mimeTypesMessage' => 'Merci de soumettre un fichier JPG ou PNG valide'
+                    ])
+                ],
             ])
    
         ;
