@@ -63,14 +63,14 @@ class ProfilController extends AbstractController
         }
             $user = $form->getData();
             //envoi de notifications pour la modif de compte
-            $notifs = $notificationService->addNotification("test de notifs", $user);
-            $notification = new Notification();
-            $message = "test";
+            $notifs = $notificationService->addNotification("Le compte à été modifié", $user);
+            /*$notification = new Notification();
+            $message = "Le compte à été modifié";
             $notification->setMessage($message);
             $notification->setUser($user);
             $notification->setCreatedAt(new \DateTime());
             $user->addNotification($notification);
-            $entityManager->persist($notification);
+            $entityManager->persist($notification);*/
             $entityManager->flush();
             $entityManager = $doctrine->getManager();
             $entityManager->persist($user);
@@ -123,7 +123,7 @@ class ProfilController extends AbstractController
         return $this->render('profil/modifierProfile.html.twig', [
             'form' => $form->createView(),
             'form_mdp' => $form_mdp->createView(),
-            'notifications' => $notifications,
+            
         ]);
     }
 
