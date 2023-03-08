@@ -36,6 +36,7 @@ class ProfilController extends AbstractController
         ]);
     }
 
+    #[Route('/profil/modifier', name: 'modif_profil')]
     public function editProfile(Request $request,EntityManagerInterface $entityManager, ManagerRegistry $doctrine, UserPasswordHasherInterface $userPasswordHasher):Response
     {
         $user = $this->getUser(); //on obtient user connecté
@@ -90,10 +91,24 @@ class ProfilController extends AbstractController
         }
         
 
-        return $this->render('profil/index.html.twig', [
+        return $this->render('profil/modifierProfile.html.twig', [
             'form' => $form->createView(),
             'form_mdp' => $form_mdp->createView(),
         ]);
     }
 
+    #[Route('/profil/supprimer', name: 'supprimer_profil')]
+    public function desactivateUser(Request $request, EntityManagerInterface $entityManager, ManagerRegistry $doctrine, UserPasswordHasherInterface $userPasswordHasher): Response 
+    { 
+        // Obtenir l'utilisateur connecté 
+        $user = $this->getUser(); 
+        $user->setCompteActif(false); //on passe à faux pour désactiver le compte
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Profil désactivé avec succès !'); 
+        $request->getSession()->invalidate();
+        $this->container->get('security.token_storage')->setToken(null);
+        return $this->redirectToRoute('app_home'); // Redirect to homepage
+    }
+    
 }

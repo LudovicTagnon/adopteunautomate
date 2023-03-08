@@ -1,6 +1,13 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Consultation de profil{% endblock %}
 {% block body %}
+<<<<<<< HEAD
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <h1 class ="center">Mon compte</h1>
+    <div class ="photo">
+      <img src="{{ asset('uploads/' ~ user.getFichierPhoto()) }}" alt="Profile-picture" style="margin-left :30%;margin-bottom:40px;border-radius: 50%; width: 100px; height: 100px;">
+=======
     <link rel="stylesheet" href="{{asset('css/app.css')}}">
 
     <h1 class='center'>Modifier mon profil</h1>
@@ -50,8 +57,41 @@
     </div>
     </div>
     </div>
+>>>>>>> origin/main
     </div>
+    <div class="profil">
+    <ul>
+        <li>Nom : {{ user.getNom() }}</li>
+        <li>Prénom : {{user.getPrenom}}</li>
+        <li>Numéro de Téléphone : {{user.getNumTel}}</li>
+        <li>Email : {{ user.email }}</li>
+        {% if user.vehicule == 1 %}
+            <li>Voiture :   Oui   </li>
+        {% else %}
+            <li>Voiture :   Non   </li>
+        {% endif %}
+        <li>Genre : {{ user.genre }}</li>
+        {% if user.getAutorisationMail() == 1 %}
+                <li>Autorisation de notification mail : Oui</li>
+        {% else %}
+                 <li>Autorisation de notification mail : Non</li>
+        {% endif %}
+        {% if user.getFichierPhoto() is not null %}
+          <li>Photo de profil : Oui</li>
+        {% else %}
+            <li>Photo de profil : Aucune photo de profil</li>
+        {% endif %}
+        <a href="{{ path('modif_profil') }}">
+            <button class="btn btn-primary">Modifier mon profil</button>
+        </a>
+        <a href="{{ path('supprimer_profil') }}">
+          <button class="btn btn-danger" onclick="return confirm('Êtes-vous sûr(e) de vouloir désactiver votre profil ? Cette action est irréversible !');">Désactiver mon profil</button> 
+        </a>
+    </ul>
     </div>
+<<<<<<< HEAD
+{% endblock %}
+=======
 
 
     <div class="container py-5">
@@ -87,3 +127,4 @@
     </div>
     
 {% endblock %}
+>>>>>>> origin/main

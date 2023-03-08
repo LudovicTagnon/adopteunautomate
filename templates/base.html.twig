@@ -9,6 +9,20 @@
     {% endblock %}
 </head>
 <body>
+<<<<<<< HEAD
+
+{% block header %}
+    {% include "partials/_header.html.twig" %}
+{% endblock %}
+{% for message in app.flashes('success') %}
+    <div class="alert alert-success">
+        {{ message }}
+    </div>
+{% endfor %}
+{% for message in app.flashes('warning') %}
+    <div class="alert alert-warning">
+        {{ message }}
+=======
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">
@@ -50,8 +64,9 @@
                 {% endif %}
             </ul>
         </div>
+>>>>>>> origin/main
     </div>
-</nav>
+{% endfor %}
 {% block body %}{% endblock %}
 {% block javascripts %}
     <script src="{{ asset('js/app.js') }}"></script>
