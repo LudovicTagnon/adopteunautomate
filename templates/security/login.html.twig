@@ -10,9 +10,9 @@
                     <div class="card-header" style="background-color: #007bff; color: #fff;">{{ 'Connexion'|trans }}</div>
                     <div class="card-body" style="background-color: #f8f9fa;">
                         <form method="post">
-                        {% if error %}
-                            <div class="alert alert-danger">Votre email ou votre mot de passe est incorrect</div>
-                        {% endif %}
+                            {% if error %}
+                                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                            {% endif %}
 
                             {% if app.user %}
                                 <div class="mb-3">

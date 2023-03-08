@@ -3,11 +3,8 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+
 profil: 
-    path : /profil/
-    controller : App\Controller\ProfilController::index
-    
-notification:
-    path: /notification/
-    controller : App\Controller\NotificationController:index
+    path : /profil
+    controller : App\Controller\ProfilController::editProfile
 
