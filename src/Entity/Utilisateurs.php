@@ -55,7 +55,7 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: "boolean")]
     private ?bool $autorisation_mail;
 
-    #[ORM\Column(type: "blob", nullable: true)]
+    #[ORM\Column(type: "string", nullable: true)]
     private $fichier_photo;
 
     #[ORM\Column(type: "integer")]
@@ -75,9 +75,18 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'publie', targetEntity: Trajets::class)]
     private Collection $trajets;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Notification::class)]
+    private Collection $notifications;
+
     public function __construct()
     {
+        $this->notifications = new ArrayCollection();
         $this->trajets = new ArrayCollection();
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
     }
 
     public function getEmail(): ?string
@@ -259,6 +268,40 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
     public function setCompteActif(?bool $compte_actif): self
     {
         $this->compte_actif = $compte_actif;
+
+        return $this;
+    }
+    public function __toString()
+    {
+        return $this->nom;
+    }
+
+    /**
+     * @return Collection<int, Notification>
+     */
+    public function getNotifications(): Collection
+    {
+        return $this->notifications;
+    }
+
+    public function addNotification(Notification $notification): self
+    {
+        if (!$this->notifications->contains($notification)) {
+            $this->notifications->add($notification);
+            $notification->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotification(Notification $notification): self
+    {
+        if ($this->notifications->removeElement($notification)) {
+            // set the owning side to null (unless already changed)
+            if ($notification->getUser() === $this) {
+                $notification->setUser(null);
+            }
+        }
 
         return $this;
     }
