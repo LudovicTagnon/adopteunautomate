@@ -20,6 +20,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Config\Security\PasswordHasherConfig;
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 
 
@@ -45,6 +46,18 @@ class ProfilController extends AbstractController
         $form->handleRequest($request);
         $form_mdp->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
+            $uploadedFile = $form['imageFile']->getData();
+            if($uploadedFile){ //si un fichier est chargé alors on va l'enregistrer
+            $destination = $this->getParameter('kernel.project_dir').'/public/uploads';
+            $originalFilename = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
+            $slugger = new AsciiSlugger();
+            $newFilename = $slugger->slug($originalFilename).'-'.uniqid().'.'.$uploadedFile->guessExtension();
+            $uploadedFile->move(
+                $destination,
+                $newFilename
+            );
+            $user->setFichierPhoto($newFilename);
+        }
             $user = $form->getData();
             $entityManager = $doctrine->getManager();
             $entityManager->persist($user);
@@ -101,7 +114,7 @@ class ProfilController extends AbstractController
     public function desactivateUser(Request $request, EntityManagerInterface $entityManager, ManagerRegistry $doctrine, UserPasswordHasherInterface $userPasswordHasher): Response 
     { 
         // Obtenir l'utilisateur connecté 
-        $user = $this->getUser(); 
+        $user = $this->getUser();
         $user->setCompteActif(false); //on passe à faux pour désactiver le compte
         $entityManager->flush();
 

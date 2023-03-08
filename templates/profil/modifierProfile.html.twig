@@ -43,6 +43,10 @@
         {{ form_widget(form.genre, {'attr': {'class': 'form-control'}}) }}
         </div>
         {# PHOTO #}
+        <div class="form-group">
+        {{ form_label(form.imageFile, 'Photo de profil') }}
+        {{ form_widget(form.imageFile, {'attr': {'class': 'form-control'}}) }}
+        </div>
         
         
         <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
