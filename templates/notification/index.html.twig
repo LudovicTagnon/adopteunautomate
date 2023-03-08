@@ -14,22 +14,26 @@
 
 <div class="example-wrapper">
     <h1>Notifications</h1>
-    <ul>
-        {% for notification in notifications %}
-            <div class="notifications {% if notification.isRead() %}read-notification{% endif %}">  
-            {% if notification.isRead() %}          
-                <li>{{ notification.getMessage() }} (lue)</li>
-            {% else %}
-                <li>{{ notification.getMessage() }}</li>
-                <form action="{{ path('app_mark_notification_as_read', {'id': notification.getId()}) }}" method="post" style="display:inline;">
-                    <button type="submit" class="btn btn-primary">Marquer comme lu</button>
-                </form>
-            {% endif %}
-            <a  href="{{ path('app_supprimer_notif', {'id': notification.getId()}) }}">
-            <button class="btn btn-danger" >Supprimer la notification</button> 
-            </a>
-        </div>
-        {% endfor %}
-    </ul>
+    {% if notifications|length == 0 %}
+        <p>Aucune notification</p>
+    {% else %}
+        <ul>
+            {% for notification in notifications %}
+                <div class="notifications {% if notification.isRead() %}read-notification{% endif %}">  
+                {% if notification.isRead() %}          
+                    <li>{{ notification.getMessage() }} (lue)</li>
+                {% else %}
+                    <li>{{ notification.getMessage() }}</li>
+                    <form action="{{ path('app_mark_notification_as_read', {'id': notification.getId()}) }}" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-primary">Marquer comme lu</button>
+                    </form>
+                {% endif %}
+                <a  href="{{ path('app_supprimer_notif', {'id': notification.getId()}) }}">
+                <button class="btn btn-danger" >Supprimer la notification</button> 
+                </a>
+            </div>
+            {% endfor %}
+        </ul>
+    {% endif %}
 </div>
 {% endblock %}
