@@ -6,7 +6,9 @@ use Symfony\Component\VarDumper\VarDumper;
 use App\Entity\Trajets;
 use App\Entity\Villes;
 use App\Entity\Utilisateurs;
-use App\Form\TrajetsType;
+use App\Form\TrajetType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use App\Form\SearchTrajetType;
 use App\Repository\TrajetsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -112,10 +114,12 @@ class TrajetsController extends AbstractController
     #[Route('/search', name: 'app_trajets_search', methods: ['GET'])]
     public function search(Request $request, EntityManagerInterface $manager): Response
     {
+        $form = $this->createForm(SearchTrajetType::class);
         $current_user = $this->getUser();
         $trajets = $manager->getRepository(Trajets::class)->findAll();
 
         return $this->render('trajets/search.html.twig', [
+            'form' => $form->createView(),
             'trajets' => $trajets,
             'utilisateur_actuel' => $current_user,
         ]);

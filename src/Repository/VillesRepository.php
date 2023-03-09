@@ -51,6 +51,15 @@ class VillesRepository extends ServiceEntityRepository
         return $cities;
     }
 
+    public function findByTerm(string $term): array
+{
+    return $this->createQueryBuilder('v')
+        ->andWhere('v.nom LIKE :term')
+        ->setParameter('term', '%'.$term.'%')
+        ->getQuery()
+        ->getResult();
+}
+
 //    /**
 //     * @return Villes[] Returns an array of Villes objects
 //     */
@@ -75,4 +84,6 @@ class VillesRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
 }
+

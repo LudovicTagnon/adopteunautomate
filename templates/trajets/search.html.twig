@@ -3,6 +3,15 @@
 {% block title %}Rechercher un trajet{% endblock %}
 
 {% block body %}
+<!-- jQuery library -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- jQuery UI library -->
+<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
+
+<!-- jQuery UI CSS -->
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/smoothness/jquery-ui.css">
+
 
     <!-- bootstrap-->
     <style> 
@@ -13,18 +22,12 @@
     <!-- contenu de la page -->
     <div class = "example-wrapper">
         <div>    
-            <form action="#" method="GET">
-            <label for="from">Ville de départ:</label>
-            <input type="text" id="from" name="from">
-
-            <label for="to">Ville d'arrivée:</label>
-            <input type="text" id="to" name="to">
-
-            <label for="date">Date:</label>
-            <input type="date" id="date" name="date">
-
-            <button type="submit">Rechercher</button>
-            </form>
+        <form method="GET" action="{{ path('app_trajets_search') }}" class="search-form">
+    {{ form_row(form.from, { 'attr': { 'id': 'search_trajet_from' } }) }}
+    {{ form_row(form.to, { 'attr': { 'id': 'search_trajet_to' } }) }}
+    {{ form_row(form.date, { 'attr': { 'class': 'form-control datepicker' } }) }}
+    <button type="submit" class="btn btn-primary">Rechercher</button>
+</form>
         </div>
 
         <div>
@@ -47,4 +50,36 @@
 
     </div>
 
+
+
+
+<script>
+    $(document).ready(function() {
+        // enable autocomplete for both form fields
+        $('#search_trajet_from, #search_trajet_to').autocomplete({
+            // specify the URL to send AJAX request to
+            source: "{{ path('app_autocomplete_villes') }}",
+            // specify the minimum number of characters required to trigger autocomplete
+            minLength: 2,
+            // specify the name of the parameter to be sent in the AJAX request
+            // this is the name of the GET parameter that holds the user input
+            // the default value is 'term', which matches your server-side code
+            paramName: 'term',
+            // specify the format of the response data from the server
+            // the default value is 'json', which matches your server-side code
+            dataType: 'json',
+            // specify how to extract the city names from the response data
+            // the default implementation assumes that the response data is an array of objects,
+            // and each object has a property called 'text' that holds the city name
+            // since your server-side code already returns the response data in this format,
+            // you don't need to specify this option
+            // the default value is:
+            //   function(response) {
+            //       return $.map(response, function(item) {
+            //           return { label: item.text, value: item.text };
+            //       });
+            //   }
+        });
+    });
+</script>
 {% endblock %}
