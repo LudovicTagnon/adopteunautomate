@@ -18,7 +18,7 @@
             <form method="get" action="{{path('app_trajets_search')}}">
                 <datalist id="villes">
                     {% for ville in villes %}
-                        <option value="{{ville.getNomVille()}}">
+                        <option value="{{ville.getNomVille()}}" class="ville-option">{{ville.getNomVille()}} <span class="cp">- {{ville.getCP()}}</span></option>
                     {% endfor %}
                 </datalist>
                 <div class="form-row align-items-center">
@@ -145,6 +145,5 @@
                 </div>
             </div>
         </div>
-
     </div>
 {% endblock %}
