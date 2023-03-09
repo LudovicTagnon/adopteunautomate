@@ -40,7 +40,7 @@ class Groupes
 
     public function getCreateur(): ?int
     {
-        return $this->createur->getId();
+        return $this->createur;
     }
 
     public function setCreateur(Utilisateurs $id_Createur): void

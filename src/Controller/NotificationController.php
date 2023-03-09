@@ -6,11 +6,13 @@ use App\Service\NotificationService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\Notification;
+use Symfony\Component\HttpFoundation\Request;
+
 
 class NotificationController extends AbstractController
 {
     #[Route('/notification', name: 'app_notification')]
-    #[IsGranted('ROLE_USER')]
     public function index(NotificationService $notificationService): Response
     {
         $notifications = $notificationService->getNotifications($this->getUser());
@@ -21,40 +23,25 @@ class NotificationController extends AbstractController
         ]);
     }
 
-    #[Route('/notification/{id}/mark-as-read', name: 'app_mark_notification_as_read')]
-    public function markAsRead(Request $request, ManagerRegistry $doctrine): Response
+    #[Route('/notification', name:'notification_mark_as_read')]
+    public function markNotificationAsRead(NotificationService $notificationService, $id): Response
     {
-        $notificationId = $request->get('id');
-
-        $entityManager = $doctrine->getManager();
-        $notification = $entityManager->getRepository(Notification::class)->find($notificationId);
-
-        if (!$notification) {
-            throw $this->createNotFoundException('Notification introuvable pour id : '.$notificationId);
-        }
-
-        $notification->setIsRead(true);
-        $entityManager->flush();
-
-        return $this->redirectToRoute('app_notification');
+        //Marquer comme lu 
+        $notificationService->markAsRead($id);
+        return $this->redirectToRoute('app_home');
     }
 
-
-    #[Route('/notification/{id}/supprimer', name: 'app_supprimer_notif')]
-    public function supprimerNotification(Request $request, EntityManagerInterface $entityManager, ManagerRegistry $doctrine): Response
+    #[Route('/notification', name:'delete_notification')]
+    public function deleteNotification(NotificationService $notificationService, Request $request,  $notification): Response
     {
-        $notificationId = $request->get('id');
-    
-        $notification = $entityManager->getRepository(Notification::class)->find($notificationId);
-    
-        if (!$notification) {
-            throw $this->createNotFoundException('Notification introuvable');
+        //Supprimer la notif
+        if ($this->isCsrfTokenValid('delete_notification', $request->request->get('_token'))) {
+            $notificationService->deleteNotification($notification);
         }
     
-        $entityManager->remove($notification);
-        $entityManager->flush();
-    
-        return $this->redirectToRoute('app_notification');
+
+        return $this->redirectToRoute('app_home');
     }
+
     
 }
