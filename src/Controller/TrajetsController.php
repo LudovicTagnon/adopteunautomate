@@ -105,13 +105,13 @@ class TrajetsController extends AbstractController
     }
     
 
-    #[Route('/{id}', name: 'app_trajets_show', methods: ['GET'])]
+    /*#[Route('/{id}', name: 'app_trajets_show', methods: ['GET'])]
     public function show(Trajets $trajet): Response
     {
         return $this->render('trajets/show.html.twig', [
             'trajet' => $trajet,
         ]);
-    }
+    }*/
 
     
     #[Route('/{id}/edit', name: 'app_trajets_edit', methods: ['GET', 'POST'])]
@@ -134,7 +134,7 @@ class TrajetsController extends AbstractController
     
 
     
-    #[Route('/{id}', name: 'app_trajets_delete', methods: ['POST'])]
+    #[Route('/search', name: 'app_trajets_delete', methods: ['POST'])]
     public function delete(Request $request, Trajets $trajet, TrajetsRepository $trajetsRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$trajet->getId(), $request->request->get('_token'))) {
@@ -142,6 +142,15 @@ class TrajetsController extends AbstractController
         }
 
         return $this->redirectToRoute('app_trajets_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/search', name: 'app_trajets_search', methods: ['GET'])]
+    public function search(Request $request, EntityManagerInterface $manager): Response
+    {
+        $current_user = $this->getUser();
+
+        return $this->render('trajets/search.html.twig', [
+        ]);
     }
     
 }
