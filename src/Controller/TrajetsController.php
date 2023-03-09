@@ -122,7 +122,7 @@ class TrajetsController extends AbstractController
         $form->handleRequest($request);
 
         $demain = new DateTime('tomorrow');
-        if (!$trajet->getTDepart() <$demain ) {
+        if ($trajet->getTDepart() <$demain ) {
             $this->addFlash(
                 'warning',
                 'Vous ne pouvez plus modifier ce trajet.'
@@ -151,7 +151,7 @@ class TrajetsController extends AbstractController
     public function delete(Request $request, Trajets $trajet, TrajetsRepository $trajetsRepository): Response
     {
         $demain = new DateTime('tomorrow');
-        if (!$trajet->getTDepart() <$demain ) {
+        if ($trajet->getTDepart() <$demain ) {
             $this->addFlash(
                 'warning',
                 'Vous ne pouvez plus supprimer ce trajet.'
