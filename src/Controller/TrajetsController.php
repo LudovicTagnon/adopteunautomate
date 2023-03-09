@@ -114,6 +114,8 @@ class TrajetsController extends AbstractController
     {
         $current_user = $this->getUser();
 
+        $villes = $manager->getRepository(Villes::class)->findAll();
+
         $villeDepart = $request->query->get('ville_depart');
         $villeArrivee = $request->query->get('ville_arrivee');
         $jourDepart = $request->query->get('date_depart');
@@ -125,6 +127,7 @@ class TrajetsController extends AbstractController
         return $this->render('trajets/search.html.twig', [
             'trajets' => $trajets,
             'nb_trajets' => count($trajets),
+            'villes' => $villes,
             'depart' => $villeDepart,
             'arrivee' => $villeArrivee,
             'date' => $dateDepart,

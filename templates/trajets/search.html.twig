@@ -16,13 +16,18 @@
         <br/>
         <div class="container justify-content-center">
             <form method="get" action="{{path('app_trajets_search')}}">
+                <datalist id="villes">
+                    {% for ville in villes %}
+                        <option value="{{ville.getNomVille()}}">
+                    {% endfor %}
+                </datalist>
                 <div class="form-row align-items-center">
                     <div class="col-sm-3 my-1">
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <div class="input-group-text">De</div>
                             </div>
-                            <input type="text" class="form-control" name="ville_depart" placeholder="Ville de départ" required value="{{ app.request.query.get('ville_depart') }}">
+                            <input type="text" class="form-control" name="ville_depart" placeholder="Ville de départ" required value="{{ app.request.query.get('ville_depart') }}" autocomplete="off" list="villes">
                         </div>
                     </div>
                     <div class="col-sm-3 my-1">
@@ -30,7 +35,7 @@
                             <div class="input-group-prepend">
                                 <div class="input-group-text">à</div>
                             </div>
-                            <input type="text" class="form-control" name="ville_arrivee" placeholder="Ville d'arrivée" required value="{{ app.request.query.get('ville_arrivee') }}">
+                            <input type="text" class="form-control" name="ville_arrivee" placeholder="Ville d'arrivée" required value="{{ app.request.query.get('ville_arrivee') }}" autocomplete="off" list="villes">
                         </div>
                     </div>
                     <div class="col-sm-3 my-1">
@@ -142,5 +147,4 @@
         </div>
 
     </div>
-
 {% endblock %}
