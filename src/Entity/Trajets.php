@@ -33,12 +33,6 @@ class Trajets
         }
     }
 
-    //public function setLessthan(): void
-    //{
-    //    $this->nb_passager_courant <$this->nb_passager_max;
-    //}
-
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -71,9 +65,6 @@ class Trajets
     # places prises: entre 0 et nb_passager_max
     #[ORM\Column]
     #[Assert\PositiveOrZero]
-    //#[Assert\PositiveOrZero($nb_passager_max - $nb_passager_courant)]
-    //#[Assert\Range(min: 0, max: $this.$nb_passager_max)]
-    //#[Assert\LessThanOrEqual('$this.$nb_passager_max')]
     private ?int $nb_passager_courant = 0;
 
     # le voyage est public a priori
@@ -94,15 +85,7 @@ class Trajets
     #[ORM\ManyToOne(inversedBy: 'arrivant', cascade:["persist"])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Villes $arrivea = null;
-/*
-    #[ORM\OneToOne(inversedBy: 'depart_de', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Villes $demarre_de = null;
 
-    #[ORM\OneToOne(inversedBy: 'arrivee_de', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Villes $arrive_a = null;
-*/
     public function getId(): ?int
     {
         return $this->id;
@@ -132,7 +115,22 @@ class Trajets
 
     public function getHeureDepartString(): ?string
     {
-        return $this->T_depart->format('H-m');
+        return $this->T_depart->format('H-i');
+    }
+
+    public function getJourArriveeString(): ?string
+    {
+        return $this->T_arrivee->format('d-m-y');
+    }
+
+    public function getHeureArriveeString(): ?string
+    {
+        return $this->T_arrivee->format('H-i');
+    }
+
+    public function getTempsTrajetString(): ?String
+    {
+        return date_diff($this->T_depart,$this->T_arrivee)->format('%H-%I');
     }
 
     public function setTDepart(\DateTime $T_depart): self
