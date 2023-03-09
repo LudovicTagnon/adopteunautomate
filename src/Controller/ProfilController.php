@@ -82,12 +82,20 @@ class ProfilController extends AbstractController
             return $this->redirectToRoute('profil');
 
             
+        }else {
+            // affichage des erreurs
+            $errors = $form->getErrors(true, false);
+            foreach ($errors as $error) {
+                foreach ($error as $e) {
+                    echo $e->getMessage() . "<br>";
+                }
+            }
         }
         if($form_mdp->isSubmitted() && $form_mdp->isValid()){
             $user = $form_mdp->getData();
             $oldpassword = $form_mdp->get('oldPassword')->getData();
             if(!$userPasswordHasher->isPasswordValid($user,$oldpassword)){
-                $form_mdp->get('oldPassword')->addError(new FormError('Ancien mot de passe est incorrect.'));
+                $form_mdp->get('oldPassword')->addError(new FormError('Le mot de passe actuel est incorrect.'));
             }else {
                 $user->setPassword($userPasswordHasher->hashPassword($user, $form_mdp->get('plainPassword')->getData()));
                 $entityManager = $doctrine->getManager();
@@ -98,6 +106,14 @@ class ProfilController extends AbstractController
     
                 return $this->redirectToRoute('profil');
 
+            }
+        }else{
+            //TODO : afficher les messages d'erreurs du form mot de passe
+            $errors = $form->getErrors(true, false);
+            foreach ($errors as $error) {
+                foreach ($error as $e) {
+                    echo $e->getMessage() . "<br>";
+                }
             }
         }
 
