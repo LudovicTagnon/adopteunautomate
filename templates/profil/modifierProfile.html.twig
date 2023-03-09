@@ -17,37 +17,31 @@
     {{ form_errors(form) }}
         {# EMAIL #} 
         <div class="form-group">
-            {{form_errors(form.email)}}
             {{ form_label(form.email, 'Adresse Mail') }}
             {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
         </div>
         {# NOM #}
         <div class="form-group">
-        {{form_errors(form.nom)}}
         {{ form_label(form.nom, 'Nom') }}
         {{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
         </div>
         {# PRENOM #}
         <div class="form-group">
-        {{form_errors(form.prenom)}}
         {{ form_label(form.prenom, 'Prénom') }}
         {{ form_widget(form.prenom, {'attr': {'class': 'form-control'}}) }}
         </div>
         {# NUM_TEL #}
         <div class="form-group">
-        {{form_errors(form.num_tel)}}
         {{ form_label(form.num_tel, 'Numéro de téléphone') }}
         {{ form_widget(form.num_tel, {'attr': {'class': 'form-control'}}) }}
         </div>
         {# VOITURE #}
         <div class="form-group">
-        {{form_errors(form.vehicule)}}
         {{ form_label(form.vehicule, 'Voiture') }}
         {{ form_widget(form.vehicule, {'attr': {'class': 'form-control'}}) }}
         </div>
         {# GENRE #}
         <div class="form-group">
-        {{form_errors(form.genre)}}
         {{ form_label(form.genre, 'Genre') }}
         {{ form_widget(form.genre, {'attr': {'class': 'form-control'}}) }}
         </div>
