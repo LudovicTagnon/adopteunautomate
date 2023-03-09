@@ -43,15 +43,7 @@ class RegistrationController extends AbstractController
             $this->addFlash('success', 'Vous êtes inscrits ! Vous pouvez désormais vous connecter!');
 
             return $this->redirectToRoute('app_home');
-        } else {
-            // print any form validation errors
-            $errors = $form->getErrors(true, false);
-            foreach ($errors as $error) {
-                foreach ($error as $e) {
-                    echo $e->getMessage() . "<br>";
-                }
-            }
-        }
+        } 
 
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
