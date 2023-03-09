@@ -42,10 +42,4 @@ class NotificationService
 
         $this->entityManager->flush();
     }
-
-    public function deleteNotification(Notification $notification)
-    {
-        $this->entityManager->remove($notification);
-        $this->entityManager->flush();
-    }
 }

@@ -179,12 +179,19 @@ composer update
 ```
 Create the database
 ```bash
-php bin/console doctrine:database:create
-```
-```bash
+rm migrations/Version*.php
+symfony console doctrine:database:drop --force
+symfony console doctrine:database:create
 php bin/console make:migration
 php bin/console doctrine:migrations:migrate
+php bin/console doctrine:fixtures:load
 ```
+
+Update database 
+```bash
+php bin/console doctrine:schema:update
+```
+
 And you are ready ! 
 
 
