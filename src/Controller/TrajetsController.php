@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 #[Route('/trajets')]
 class TrajetsController extends AbstractController
@@ -21,6 +22,7 @@ class TrajetsController extends AbstractController
     
 
     #[Route('/', name: 'app_trajets_index', methods: ['GET'])]
+    #[IsGranted('ROLE_USER')]
     public function index(TrajetsRepository $trajetsRepository): Response
     {
         
