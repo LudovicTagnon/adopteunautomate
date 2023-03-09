@@ -13,10 +13,12 @@ use App\Repository\UtilisateursRepository;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\DateTime;
+use Symfony\Component\Validator\Constraints\Date;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToStringTransformer;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 // use Symfony\Component\Form\Extension\Core\Type\EntityType;
@@ -24,6 +26,12 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeImmutableType;
 use Symfony\Component\Form\FormTypeInterface;
+use Symfony\Component\Validator\Constraints\GreaterThan;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Constraints\Callback;
+use Symfony\Component\Validator\Constraints as Assert;
+
+use function PHPUnit\Framework\greaterThan;
 
 // ajout en ligne de commande: composer require doctrine/doctrine-bundle
 
@@ -52,10 +60,16 @@ class TrajetsType extends AbstractType
                 'widget' => 'single_text',
                 'label' => 'Jour et heure de départ :   '
             ])
+            
+
             ->add('T_arrivee', DateTimeType::class, [
                 'widget' => 'single_text',
                 'required'   => false,
-                'label' => 'Jour et heure d\'arrivée    :      '
+                'label' => 'Jour et heure d\'arrivée    :      ',
+                'constraints' => [
+                    new Callback([$this, 'validateDates']),
+                ]
+                
             ]) 
             ->add('demarrea', EntityType::class, [
                 'class' => Villes::class,
@@ -130,5 +144,18 @@ class TrajetsType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Trajets::class,
         ]);
+    }
+
+
+    //Verification si les dates sont valides (dateDepart < date)
+    public function validateDates($value,ExecutionContextInterface $context, $payload)
+    {
+        $dateDepart = $context->getRoot()->get('T_depart')->getData();
+
+        if($value < $dateDepart){
+            $context->buildViolation('La date doit être postérieure à la date de départ')
+                ->atPath('T_arrivee')
+                ->addViolation();
+        }
     }
 }
