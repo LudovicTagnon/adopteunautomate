@@ -41,6 +41,12 @@ class Notification
     {
         return $this->isRead;
     }
+    public function setIsRead(bool $isRead): self
+    {
+        $this->isRead = $isRead;
+
+        return $this;
+    }
 
     public function getCreatedAt(): ?\DateTime
     {
