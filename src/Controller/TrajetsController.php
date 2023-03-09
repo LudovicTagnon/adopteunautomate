@@ -2,16 +2,17 @@
 
 namespace App\Controller;
 
-use Symfony\Component\VarDumper\VarDumper;
-use App\Entity\Trajets;
 use App\Entity\Villes;
-use App\Entity\Utilisateurs;
+use App\Entity\Trajets;
 use App\Form\TrajetsType;
+use App\Entity\Utilisateurs;
 use App\Repository\TrajetsRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\VarDumper\VarDumper;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/trajets')]
@@ -118,6 +119,18 @@ class TrajetsController extends AbstractController
         $form = $this->createForm(TrajetsType::class, $trajet);
         $form->handleRequest($request);
 
+        $demain = new DateTime('tomorrow');
+        if (!$trajet->getTDepart() <$demain ) {
+            $this->addFlash(
+                'warning',
+                'Vous ne pouvez plus modifier ce trajet.'
+            );
+
+            return $this->redirectToRoute('app_trajets_index');
+        }
+
+
+
         if ($form->isSubmitted() && $form->isValid()) {
             $trajetsRepository->save($trajet, true);
 
@@ -135,6 +148,16 @@ class TrajetsController extends AbstractController
     #[Route('/{id}', name: 'app_trajets_delete', methods: ['POST'])]
     public function delete(Request $request, Trajets $trajet, TrajetsRepository $trajetsRepository): Response
     {
+        $demain = new DateTime('tomorrow');
+        if (!$trajet->getTDepart() <$demain ) {
+            $this->addFlash(
+                'warning',
+                'Vous ne pouvez plus supprimer ce trajet.'
+            );
+
+            return $this->redirectToRoute('app_trajets_index');
+        }
+        
         if ($this->isCsrfTokenValid('delete'.$trajet->getId(), $request->request->get('_token'))) {
             $trajetsRepository->remove($trajet, true);
         }
