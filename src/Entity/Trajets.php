@@ -125,6 +125,16 @@ class Trajets
         return $this->T_depart;
     }
 
+    public function getJourDepartString(): ?string
+    {
+        return $this->T_depart->format('d-m-y');
+    }
+
+    public function getHeureDepartString(): ?string
+    {
+        return $this->T_depart->format('H-m');
+    }
+
     public function setTDepart(\DateTime $T_depart): self
     {
         $this->T_depart = $T_depart;
@@ -216,57 +226,32 @@ class Trajets
 
         return $this;
     }
-/*
-    public function getDemarreDe(): ?Villes
+
+    public function getDemarreA(): ?Villes
     {
-        return $this->demarre_de;
+        return $this->demarrea;
     }
 
-    public function setDemarreDe(Villes $demarre_de): self
+    public function setDemarreA(?Villes $demarrea): self
     {
-        $this->demarre_de = $demarre_de;
+        $this->demarrea = $demarrea;
 
         return $this;
     }
 
     public function getArriveA(): ?Villes
     {
-        return $this->arrive_a;
+        return $this->arrivea;
     }
 
-    public function setArriveA(Villes $arrive_a): self
+    public function setArriveA(?Villes $arrivea): self
     {
-        $this->arrive_a = $arrive_a;
+        $this->arrivea = $arrivea;
 
         return $this;
     }
-*/
 
-public function getDemarreA(): ?Villes
-{
-    return $this->demarrea;
-}
-
-public function setDemarreA(?Villes $demarrea): self
-{
-    $this->demarrea = $demarrea;
-
-    return $this;
-}
-
-public function getArriveA(): ?Villes
-{
-    return $this->arrivea;
-}
-
-public function setArriveA(?Villes $arrivea): self
-{
-    $this->arrivea = $arrivea;
-
-    return $this;
-}
-
-public function addDepart(Villes $ville): self
+    public function addDepart(Villes $ville): self
     {
         if (!$this->demarrea->contains($ville)) {
             $this->demarrea = $ville;

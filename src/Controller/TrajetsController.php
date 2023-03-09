@@ -41,20 +41,11 @@ class TrajetsController extends AbstractController
         
         $user = $this->getUser();
         $trajet = new Trajets();
-        //$villedepart= new Villes();
-        //$villearrivee= new Villes();
         $form = $this->createForm(TrajetsType::class, $trajet);
         $form->handleRequest($request);
 
         
         if ($form->isSubmitted() && $form->isValid()) {
-            // $trajetsRepository->save($trajet, true);
-           
-           // $villedepart ->setnom_ville($form->getData()['demarrea']);
-                    
-           // $villearrivee ->setnom_ville($form->getData()['arrivea']);
-
-
             //On récupère les données du formulaire
             $trajet = $form->getData();
 
@@ -64,22 +55,6 @@ class TrajetsController extends AbstractController
             $villeArrivee = $manager->getRepository(Villes::class)->find(['id' => $form->getData()->getArriveA()]);
             $trajet->setArriveA($villeArrivee);
             $trajet->setDemarreA($villeDepart);
-
-            //Si elles existent, on ne les créer pas mais on récupère l'id de celle déjà existante
-            //Sinon je la crée
-            /*if (!$villeDepart) {
-                $villeDepart = new Villes();
-                $villeDepart->setNomVille($form->get('demarrea')->getData());
-                $manager->persist($villeDepart);
-                $manager->flush();
-            }
-        
-            if (!$villeArrivee) {
-                $villeArrivee = new Villes();
-                $villeArrivee->setNomVille($form->get('arrivea')->getData());
-                $manager->persist($villeArrivee);
-                $manager->flush();
-            }*/
 
             // champs remplis d'office:
             $trajet->setPublie($this->getUser());
@@ -103,16 +78,6 @@ class TrajetsController extends AbstractController
             'user' => $user,
         ]);
     }
-    
-
-    /*#[Route('/{id}', name: 'app_trajets_show', methods: ['GET'])]
-    public function show(Trajets $trajet): Response
-    {
-        return $this->render('trajets/show.html.twig', [
-            'trajet' => $trajet,
-        ]);
-    }*/
-
     
     #[Route('/{id}/edit', name: 'app_trajets_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Trajets $trajet, TrajetsRepository $trajetsRepository): Response
@@ -148,8 +113,11 @@ class TrajetsController extends AbstractController
     public function search(Request $request, EntityManagerInterface $manager): Response
     {
         $current_user = $this->getUser();
+        $trajets = $manager->getRepository(Trajets::class)->findAll();
 
         return $this->render('trajets/search.html.twig', [
+            'trajets' => $trajets,
+            'utilisateur_actuel' => $current_user,
         ]);
     }
     
