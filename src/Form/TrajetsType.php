@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Trajets;
 use App\Entity\Utilisateurs;
 use App\Entity\Villes;
+use App\Entity\Groupes;
 use ConvertirFormatDate;
 use Doctrine\DBAL\Types\BooleanType;
 
@@ -60,7 +61,7 @@ class TrajetsType extends AbstractType
             ->add('demarrea', EntityType::class, [
                 'class' => Villes::class,
                 'choice_label' => 'nomVille',
-                'label' => 'Ville de départ'
+                'label' => 'Ville de départ',
             ])
             ->add('arrivea', EntityType::class, [
                 'class' => Villes::class,
@@ -114,7 +115,17 @@ class TrajetsType extends AbstractType
                 'label' => 'Nombre de places * :   '
             ])
 
-            ->add('public')
+            ->add('public', ChoiceType::class, [
+                'choices' => [
+                    'Public ' => true,
+                    ' Privé' => false,
+                ],
+                'expanded' => true,
+                'multiple' => false,
+                'label' => 'Trajet public ou privé :   '
+            ])
+            //a ajouter la selection des groupes
+            
             ->add('renseignement', TextareaType::class, [
                 'required'   => false,
                 'label' => 'Informations additionnelles :   '
