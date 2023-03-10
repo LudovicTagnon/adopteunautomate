@@ -23,6 +23,7 @@
     <!-- contenu de la page -->
     <div class = "container">
         <br/>
+        <!-- Formulaire de recherche -->
         <div class="container justify-content-center">
             <form method="get" action="{{path('app_trajets_search')}}">
                 <datalist id="villes">
@@ -52,7 +53,7 @@
                             <div class="input-group-prepend">
                                 <div class="input-group-text">le</div>
                             </div>
-                            <input type="datetime-local" class="form-control" id="date_depart" name="date_depart" min="{{ "now"|date("Y-m-d\\TH:i") }}" required value="{{ app.request.query.get('date_depart') }}">
+                            <input type="date" class="form-control" id="date_depart" name="date_depart" min="{{ "now"|date("Y-m-d\\TH:i") }}" required value="{{ app.request.query.get('date_depart') }}">
                         </div>
                     </div>
                         <button class="btn btn-primary" type="submit">Rechercher</button>
@@ -60,11 +61,24 @@
                 </div>
             </form>
         </div>
+
+        <!-- Page de résultats -->
         <div class="container"> 
             <br>
             <div class="row">
                 <div class="col-4">
-                    filtres
+                    <!-- Panneau de filtre -->
+                    <div class="filter-panel">
+                        <h4>Options de tri:</h4>
+                        <div class="form-check">
+                            <label for="tri_date">Trier par date et heure</label>
+                            <input type="radio" name="filtre" id="tri_date" value="tôt" checked>
+                        </div>
+                        <div class="form-check">
+                            <label for="tri_prix">Trier par prix</label>
+                            <input type="radio" name="filtre" id="tri_prix" value="moins_cher">
+                        </div>
+                    </div>
                 </div>
                 <div class="col">
                     <div class="row"> 
@@ -102,57 +116,106 @@
                         Aucun trajet enregistré
                     {% else %}
                         <br/>
-                        {% for trajet in trajets %}
-                            {% if trajet.publie != utilisateur_actuel%}
-                                {% if trajet.getNbPassagerMax() >  trajet.getNbPassagerCourant()%}
-                                    <li style="list-style-type:none">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="card mb-12 shadow-sm">
-                                                    <div class="card-body">
-                                                        <div class="row"> <!-- Info concernant le trajet -->
-                                                            <div class="col col-lg-2">
-                                                                <h4 class="my-0 font-weight-normal">{{trajet.getHeureDepartString()}}</h4>
-                                                                <small class="text-muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{trajet.getTempsTrajetString()}}</small>
-                                                                <br/>
-                                                                <h4 class="my-0 font-weight-normal">{{trajet.getHeureArriveeString()}}</h4>
-                                                            </div>
-                                                            <div class="col-lg-3">
-                                                                <h4 class="my-0 font-weight-normal"> {{trajet.demarrea}} </h4>
-                                                                &nbsp;&nbsp;&nbsp;&nbsp;<i class="bi bi-arrow-down-short"></i>
-                                                                <h4 class="my-0 font-weight-normal">{{trajet.arrivea}}</h4>
-                                                            </div>
-                                                            <div class="col-lg-5">
-                                                                <h4 class="my-0 font-weight-normal">Description :</h4>
-                                                                {{trajet.renseignement}}
-                                                            </div>
-                                                            <div class="col">
-                                                                <h1 class="card-title pricing-card-title">{{trajet.prix}} <small class="text-muted">€</small></h1>
-                                                            </div>
+                        <ul id="liste_trajets">
+                            {% for trajet in trajets %}
+                                {% if trajet.publie != utilisateur_actuel%}
+                                    {% if trajet.getNbPassagerMax() >  trajet.getNbPassagerCourant()%}
+                                        <li style="list-style-type:none">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div class="row">
+                                                        <div class="row">
+                                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="row">Le&nbsp;<div class="date_depart">{{trajet.getJourDepartString()}}</div></span>
                                                         </div>
-                                                        </br>
-                                                        <div class="row"> <!-- Info concernant le conducteur -->
-                                                            <div class="col col-lg-2">
-                                                                <img src="/uploads/{{trajet.publie.getFichierPhoto()}}" class="rounded-circle" alt="img_profil" width="50" height="50">
-                                                            </div>
-                                                            <div class="col">
-                                                                {{trajet.publie.nom}} {{trajet.publie.prenom}}<br/>
-                                                                //note à afficher ici
-                                                            <div>
-                                                        </div>
-                                                        </br>
                                                     </div>
-                                                    <button type="button" class="btn btn-lg btn-block btn-primary">Adopter ce trajet</button>
-                                                </div> 
+                                                    <div class="card mb-12 shadow-sm">
+                                                        <div class="card-body">
+                                                            <div class="row"> <!-- Info concernant le trajet -->
+                                                                <div class="col col-lg-2">
+                                                                    <h4 class="my-0 font-weight-normal"><div class="heure_depart">{{trajet.getHeureDepartString()}}</div></h4>
+                                                                    <small class="text-muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{trajet.getTempsTrajetString()}}</small>
+                                                                    <br/>
+                                                                    <h4 class="my-0 font-weight-normal">{{trajet.getHeureArriveeString()}}</h4>
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    <h4 class="my-0 font-weight-normal"> {{trajet.demarrea}} </h4>
+                                                                    &nbsp;&nbsp;&nbsp;&nbsp;<i class="bi bi-arrow-down-short"></i>
+                                                                    <h4 class="my-0 font-weight-normal">{{trajet.arrivea}}</h4>
+                                                                </div>
+                                                                <div class="col-lg-5">
+                                                                    <h4 class="my-0 font-weight-normal">Description :</h4>
+                                                                    {{trajet.renseignement}}
+                                                                </div>
+                                                                <div class="col">
+                                                                    <h1 class="card-title pricing-card-title"><span class="prix">{{trajet.prix}}<small class="text-muted">€</small></span></h1>
+                                                                </div>
+                                                            </div>
+                                                            </br>
+                                                            <div class="row"> <!-- Info concernant le conducteur -->
+                                                                <div class="col col-lg-2">
+                                                                    <img src="/uploads/{{trajet.publie.getFichierPhoto()}}" class="rounded-circle" alt="img_profil" width="50" height="50">
+                                                                </div>
+                                                                <div class="col">
+                                                                    {{trajet.publie.nom}} {{trajet.publie.prenom}}<br/>
+                                                                    //note à afficher ici
+                                                                <div>
+                                                            </div>
+                                                            </br>
+                                                        </div>
+                                                        <button type="button" class="btn btn-lg btn-block btn-primary">Adopter ce trajet</button>
+                                                    </div> 
+                                                </div>
                                             </div>
-                                        </div>
-                                    </li>
+                                        </li>
+                                    {% endif %}
                                 {% endif %}
-                            {% endif %}
-                        {% endfor %}
+                                <br/>
+                            {% endfor %}
+                        </ul>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  </ul>
                     {% endif %}
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        // Sélection des éléments du DOM
+        const liste_trajets = document.getElementById('liste_trajets');
+        const boutons_filtre = document.getElementsByName('filtre');
+
+        // Ajout d'un écouteur d'événement à chaque bouton radio
+        for (let bouton of boutons_filtre) {
+            bouton.addEventListener('change', () => {
+                // Récupération de la valeur du bouton radio sélectionné
+                const filtre = bouton.value;
+
+                // Tri des trajets selon le filtre choisi
+                let trajets_tries;
+                if (filtre === 'tôt') {
+                    trajets_tries = Array.from(liste_trajets.children).sort((a, b) => {
+                        const date_a = a.querySelector('.date_depart').textContent;
+                        const heure_a = a.querySelector('.heure_depart').textContent;
+                        const date_b = b.querySelector('.date_depart').textContent;
+                        const heure_b = b.querySelector('.heure_depart').textContent;
+                        const date_heure_a = Date.parse(`${date_a} ${heure_a}`);
+                        const date_heure_b = Date.parse(`${date_b} ${heure_b}`);
+                        return date_heure_a - date_heure_b;
+                    });
+                } else if (filtre === 'moins_cher') {
+                    trajets_tries = Array.from(liste_trajets.children).sort((a, b) => {
+                        const prix_a = a.querySelector('.prix').textContent;
+                        const prix_b = b.querySelector('.prix').textContent;
+                        return Number(prix_a) - Number(prix_b);
+                    });
+                }
+
+                // Affichage des trajets triés dans la liste
+                liste_trajets.innerHTML = '';
+                for (let trajet of trajets_tries) {
+                    liste_trajets.appendChild(trajet);
+                }
+            });
+        }
+    </script>
+
 {% endblock %}
