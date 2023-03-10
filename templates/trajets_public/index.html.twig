@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Liste des trajets publics</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Départ</th>
+                <th>Arrivée</th>
+                <th>Prix</th>
+                <th>Nombre de passagers</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for trajet in trajets %}
+            {% if trajet.publie.id != user.id%}
+                <tr>
+                    <td>{{ trajet.id }}</td>
+                    <td>{{ trajet.demarrea.getnomVille() }} - {{ trajet.getJourDepartString() }} {{ trajet.getHeureDepartString() }}</td>
+                    <td>{{ trajet.arrivea.getnomVille() }} - {{ trajet.getJourArriveeString() }} {{ trajet.getHeureArriveeString() }}</td>
+                    <td>{{ trajet.prix }} €</td>
+                    <td>{{ trajet.getNbPassagerCourant() }}/{{ trajet.getNbPassagerMax() }}</td>
+                </tr>
+            {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

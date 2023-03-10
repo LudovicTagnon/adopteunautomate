@@ -101,7 +101,7 @@ class TrajetsController extends AbstractController
     
 
     
-    #[Route('/search', name: 'app_trajets_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'app_trajets_delete', methods: ['POST'])]
     public function delete(Request $request, Trajets $trajet, TrajetsRepository $trajetsRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$trajet->getId(), $request->request->get('_token'))) {
@@ -114,7 +114,6 @@ class TrajetsController extends AbstractController
     #[Route('/rechercher-trajet', name: 'app_trajets_search', methods: ['GET'])]
     public function search(Request $request, EntityManagerInterface $manager): Response
     {
-        $form = $this->createForm(SearchTrajetType::class);
         $current_user = $this->getUser();
 
         $villes = $manager->getRepository(Villes::class)->findAll();
@@ -128,7 +127,6 @@ class TrajetsController extends AbstractController
         $dateDepart = \DateTime::createFromFormat('Y-m-d', $jourDepart);
 
         return $this->render('trajets/search.html.twig', [
-            'form' => $form->createView(),
             'trajets' => $trajets,
             'nb_trajets' => count($trajets),
             'villes' => $villes,
