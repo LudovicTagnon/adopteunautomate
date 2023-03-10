@@ -3,7 +3,7 @@
 {% block body %}
     <h1>Liste des trajets publics</h1>
 
-    <table>
+    <table class="table table-hover">
         <thead>
             <tr>
                 <th>ID</th>
@@ -22,6 +22,11 @@
                     <td>{{ trajet.arrivea.getnomVille() }} - {{ trajet.getJourArriveeString() }} {{ trajet.getHeureArriveeString() }}</td>
                     <td>{{ trajet.prix }} €</td>
                     <td>{{ trajet.getNbPassagerCourant() }}/{{ trajet.getNbPassagerMax() }}</td>
+                    <td>
+                        {% if not is_granted('ROLE_ADMIN') %}
+                            <a href="#" class="btn btn-success">Demande de participation</a>
+                        {% endif %}
+                    </td>
                 </tr>
             {% endif %}
             {% endfor %}
