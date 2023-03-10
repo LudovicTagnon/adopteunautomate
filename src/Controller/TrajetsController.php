@@ -111,7 +111,7 @@ class TrajetsController extends AbstractController
         return $this->redirectToRoute('app_trajets_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/rechercher-trajet', name: 'app_trajets_search', methods: ['GET'])]
+   /* #[Route('/rechercher-trajet', name: 'app_trajets_search', methods: ['GET'])]
     public function search(Request $request, EntityManagerInterface $manager): Response
     {
         $current_user = $this->getUser();
@@ -135,6 +135,6 @@ class TrajetsController extends AbstractController
             'date' => $dateDepart,
             'utilisateur_actuel' => $current_user,
         ]);
-    }
+    }*/
     
 }

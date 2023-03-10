@@ -25,7 +25,7 @@
         <br/>
         <!-- Formulaire de recherche -->
         <div class="container justify-content-center">
-            <form method="get" action="{{path('app_trajets_search')}}">
+            <form method="get" action="{{path('app_home')}}">
                 <datalist id="villes">
                     {% for ville in villes %}
                         <option value="{{ville.getNomVille()}}" class="ville-option">{{ville.getNomVille()}} <span class="cp">- {{ville.getCP()}}</span></option>
