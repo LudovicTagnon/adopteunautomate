@@ -107,8 +107,24 @@ class TrajetsController extends AbstractController
     
 
     #[Route('/{id}', name: 'app_trajets_show', methods: ['GET'])]
-    public function show(Trajets $trajet): Response
+    public function show(Trajets $trajet, Request $request, EntityManagerInterface $manager): Response
     {
+        // modifications automatiques de l'état d'un trajet
+        // dans l'affichage
+        $demain = new DateTime('tomorrow');
+        if ($trajet->getTDepart() <$demain ) {
+            $trajet->setEtat('bloqué');
+        }
+        $maintenant = new DateTime();
+        $hier = new DateTime('yesterday');
+        if ($trajet->getTArrivee() <$maintenant  || $trajet->getTDepart() <$hier ) {
+            $trajet->setEtat('terminé');
+        }
+        
+        $manager->persist($trajet);
+
+        $manager->flush();
+
         return $this->render('trajets/show.html.twig', [
             'trajet' => $trajet,
         ]);
@@ -148,10 +164,11 @@ class TrajetsController extends AbstractController
 
     
     #[Route('/{id}', name: 'app_trajets_delete', methods: ['POST'])]
-    public function delete(Request $request, Trajets $trajet, TrajetsRepository $trajetsRepository): Response
+    public function delete(Request $request, Trajets $trajet, TrajetsRepository $trajetsRepository, EntityManagerInterface $manager): Response
     {
         $demain = new DateTime('tomorrow');
         if ($trajet->getTDepart() <$demain ) {
+            $trajet->setEtat('bloqué');
             $this->addFlash(
                 'warning',
                 'Vous ne pouvez plus supprimer ce trajet.'
@@ -161,9 +178,12 @@ class TrajetsController extends AbstractController
         }
         
         if ($this->isCsrfTokenValid('delete'.$trajet->getId(), $request->request->get('_token'))) {
+            $trajet->setEtat('annulé');
             $trajetsRepository->remove($trajet, true);
         }
+        $manager->persist($trajet);
 
+        $manager->flush();
         return $this->redirectToRoute('app_trajets_index', [], Response::HTTP_SEE_OTHER);
     }
     
