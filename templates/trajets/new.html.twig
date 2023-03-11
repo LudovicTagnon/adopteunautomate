@@ -19,9 +19,7 @@
 
        {% if app.flashes('error') is not empty %}
            <div class="alert alert-danger">
-               {% for flash_message in app.flashes('error') %}
-                   {{ flash_message }}
-               {% endfor %}
+               <p>Vous avez déjà créé un trajet pour cette date. Veuillez choisir une autre date</p>
            </div>
        {% endif %}
 
