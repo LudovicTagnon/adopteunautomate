@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 class RegistrationController extends AbstractController
 {
@@ -23,21 +24,26 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $uploadedFile = $form['imageFile']->getData();
+            if($uploadedFile){ //si un fichier est chargé alors on va l'enregistrer
+            $destination = $this->getParameter('kernel.project_dir').'/public/uploads';
+            $originalFilename = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
+            $slugger = new AsciiSlugger();
+            $newFilename = $slugger->slug($originalFilename).'-'.uniqid().'.'.$uploadedFile->guessExtension();
+            $uploadedFile->move(
+                $destination,
+                $newFilename
+            );
+            $user->setFichierPhoto($newFilename);
+        }
             $user->setPassword($userPasswordHasher->hashPassword($user, $form->get('plainPassword')->getData()));
             $entityManager = $doctrine->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
+            $this->addFlash('success', 'Vous êtes inscrits ! Vous pouvez désormais vous connecter!');
 
             return $this->redirectToRoute('app_home');
-        } else {
-            // print any form validation errors
-            $errors = $form->getErrors(true, false);
-            foreach ($errors as $error) {
-                foreach ($error as $e) {
-                    echo $e->getMessage() . "<br>";
-                }
-            }
-        }
+        } 
 
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),

@@ -1,102 +1,44 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Consultation de profil{% endblock %}
 {% block body %}
-    <link rel="stylesheet" href="{{asset('css/app.css')}}">
-
-    <h1 class='center'>Modifier mon profil</h1>
-    <div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header" style="background-color: #007bff; color: #fff">{{ 'Modification'|trans }}</div>
-                <div class="card-body" style="background-color: #f8f9fa;">
-    {{form_start(form)}}
-    {{ form_errors(form) }}
-        {# EMAIL #}
-        <div class="form-group">
-            {{ form_label(form.email, 'Adresse Mail') }}
-            {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
-        </div>
-        {# NOM #}
-        <div class="form-group">
-        {{ form_label(form.nom, 'Nom') }}
-        {{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
-        </div>
-        {# PRENOM #}
-        <div class="form-group">
-        {{ form_label(form.prenom, 'Prénom') }}
-        {{ form_widget(form.prenom, {'attr': {'class': 'form-control'}}) }}
-        </div>
-        {# NUM_TEL #}
-        <div class="form-group">
-        {{ form_label(form.num_tel, 'Numéro de téléphone') }}
-        {{ form_widget(form.num_tel, {'attr': {'class': 'form-control'}}) }}
-        </div>
-        {# VOITURE #}
-        <div class="form-group">
-        {{ form_label(form.vehicule, 'Voiture') }}
-        {{ form_widget(form.vehicule, {'attr': {'class': 'form-control'}}) }}
-        </div>
-        {# GENRE #}
-        <div class="form-group">
-        {{ form_label(form.genre, 'Genre') }}
-        {{ form_widget(form.genre, {'attr': {'class': 'form-control'}}) }}
-        </div>
-        {# PHOTO #}
-        
-        <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
-    {{form_end(form)}}
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <h1 class ="center">Mon compte</h1>
+    <div class ="photo">
+      <img src="{{ asset('uploads/' ~ user.getFichierPhoto()) }}" alt="Profile-picture" style="margin-left :30%;margin-bottom:40px;border-radius: 50%; width: 100px; height: 100px;">
     </div>
-    </div>
-    </div>
-    </div>
-    </div>
+    <div class="profil">
+    <ul>
+        <li>Nom : {{ user.getNom() }}</li>
+        <li>Prénom : {{user.getPrenom}}</li>
+        <li>Numéro de Téléphone : {{user.getNumTel}}</li>
+        <li>Email : {{ user.email }}</li>
+        {% if user.vehicule == 1 %}
+            <li>Voiture :   Oui   </li>
+        {% else %}
+            <li>Voiture :   Non   </li>
+        {% endif %}
+        <li>Genre : {{ user.genre }}</li>
+        {% if user.getAutorisationMail() == 1 %}
+                <li>Autorisation de notification mail : Oui</li>
+        {% else %}
+                 <li>Autorisation de notification mail : Non</li>
+        {% endif %}
+        {% if user.getFichierPhoto() is not null %}
+          <li>Photo de profil : Oui</li>
+        {% else %}
+            <li>Photo de profil : Aucune photo de profil</li>
+        {% endif %}
+        <a href="{{ path('modif_profil') }}">
+            <button class="btn btn-primary">Modifier mon profil</button>
+        </a>
+        <a href="{{ path('supprimer_profil') }}">
+          <button class="btn btn-danger" onclick="return confirm('Êtes-vous sûr(e) de vouloir désactiver votre profil ? Cette action est irréversible !');">Désactiver mon profil</button> 
+        </a>
+    </ul>
     </div>
 
 
-    <div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header" style="background-color: #007bff; color: #fff">{{ 'Mot de passe'|trans }}</div>
-                <div class="card-body" style="background-color: #f8f9fa;">
-    {{form_start(form_mdp)}}
-    {{ form_errors(form_mdp) }}
-
-        <div class="form-group">
-
-
-            {{ form_errors(form_mdp.oldPassword) }}
-            {{ form_row(form_mdp.oldPassword, {
-                'label': 'Ancien mot de passe',
-                'attr': {'class': 'form-control mb-3'},
-            }) }}
-
-            {{ form_errors(form_mdp.plainPassword) }}
-            {{ form_row(form_mdp.plainPassword.first, {
-                'label': 'Nouveau mot de passe',
-                'attr': {'class': 'form-control mb-3'},
-            }) }}
-
-            {{ form_row(form_mdp.plainPassword.second, {
-                'label': 'Confirmez votre mot de passe',
-                'attr': {'class': 'form-control mb-3'},
-            }) }}
-
-
-        </div>
-
-
-
-
-                    <button type="submit" class="btn btn-primary">Modifier le mot de passe</button>
-    {{ form_errors(form_mdp)}}
-    {{form_end(form_mdp)}}
-    </div>
-    </div>
-    </div>
-    </div>
-    </div>
-    </div>
+    
     
 {% endblock %}

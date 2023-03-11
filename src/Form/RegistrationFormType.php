@@ -15,6 +15,7 @@ use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class RegistrationFormType extends AbstractType
@@ -95,10 +96,19 @@ class RegistrationFormType extends AbstractType
                 'required' => false,
                 'attr' => ['autocomplete' => 'autorisation_mail'],
             ])
-            ->add('fichier_photo', FileType::class, [
+            ->add('imageFile', FileType::class, [
                 'required' => false,
                 'mapped' => false,
                 'attr' => ['autocomplete' => 'fichier_photo'],
+                'constraints' => [
+                    new File([
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/png',
+                        ],
+                        'mimeTypesMessage' => 'Merci de soumettre un fichier JPG ou PNG valide',
+                    ])
+                ],
             ])
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,

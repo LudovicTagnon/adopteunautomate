@@ -7,15 +7,16 @@ Maybe you can mention me or this repo in the acknowledgements too
 -->
 <div align="center">
 
-  <img src="assets/logo.png" alt="logo" width="200" height="auto" />
+  <img src="images/logo1.png" alt="logo" width="200" height="auto" />
   <h1>Adopte un AutoMate</h1>
   
   <p>
-    An awesome README template for your projects! 
+    Site de covoiturage : Adopte AutoMate 
   </p>
   
   
 <!-- Badges -->
+<!-- TODO :  faire les badges pour notre projet (version gitlab)-->
 <p>
   <a href="https://gitlab.univ-lorraine.fr/antunes26u/adopteunautomate/-/graphs/main">
     <img src="https://img.shields.io/github/contributors/Louis3797/awesome-readme-template" alt="contributors" />
@@ -178,12 +179,19 @@ composer update
 ```
 Create the database
 ```bash
-php bin/console doctrine:database:create
-```
-```bash
+rm migrations/Version*.php
+symfony console doctrine:database:drop --force
+symfony console doctrine:database:create
 php bin/console make:migration
 php bin/console doctrine:migrations:migrate
+php bin/console doctrine:fixtures:load
 ```
+
+Update database 
+```bash
+php bin/console doctrine:schema:update
+```
+
 And you are ready ! 
 
 
