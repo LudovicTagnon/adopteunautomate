@@ -49,39 +49,18 @@ class TrajetsController extends AbstractController
 
         
         if ($form->isSubmitted() && $form->isValid()) {
-            // $trajetsRepository->save($trajet, true);
            
-           // $villedepart ->setnom_ville($form->getData()['demarrea']);
-                    
-           // $villearrivee ->setnom_ville($form->getData()['arrivea']);
-
-
             //On récupère les données du formulaire
             $trajet = $form->getData();
 
             //On vérifie d'abord si les villes existent déjà dans la base de donnée
-            // var_dump($form->get('demarrea')->getData());
+
             $villeDepart = $manager->getRepository(Villes::class)->find(['id' => $form->getData()->getDemarreA()]);
             $villeArrivee = $manager->getRepository(Villes::class)->find(['id' => $form->getData()->getArriveA()]);
             $trajet->setArriveA($villeArrivee);
             $trajet->setDemarreA($villeDepart);
 
-            //Si elles existent, on ne les créer pas mais on récupère l'id de celle déjà existante
-            //Sinon je la crée
-            /*if (!$villeDepart) {
-                $villeDepart = new Villes();
-                $villeDepart->setNomVille($form->get('demarrea')->getData());
-                $manager->persist($villeDepart);
-                $manager->flush();
-            }
-        
-            if (!$villeArrivee) {
-                $villeArrivee = new Villes();
-                $villeArrivee->setNomVille($form->get('arrivea')->getData());
-                $manager->persist($villeArrivee);
-                $manager->flush();
-            }*/
-
+           
             // champs remplis d'office:
             $trajet->setPublie($this->getUser());
             $trajet->setEtat('ouvert');
@@ -114,11 +93,20 @@ class TrajetsController extends AbstractController
         $demain = new DateTime('tomorrow');
         if ($trajet->getTDepart() <$demain ) {
             $trajet->setEtat('bloqué');
+
+            $this->addFlash(
+                'succès',
+                'Votre trajet ne peut plus être modifié !'
+            );    
         }
         $maintenant = new DateTime();
         $hier = new DateTime('yesterday');
         if ($trajet->getTArrivee() <$maintenant  || $trajet->getTDepart() <$hier ) {
             $trajet->setEtat('terminé');
+            $this->addFlash(
+                'succès',
+                'Votre trajet est terminé !'
+            );    
         }
         
         $manager->persist($trajet);
@@ -132,18 +120,19 @@ class TrajetsController extends AbstractController
 
     
     #[Route('/{id}/edit', name: 'app_trajets_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Trajets $trajet, TrajetsRepository $trajetsRepository): Response
+    public function edit(Request $request, Trajets $trajet, TrajetsRepository $trajetsRepository, EntityManagerInterface $manager): Response
     {
         $form = $this->createForm(TrajetsType::class, $trajet);
         $form->handleRequest($request);
-
+        $trajet = $form->getData();
+        
         $demain = new DateTime('tomorrow');
         if ($trajet->getTDepart() <$demain ) {
             $this->addFlash(
                 'warning',
                 'Vous ne pouvez plus modifier ce trajet.'
             );
-
+            
             return $this->redirectToRoute('app_trajets_index');
         }
 
@@ -151,7 +140,10 @@ class TrajetsController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $trajetsRepository->save($trajet, true);
+            
+            $manager->persist($trajet);
 
+            $manager->flush();
             return $this->redirectToRoute('app_trajets_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -179,6 +171,7 @@ class TrajetsController extends AbstractController
         
         if ($this->isCsrfTokenValid('delete'.$trajet->getId(), $request->request->get('_token'))) {
             $trajet->setEtat('annulé');
+            // si on l'enlève carrément:
             $trajetsRepository->remove($trajet, true);
         }
         $manager->persist($trajet);
