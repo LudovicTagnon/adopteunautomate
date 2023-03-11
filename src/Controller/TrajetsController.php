@@ -65,23 +65,23 @@ class TrajetsController extends AbstractController
             $trajet->setArriveA($villeArrivee);
             $trajet->setDemarreA($villeDepart);
 
-            //Si elles existent, on ne les créer pas mais on récupère l'id de celle déjà existante
-            //Sinon je la crée
-            /*if (!$villeDepart) {
-                $villeDepart = new Villes();
-                $villeDepart->setNomVille($form->get('demarrea')->getData());
-                $manager->persist($villeDepart);
-                $manager->flush();
-            }
-        
-            if (!$villeArrivee) {
-                $villeArrivee = new Villes();
-                $villeArrivee->setNomVille($form->get('arrivea')->getData());
-                $manager->persist($villeArrivee);
-                $manager->flush();
-            }*/
 
-            // champs remplis d'office:
+            // Check if there is already a trip on the same day
+            $dateDepart = $trajet->getTDepart();
+            $existingTrips = $manager->getRepository(Trajets::class)->findBy([
+                'publie' => $user,
+                'T_depart' => $dateDepart
+            ]);
+            if (count($existingTrips) > 0) {
+                $this->addFlash(
+                    'error',
+                    'Vous avez déjà créé un trajet pour cette date. Veuillez choisir une autre date.'
+                );
+                return $this->redirectToRoute('app_trajets_new');
+            }
+
+
+
             $trajet->setPublie($this->getUser());
             $trajet->setEtat('ouvert');
 
