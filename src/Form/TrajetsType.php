@@ -25,18 +25,23 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeImmutableType;
 use Symfony\Component\Form\FormTypeInterface;
+use App\Repository\GroupesRepository;
 
 // ajout en ligne de commande: composer require doctrine/doctrine-bundle
 
 class TrajetsType extends AbstractType
 {
     private UtilisateursRepository $utilisateursRepository;
+    private GroupesRepository $groupesRepository;
     private $security;
 
-    public function __construct(UtilisateursRepository $utilisateursRepository, Security $security)
+    public function __construct(UtilisateursRepository $utilisateursRepository, GroupesRepository $groupesRepository, Security $security)
     {
         //$this->utilisateursRepository = $utilisateursRepository;
        // $this->security = $security;
+       $this->utilisateursRepository = $utilisateursRepository;
+       $this->groupesRepository = $groupesRepository;
+       $this->security = $security;
     }
 
     
@@ -46,6 +51,7 @@ class TrajetsType extends AbstractType
         $tomorrow = new \DateTime('tomorrow');
         $demain = new \DateTime('+24 hours');
         $user = new Utilisateurs();
+        $userConnected = $this->security->getUser();
 
         $builder
             //->add('etat')
@@ -124,6 +130,17 @@ class TrajetsType extends AbstractType
                 'multiple' => false,
                 'label' => 'Trajet public ou privé :   '
             ])
+            ->add('groupes', EntityType::class, [
+                'class' => Groupes::class,
+                'choices' => $this->groupesRepository->findBy(['createur' => $userConnected]),
+                'choice_label' => 'nom_groupe',
+                'multiple' => true,
+                'expanded' => true,
+                'required' => false,
+                'label' => 'Groupes',
+                'mapped' => false, // add this line
+            ])
+            
             //a ajouter la selection des groupes
             
             ->add('renseignement', TextareaType::class, [

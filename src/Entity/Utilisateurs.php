@@ -70,8 +70,8 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: "boolean")]
     private ?bool $compte_actif = true;
 
-    #[ORM\OneToMany(mappedBy: 'utilisateurs', targetEntity: Groupes::class, orphanRemoval: true)]
-    private $groupes;
+    #[ORM\OneToMany(mappedBy: 'createur', targetEntity: Groupes::class, orphanRemoval: true)]
+    public $groupes;
 
     #[ORM\OneToMany(mappedBy: 'publie', targetEntity: Trajets::class)]
     private Collection $trajets;
@@ -336,6 +336,12 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+        public function getGroupes(): Collection
+    {
+        return $this->groupes;
+    }
+
 
 
 }
