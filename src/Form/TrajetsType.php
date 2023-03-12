@@ -137,8 +137,9 @@ class TrajetsType extends AbstractType
                 'multiple' => true,
                 'expanded' => true,
                 'required' => false,
-                'label' => 'Groupes',
+                'label' => 'Groupes à inviter',
                 'mapped' => false, // add this line
+
             ])
             
             //a ajouter la selection des groupes
