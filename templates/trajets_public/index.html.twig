@@ -21,7 +21,9 @@
                     <tr>
                         <td>{{ trajet.getPublie().getNom()}} {{ trajet.getPublie().getPrenom() }}</td>
                         <td>{{ trajet.demarrea.getnomVille() }} - {{ trajet.getJourDepartString() }} {{ trajet.getHeureDepartString() }}</td>
+                        {% if trajet.getTArrivee() != null%}
                         <td>{{ trajet.arrivea.getnomVille() }} - {{ trajet.getJourArriveeString() }} {{ trajet.getHeureArriveeString() }}</td>
+                        {% endif%}
                         <td>{{ trajet.prix }} €</td>
                         <td>{{ trajet.getNbPassagerCourant() }}/{{ trajet.getNbPassagerMax() }}</td>
                         <td>

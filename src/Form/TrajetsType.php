@@ -69,8 +69,6 @@ class TrajetsType extends AbstractType
                 'widget' => 'single_text',
                 'required'   => false,
                 'label' => 'Jour et heure d\'arrivée    :',
-                'data' => new \DateTime(),
-                'empty_data' => (new \DateTime())->format('Y-m-d H:i:s')
             ]) 
             ->add('demarrea', EntityType::class, [
                 'class' => Villes::class,
