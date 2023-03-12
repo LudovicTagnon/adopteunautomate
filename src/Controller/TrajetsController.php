@@ -15,6 +15,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Form\FormError;
+
 
 #[Route('/trajets')]
 class TrajetsController extends AbstractController
@@ -56,6 +58,28 @@ class TrajetsController extends AbstractController
             $villeArrivee = $manager->getRepository(Villes::class)->find(['id' => $form->getData()->getArriveA()]);
             $trajet->setArriveA($villeArrivee);
             $trajet->setDemarreA($villeDepart);
+            $public = $form->get('public')->getData();
+            if ($trajet->getPublic() === false && $form->get('groupes')->getData()->isEmpty()) {
+                $form->get('groupes')->addError(new FormError('Please select at least one group.'));
+                $this->addFlash(
+                    'warning',
+                    'Vous devez sélectionner au moins 1 groupe !'
+                );
+                return $this->render('trajets/new.html.twig', [
+                    'form' => $form->createView(),
+                    'trajet' => $trajet,
+                    'user' => $user,
+                ]);
+            }
+            if (!$public) {
+                // Get the selected groups
+                $groupes = $form->get('groupes')->getData();
+                if (!empty($groupes)) {
+                    foreach ($groupes as $groupe) {
+                        $trajet->addGroupe($groupe);
+                    }
+                }
+            }
 
             // champs remplis d'office:
             $trajet->setPublie($this->getUser());

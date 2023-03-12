@@ -27,6 +27,12 @@ use Symfony\Component\Form\Extension\Core\Type\DateTimeImmutableType;
 use Symfony\Component\Form\FormTypeInterface;
 use App\Repository\GroupesRepository;
 
+
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormErrorIterator;
+use Symfony\Component\Validator\Constraints\NotBlank;
+
 // ajout en ligne de commande: composer require doctrine/doctrine-bundle
 
 class TrajetsType extends AbstractType
@@ -62,7 +68,9 @@ class TrajetsType extends AbstractType
             ->add('T_arrivee', DateTimeType::class, [
                 'widget' => 'single_text',
                 'required'   => false,
-                'label' => 'Jour et heure d\'arrivée    :      '
+                'label' => 'Jour et heure d\'arrivée    :',
+                'data' => new \DateTime(),
+                'empty_data' => (new \DateTime())->format('Y-m-d H:i:s')
             ]) 
             ->add('demarrea', EntityType::class, [
                 'class' => Villes::class,
@@ -123,9 +131,10 @@ class TrajetsType extends AbstractType
 
             ->add('public', ChoiceType::class, [
                 'choices' => [
-                    'Public ' => true,
+                    ' Public ' => true,
                     ' Privé' => false,
                 ],
+                'required' => true,
                 'expanded' => true,
                 'multiple' => false,
                 'label' => 'Trajet public ou privé :   '

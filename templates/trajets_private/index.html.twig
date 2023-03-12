@@ -2,38 +2,42 @@
 
 {% block body %}
     <h1>Liste des trajets privés</h1>
-
-     {% if trajets|length == 0 %}
-        <p>Aucun trajet privé, revenez plus tard !</p>
-    {% else %}
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>Créateur</th>
-                    <th>Départ</th>
-                    <th>Arrivée</th>
-                    <th>Prix</th>
-                    <th>Nombre de passagers</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for trajet in trajets %}
-                {% if trajet.publie.id != user.id%}
+        {% if trajets|length == 0 or not estDedans%}
+            <p>Aucun trajet privé, revenez plus tard !</p>
+        {% else %}
+            <table class="table table-hover">
+                <thead>
                     <tr>
-                        <td>{{ trajet.getPublie().getNom()}} {{ trajet.getPublie().getPrenom() }}</td>
-                        <td>{{ trajet.demarrea.getnomVille() }} - {{ trajet.getJourDepartString() }} {{ trajet.getHeureDepartString() }}</td>
-                        <td>{{ trajet.arrivea.getnomVille() }} - {{ trajet.getJourArriveeString() }} {{ trajet.getHeureArriveeString() }}</td>
-                        <td>{{ trajet.prix }} €</td>
-                        <td>{{ trajet.getNbPassagerCourant() }}/{{ trajet.getNbPassagerMax() }}</td>
-                        <td>
-                            {% if not is_granted('ROLE_ADMIN') %}
-                                <a href="#" class="btn btn-success">Demande de participation</a>
-                            {% endif %}
-                        </td>
+                        <th>Créateur</th>
+                        <th>Départ</th>
+                        <th>Arrivée</th>
+                        <th>Prix</th>
+                        <th>Nombre de passagers</th>
                     </tr>
-                {% endif %}
-                {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {% for trajet in trajets %}
+                        {% if trajet.publie.id != user.id%}
+                            {% for groupe in groupes %}
+                                {% if groupe.estDansGroupes(user.getId()) %}
+                                    <tr>
+                                        <td>{{ trajet.getPublie().getNom()}} {{ trajet.getPublie().getPrenom() }}</td>
+                                        <td>{{ trajet.demarrea.getnomVille() }} - {{ trajet.getJourDepartString() }} {{ trajet.getHeureDepartString() }}</td>
+                                        
+                                        <td>{{ trajet.arrivea.getnomVille() }} - {{ trajet.getJourArriveeString() }} {{ trajet.getHeureArriveeString() }}</td>
+                                        <td>{{ trajet.prix }} €</td>
+                                        <td>{{ trajet.getNbPassagerCourant() }}/{{ trajet.getNbPassagerMax() }}</td>
+                                        <td>
+                                            {% if not is_granted('ROLE_ADMIN') %}
+                                                <a href="#" class="btn btn-success">Demande de participation</a>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
     {% endif %}
 {% endblock %}
