@@ -78,10 +78,14 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Notification::class)]
     private Collection $notifications;
 
+    #[ORM\OneToMany(targetEntity:"App\Entity\Adopte", mappedBy:"utilisateur")]
+    private $adoptions;
+
     public function __construct()
     {
         $this->notifications = new ArrayCollection();
         $this->trajets = new ArrayCollection();
+        $this->adoptions = new ArrayCollection();
     }
 
     public function getId(): ?int

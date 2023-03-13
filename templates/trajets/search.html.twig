@@ -3,15 +3,6 @@
 {% block title %}Rechercher un trajet{% endblock %}
 
 {% block body %}
-<!-- jQuery library -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<!-- jQuery UI library -->
-<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
-
-<!-- jQuery UI CSS -->
-<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/smoothness/jquery-ui.css">
-
 
     <!-- bootstrap-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
@@ -82,7 +73,7 @@
                 </div>
                 <div class="col">
                     <div class="row"> 
-                        {% if date is null or date|date('Y-m-d') == "now"|date('Y-m-d') %}
+                        {% if date is null or date|date('d-m-Y') == "now"|date('d-m-Y') %}
                             <h3 class="my-0 font-weight-normal">Aujourd'hui</h3>
                         {% else %}
                             <h3 class="my-0 font-weight-normal">{{date}}</h3>

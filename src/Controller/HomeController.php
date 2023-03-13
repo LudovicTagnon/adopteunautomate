@@ -26,7 +26,8 @@ class HomeController extends AbstractController
 
             $trajets = $manager->getRepository(Trajets::class)->findByCritere($villeDepart, $villeArrivee, $jourDepart);
 
-            $dateDepart = \DateTime::createFromFormat('Y-m-d', $jourDepart);
+            $dateA = \DateTime::createFromFormat('Y-m-d', $jourDepart);
+            $dateDepart = $dateA->format('d-m-Y');
 
             return $this->render('trajets/search.html.twig', [
                 'trajets' => $trajets,
