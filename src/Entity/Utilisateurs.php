@@ -340,4 +340,32 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getAdoptions(): Collection
+    {
+        return $this->adoptions;
+    }
+
+    public function addAdoption(Adopte $adoption): self
+    {
+        if (!$this->adoptions->contains($adoption)) {
+            $this->adoptions[] = $adoption;
+            $adoption->setUtilisateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAdoption(Adopte $adoption): self
+    {
+        if ($this->adoptions->contains($adoption)) {
+            $this->adoptions->removeElement($adoption);
+            // set the owning side to null (unless already changed)
+            if ($adoption->getUtilisateur() === $this) {
+                $adoption->setUtilisateur(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

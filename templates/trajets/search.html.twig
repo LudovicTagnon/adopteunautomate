@@ -153,7 +153,18 @@
                                                             </div>
                                                             </br>
                                                         </div>
-                                                        <button type="button" class="btn btn-lg btn-block btn-primary">Adopter ce trajet</button>
+                                                        {% dump(utilisateur_actuel.getAdoptions()) %}
+                                                        {% set trajet_deja_adopte = false %}
+                                                        {% for adoption in utilisateur_actuel.getAdoptions() %}
+                                                            {% if adoption.trajet.id == trajet.id %}
+                                                                {% set trajet_deja_adopte = true %}
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                        {% if trajet_deja_adopte == false %}
+                                                            <button type="button" class="btn btn-lg btn-block btn-primary" onclick="adopterTrajet({{ utilisateur_actuel.id }}, {{ trajet.id }})">Adopter ce trajet</button>
+                                                        {% else %}
+                                                            <button type="button" class="btn btn-lg btn-block btn-primary" onclick="lacherTrajet({{ utilisateur_actuel.id }}, {{ trajet.id }})">Abandonner ce trajet</button>
+                                                        {% endif %}
                                                     </div> 
                                                 </div>
                                             </div>
@@ -169,6 +180,7 @@
         </div>
     </div>
 
+    <!-- Système de tri -->
     <script>
         // Sélection des éléments du DOM
         const liste_trajets = document.getElementById('liste_trajets');
@@ -206,6 +218,22 @@
                     liste_trajets.appendChild(trajet);
                 }
             });
+        }
+    </script>
+
+    <!-- Inscription/désinscription d'un trajet -->
+    <script>
+        function adopterTrajet(utilisateurId, trajetId) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '{{ path('app_trajet.adopter_trajet', { trajetId: '__trajetId__' , utilisateurId: '__utilisateurId__' }) }}'.replace('__utilisateurId__', utilisateurId).replace('__trajetId__', trajetId), true);
+            xhr.send();
+            location.reload();
+        }
+        function lacherTrajet(utilisateurId, trajetId) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '{{ path('app_trajet.laisser_trajet', { trajetId: '__trajetId__' , utilisateurId: '__utilisateurId__' }) }}'.replace('__utilisateurId__', utilisateurId).replace('__trajetId__', trajetId), true);
+            xhr.send();
+            location.reload();
         }
     </script>
 

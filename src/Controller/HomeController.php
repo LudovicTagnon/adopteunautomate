@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -26,8 +27,15 @@ class HomeController extends AbstractController
 
             $trajets = $manager->getRepository(Trajets::class)->findByCritere($villeDepart, $villeArrivee, $jourDepart);
 
-            $dateA = \DateTime::createFromFormat('Y-m-d', $jourDepart);
-            $dateDepart = $dateA->format('d-m-Y');
+            $dateA = DateTime::createFromFormat('Y-m-d', $jourDepart);
+
+            $dateDepart = null;
+
+            if ($dateA instanceof DateTime) {
+                $dateDepart = $dateA->format('d-m-Y');
+            } else {
+                // handle the case where the date string is invalid
+            }
 
             return $this->render('trajets/search.html.twig', [
                 'trajets' => $trajets,

@@ -5,7 +5,7 @@ use App\Entity\Trajets;
 use App\Entity\Utilisateurs;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: Adopte::class)]
 #[ORM\Table(name:"adopte")]
 #[ORM\UniqueConstraint(name: "utilisateur_trajet_unique", columns: ["utilisateur_id", "trajet_id"])]
 class Adopte
@@ -28,7 +28,7 @@ class Adopte
         return $this->utilisateur;
     }
 
-    public function setUtilisateur(?Utilisateurs $utilisateur): self
+    public function setUtilisateur(Utilisateurs $utilisateur): self
     {
         $this->utilisateur = $utilisateur;
 
@@ -40,7 +40,7 @@ class Adopte
         return $this->trajet;
     }
 
-    public function setTrajet(?Trajets $trajet): self
+    public function setTrajet(Trajets $trajet): self
     {
         $this->trajet = $trajet;
 
