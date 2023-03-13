@@ -119,6 +119,7 @@
                         <ul id="liste_trajets">
                             {% for trajet in trajets %}
                                 {% if trajet.publie != utilisateur_actuel%}
+                                {% if trajet.public %}
                                     {% if trajet.getNbPassagerMax() >  trajet.getNbPassagerCourant()%}
                                         <li style="list-style-type:none">
                                             <div class="row">
