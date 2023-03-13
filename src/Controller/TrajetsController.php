@@ -68,6 +68,7 @@ class TrajetsController extends AbstractController
 
             // Check if there is already a trip on the same day
             $dateDepart = $trajet->getTDepart();
+            $dateArrivee= $trajet->getTArrivee();
             $existingTrips = $manager->getRepository(Trajets::class)->findBy([
                 'publie' => $user,
                 'T_depart' => $dateDepart
