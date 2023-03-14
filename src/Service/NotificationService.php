@@ -31,7 +31,11 @@ class NotificationService
             $email = (new Email())
             ->from('adopteautomate-noreply@example.com')
             ->to($user->getEmail())
+<<<<<<< HEAD
             ->subject('Notification - Modification du profil')
+=======
+            ->subject('Notification')
+>>>>>>> creationtrajetprive
             ->text($message);
 
             $this->mailer->send($email);
