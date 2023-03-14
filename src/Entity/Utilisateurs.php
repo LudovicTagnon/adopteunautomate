@@ -79,10 +79,14 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Notification::class)]
     private Collection $notifications;
 
+    #[ORM\OneToMany(targetEntity:"App\Entity\Adopte", mappedBy:"utilisateur")]
+    private $adoptions;
+
     public function __construct()
     {
         $this->notifications = new ArrayCollection();
         $this->trajets = new ArrayCollection();
+        $this->adoptions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -331,6 +335,34 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($trajet->getPublie() === $this) {
                 $trajet->setPublie(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getAdoptions(): Collection
+    {
+        return $this->adoptions;
+    }
+
+    public function addAdoption(Adopte $adoption): self
+    {
+        if (!$this->adoptions->contains($adoption)) {
+            $this->adoptions[] = $adoption;
+            $adoption->setUtilisateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAdoption(Adopte $adoption): self
+    {
+        if ($this->adoptions->contains($adoption)) {
+            $this->adoptions->removeElement($adoption);
+            // set the owning side to null (unless already changed)
+            if ($adoption->getUtilisateur() === $this) {
+                $adoption->setUtilisateur(null);
             }
         }
 

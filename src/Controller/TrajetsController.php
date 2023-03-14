@@ -2,11 +2,13 @@
 
 namespace App\Controller;
 
+use DateTime;
 use Symfony\Component\VarDumper\VarDumper;
 use App\Entity\Trajets;
 use App\Entity\Villes;
 use App\Form\TrajetsType;
 use App\Entity\Utilisateurs;
+use App\Form\TrajetsType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use App\Repository\TrajetsRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -134,30 +136,44 @@ class TrajetsController extends AbstractController
         return $this->redirectToRoute('app_trajets_index', [], Response::HTTP_SEE_OTHER);
     }
 
-   /* #[Route('/rechercher-trajet', name: 'app_trajets_search', methods: ['GET'])]
+   #[Route('/rechercher-trajet', name: 'app_trajets_search', methods: ['GET'])]
     public function search(Request $request, EntityManagerInterface $manager): Response
     {
         $current_user = $this->getUser();
 
-        $villes = $manager->getRepository(Villes::class)->findAll();
+        if ($current_user) {
+            $villes = $manager->getRepository(Villes::class)->findAll();
 
-        $villeDepart = $request->query->get('ville_depart');
-        $villeArrivee = $request->query->get('ville_arrivee');
-        $jourDepart = $request->query->get('date_depart');
+            $villeDepart = $request->query->get('ville_depart');
+            $villeArrivee = $request->query->get('ville_arrivee');
+            $jourDepart = $request->query->get('date_depart');
 
-        $trajets = $manager->getRepository(Trajets::class)->findByCritere($villeDepart, $villeArrivee, $jourDepart);
+            $trajets = $manager->getRepository(Trajets::class)->findByCritere($current_user, $villeDepart, $villeArrivee,  $jourDepart);
 
-        $dateDepart = \DateTime::createFromFormat('Y-m-d', $jourDepart);
+            $dateA = DateTime::createFromFormat('Y-m-d', $jourDepart);
 
-        return $this->render('trajets/search.html.twig', [
-            'trajets' => $trajets,
-            'nb_trajets' => count($trajets),
-            'villes' => $villes,
-            'depart' => $villeDepart,
-            'arrivee' => $villeArrivee,
-            'date' => $dateDepart,
-            'utilisateur_actuel' => $current_user,
-        ]);
-    }*/
+            $dateDepart = null;
+
+            if ($dateA instanceof DateTime) {
+                $dateDepart = $dateA->format('d-m-Y');
+            } else {
+                // handle the case where the date string is invalid
+            }
+
+            return $this->render('trajets/search.html.twig', [
+                'trajets' => $trajets,
+                'nb_trajets' => count($trajets),
+                'villes' => $villes,
+                'depart' => $villeDepart,
+                'arrivee' => $villeArrivee,
+                'date' => $dateDepart,
+                'utilisateur_actuel' => $current_user,
+            ]);
+        } else {
+            return $this->render('home/index.html.twig', [
+                'controller_name' => 'HomeController',
+            ]);
+        }
+    }
     
 }

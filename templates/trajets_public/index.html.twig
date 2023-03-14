@@ -28,7 +28,7 @@
                         <td>{{ trajet.getNbPassagerCourant() }}/{{ trajet.getNbPassagerMax() }}</td>
                         <td>
                             {% if not is_granted('ROLE_ADMIN') %}
-                                <a href="#" class="btn btn-success">Demande de participation</a>
+                                <a href="{{ path('app_trajet.adopter_trajet', {'trajetId': trajet.id, 'utilisateurId': user.id}) }}" class="btn btn-success">Demande de participation</a>
                             {% endif %}
                         </td>
                     </tr>
