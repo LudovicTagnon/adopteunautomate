@@ -6,6 +6,7 @@ use App\Entity\Trajets;
 use App\Entity\Villes;
 use App\Repository\VillesRepository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -18,9 +19,12 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class TrajetsRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private EntityManagerInterface $entityManager;
+
+    public function __construct(ManagerRegistry $registry,EntityManagerInterface $entityManager)
     {
         parent::__construct($registry, Trajets::class);
+        $this->entityManager = $entityManager;
     }
 
     public function save(Trajets $entity, bool $flush = false): void
@@ -43,9 +47,35 @@ class TrajetsRepository extends ServiceEntityRepository
     
     public function findByCritere($villeDepart, $villeArrivee, $jourDepart)
     {
-        $queryBuilder = $this->createQueryBuilder('t');
+        $queryBuilder = $this->entityManager->createQueryBuilder();
 
-        // Si la ville de départ est saisie
+        $villeDepartEntity = $this->getEntityManager()->getRepository(Villes::class)->findByVille($villeDepart);
+        $villeArriveeEntity = $this->getEntityManager()->getRepository(Villes::class)->findByVille($villeArrivee);
+
+        dump($villeDepartEntity);
+        dump($villeArriveeEntity);
+
+        $queryBuilder->select('t')
+            ->from(Trajets::class, 't')
+            ->where('t.T_depart >= :dateDepart')
+            ->setParameter('dateDepart', $jourDepart);
+
+        if (!is_null($villeDepartEntity)) {
+            $queryBuilder->andWhere('t.demarrea = :villeDepart');
+            $queryBuilder->setParameter('villeDepart', $villeDepartEntity->getId());
+        }
+
+        if (!is_null($villeArriveeEntity)) {
+            $queryBuilder->andWhere('t.arrivea = :villeArrivee');
+            $queryBuilder->setParameter('villeArrivee', $villeArriveeEntity->getId());
+        }
+
+        $query = $queryBuilder->getQuery();
+
+        return $query->getResult();
+
+
+        /*// Si la ville de départ est saisie
         if ($villeDepart) {
             $villeDepartEntity = $this->getEntityManager()->getRepository(Villes::class)->findOneBy(['nom_ville' => $villeDepart]);
             if ($villeDepartEntity) {
@@ -76,10 +106,6 @@ class TrajetsRepository extends ServiceEntityRepository
         // Vérifier que l'une des deux villes a été saisie
         if (!$villeDepart && !$villeArrivee) {
             return [];
-        }
-
-        $query = $queryBuilder->getQuery();
-
-        return $query->getResult();
+        }*/
     }
 }

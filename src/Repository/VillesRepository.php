@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Villes;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * @extends ServiceEntityRepository<Villes>
@@ -16,9 +17,12 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class VillesRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private EntityManagerInterface $entityManager;
+
+    public function __construct(ManagerRegistry $registry, EntityManagerInterface $entityManager)
     {
         parent::__construct($registry, Villes::class);
+        $this->entityManager = $entityManager;
     }
 
     public function save(Villes $entity, bool $flush = false): void
@@ -51,39 +55,24 @@ class VillesRepository extends ServiceEntityRepository
         return $cities;
     }
 
-    public function findByTerm(string $term): array
-{
-    return $this->createQueryBuilder('v')
-        ->andWhere('v.nom LIKE :term')
-        ->setParameter('term', '%'.$term.'%')
-        ->getQuery()
-        ->getResult();
-}
+    public function findByVille(string $ville): ?Villes
+    {
+        $queryBuilder = $this->entityManager->createQueryBuilder();
 
-//    /**
-//     * @return Villes[] Returns an array of Villes objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('v')
-//            ->andWhere('v.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('v.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+        $replacedName = str_replace(' ', '', $ville);
 
-//    public function findOneBySomeField($value): ?Villes
-//    {
-//        return $this->createQueryBuilder('v')
-//            ->andWhere('v.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        $queryBuilder->select('v')
+            ->from(Villes::class,'v')
+            ->andWhere('upper(v.nom_ville) LIKE :term')
+            ->setParameter('term', '%'.strtoupper($replacedName).'%')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+
+        $results = $queryBuilder->getQuery()->getResult();
+        dump($results);
+        return isset($results[0]) ? $results[0] : null;
+    }
 
 }
 
