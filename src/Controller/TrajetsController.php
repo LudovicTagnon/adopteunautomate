@@ -124,7 +124,7 @@ class TrajetsController extends AbstractController
             $villeArrivee = $request->query->get('ville_arrivee');
             $jourDepart = $request->query->get('date_depart');
 
-            $trajets = $manager->getRepository(Trajets::class)->findByCritere($villeDepart, $villeArrivee, $jourDepart);
+            $trajets = $manager->getRepository(Trajets::class)->findByCritere($current_user, $villeDepart, $villeArrivee,  $jourDepart);
 
             $dateA = DateTime::createFromFormat('Y-m-d', $jourDepart);
 

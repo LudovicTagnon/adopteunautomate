@@ -45,7 +45,7 @@ class TrajetsRepository extends ServiceEntityRepository
         }
     }
     
-    public function findByCritere($villeDepart, $villeArrivee, $jourDepart)
+    public function findByCritere($user, $villeDepart, $villeArrivee, $jourDepart)
     {
         $queryBuilder = $this->entityManager->createQueryBuilder();
 
@@ -57,7 +57,9 @@ class TrajetsRepository extends ServiceEntityRepository
 
         $queryBuilder->select('t')
             ->from(Trajets::class, 't')
-            ->where('t.T_depart >= :dateDepart')
+            ->where('t.publie != :user')
+            ->setParameter('user',$user)
+            ->andWhere('t.T_depart >= :dateDepart')
             ->setParameter('dateDepart', $jourDepart);
 
         if (!is_null($villeDepartEntity)) {
@@ -73,39 +75,5 @@ class TrajetsRepository extends ServiceEntityRepository
         $query = $queryBuilder->getQuery();
 
         return $query->getResult();
-
-
-        /*// Si la ville de départ est saisie
-        if ($villeDepart) {
-            $villeDepartEntity = $this->getEntityManager()->getRepository(Villes::class)->findOneBy(['nom_ville' => $villeDepart]);
-            if ($villeDepartEntity) {
-                $queryBuilder->andWhere('t.demarrea = :villeDepart')
-                    ->setParameter('villeDepart', $villeDepartEntity->getId());
-            }
-        }
-
-        // Si la ville d'arrivée est saisie
-        if ($villeArrivee) {
-            $villeArriveeEntity = $this->getEntityManager()->getRepository(Villes::class)->findOneBy(['nom_ville' => $villeArrivee]);
-            if ($villeArriveeEntity) {
-                $queryBuilder->andWhere('t.arrivea = :villeArrivee')
-                    ->setParameter('villeArrivee', $villeArriveeEntity->getId());
-            }
-        }
-
-        // Si la date est saisie
-        if ($jourDepart) {
-            $queryBuilder->andWhere('t.T_depart >= :jourDepart')
-                ->setParameter('jourDepart', $jourDepart);
-        } else {
-            // Sinon, la date par défaut est aujourd'hui
-            $queryBuilder->andWhere('t.T_depart >= :today')
-                ->setParameter('today', new \DateTime('today'));
-        }
-
-        // Vérifier que l'une des deux villes a été saisie
-        if (!$villeDepart && !$villeArrivee) {
-            return [];
-        }*/
     }
 }

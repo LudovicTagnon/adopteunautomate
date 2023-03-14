@@ -50,7 +50,7 @@ class VillesRepository extends ServiceEntityRepository
 
         $cities = [];
         foreach($savedCity as $cityItem){
-            $cities[] = $cityItem->getNom_Ville();
+            $cities[] = $cityItem->getNomVille();
         }
         return $cities;
     }
