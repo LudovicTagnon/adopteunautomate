@@ -122,6 +122,17 @@ class TrajetsController extends AbstractController
     #[Route('/{id}/edit', name: 'app_trajets_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Trajets $trajet, TrajetsRepository $trajetsRepository, EntityManagerInterface $manager): Response
     {
+        $demain = new DateTime('tomorrow');
+        if ($trajet->getTDepart() <$demain ) {
+            $this->addFlash(
+                'warning',
+                'Vous ne pouvez plus modifier ce trajet.'
+            );
+            
+            return $this->redirectToRoute('app_trajets_index');
+        }
+
+        
         $form = $this->createForm(TrajetsType::class, $trajet);
         $form->handleRequest($request);
         $trajet = $form->getData();
