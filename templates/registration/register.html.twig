@@ -46,6 +46,7 @@
                         }) }}
                     </div>
                     {{ form_row(registrationForm.imageFile, { 'attr': {'class': 'form-control mb-3'}, 'label': 'Photo de profil (optionnel)' }) }}
+                    <small class="form-text text-muted">Seuls les fichiers PNG ou JPG sont acceptés.</small>
                     <div class="form-group form-check">
                         {{ form_widget(registrationForm.agreeTerms, {
                             'label': 'Accpeter les conditions d\'utilisations'|trans,

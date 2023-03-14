@@ -16,8 +16,11 @@
                     </tr>
                 </thead>
                 <tbody>
+                {% if groupes == null %}
+                    <p> Aucun trajets privé revenez plus tard ! </p>
+                {% else %}
                     {% for trajet in trajets %}
-                        {% if trajet.publie.id != user.id%}
+                        {% if trajet.publie.id != user.id %}
                             {% for groupe in groupes %}
                                 {% if groupe.estDansGroupes(user.getId()) %}
                                     <tr>
@@ -42,5 +45,6 @@
                     {% endfor %}
                 </tbody>
             </table>
+    {% endif %}
     {% endif %}
 {% endblock %}

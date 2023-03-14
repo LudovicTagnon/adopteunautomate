@@ -27,26 +27,37 @@ class TrajetsPrivateController extends AbstractController
     {
         $user = $this->getUser(); //on récupère l'utilisateur connecté
         $trajetsRepository = $this->entityManager->getRepository(Trajets::class);
+        $groupesRepository = $this->entityManager->getRepository(Groupes::class);
+        $lesgroupes = $groupesRepository->findAll();
         $trajets = $trajetsRepository->findBy(['public' => false]); //on récupère les trajets privés
         $groupesUser = $user->getGroupes();
-        foreach ($trajets as $trajet) {
-            $groupes = $trajet->getGroupes();
+        if (count($lesgroupes) == 0) {
+            return $this->render('trajets_private/index.html.twig', [
+                'trajets' => $trajets,
+                'user' => $user,
+                'groupes' => null,
+            ]);
         }
-        $estDans = array();
-        $estDedans = false;
-        foreach ($groupes as $groupe) {
-            if ($groupe->estDansGroupes($user->getId())) {
-                $estDedans = true;
+        else{
+            foreach ($trajets as $trajet) {
+                $groupes = $trajet->getGroupes();
             }
-            $estDans[] = $groupe->getUtilisateurs();
+            $estDans = array();
+            $estDedans = false;
+            foreach ($groupes as $groupe) {
+                if ($groupe->estDansGroupes($user->getId())) {
+                    $estDedans = true;
+                }
+                $estDans[] = $groupe->getUtilisateurs();
+            }
+            return $this->render('trajets_private/index.html.twig', [
+                'trajets' => $trajets,
+                'user' => $user,
+                'estDans' => $estDans,
+                'groupes' => $groupes,
+                'estDedans' => $estDedans,
+                'groupesUser' => $groupesUser,
+            ]);
         }
-        return $this->render('trajets_private/index.html.twig', [
-            'trajets' => $trajets,
-            'user' => $user,
-            'estDans' => $estDans,
-            'groupes' => $groupes,
-            'estDedans' => $estDedans,
-            'groupesUser' => $groupesUser,
-        ]);
     }
 }

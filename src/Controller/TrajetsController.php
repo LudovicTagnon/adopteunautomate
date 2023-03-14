@@ -60,7 +60,7 @@ class TrajetsController extends AbstractController
             $trajet->setDemarreA($villeDepart);
             $public = $form->get('public')->getData();
             if ($trajet->getPublic() === false && $form->get('groupes')->getData()->isEmpty()) {
-                $form->get('groupes')->addError(new FormError('Please select at least one group.'));
+                $form->get('groupes')->addError(new FormError('Veuillez choisir au moins un groupe pour un trajet privé'));
                 $this->addFlash(
                     'warning',
                     'Vous devez sélectionner au moins 1 groupe !'

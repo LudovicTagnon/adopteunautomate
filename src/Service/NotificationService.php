@@ -21,7 +21,7 @@ class NotificationService
         $this->mailer = $mailer;
     }
 
-    public function addNotification($message, $user)
+    public function addNotificationModifProfil($message, $user)
     {
         $notification = new Notification();
         $notification->setMessage($message);
@@ -31,7 +31,7 @@ class NotificationService
             $email = (new Email())
             ->from('adopteautomate-noreply@example.com')
             ->to($user->getEmail())
-            ->subject('Notification')
+            ->subject('Notification - Modification du profil')
             ->text($message);
 
             $this->mailer->send($email);
