@@ -29,7 +29,7 @@ class NotificationService
         $notification->setCreatedAt(new \DateTime());
         if ($user->getAutorisationMail()) {
             $email = (new Email())
-            ->from('hello@example.com')
+            ->from('adopteautomate-noreply@example.com')
             ->to($user->getEmail())
             ->subject('Notification')
             ->text($message);
