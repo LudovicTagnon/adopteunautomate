@@ -61,16 +61,20 @@ class VillesRepository extends ServiceEntityRepository
 
         $replacedName = str_replace(' ', '', $ville);
 
-        $queryBuilder->select('v')
-            ->from(Villes::class,'v')
-            ->andWhere('upper(v.nom_ville) LIKE :term')
-            ->setParameter('term', '%'.strtoupper($replacedName).'%')
-            ->setMaxResults(1)
-            ->getQuery()
-            ->getResult();
+        dump($ville);
+        if(strcmp($ville,"")!=0){
+            $queryBuilder->select('v')
+                ->from(Villes::class,'v')
+                ->andWhere('upper(v.nom_ville) LIKE :term')
+                ->setParameter('term', '%'.strtoupper($replacedName).'%')
+                ->setMaxResults(1)
+                ->getQuery()
+                ->getResult();
 
-        $results = $queryBuilder->getQuery()->getResult();
-        dump($results);
+            $results = $queryBuilder->getQuery()->getResult();
+            dump($results);
+        }
+        
         return isset($results[0]) ? $results[0] : null;
     }
 
