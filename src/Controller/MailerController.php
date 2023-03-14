@@ -16,7 +16,7 @@ class MailerController extends AbstractController
     {
         $email = (new Email())
         ->from('hello@example.com')
-        ->to('you@example.com')
+        ->to('alexmendes74@gmail.com')
         //->cc('cc@example.com')
         //->bcc('bcc@example.com')
         //->replyTo('fabien@example.com')
@@ -24,7 +24,7 @@ class MailerController extends AbstractController
         ->subject('Time for Symfony Mailer!')
         ->text('Sending emails is fun again!')
         ->html('<p>See Twig integration for better HTML integration!</p>');
-    $mailer->send($email);
-    return new Response('Email sent!');
+        $mailer->send($email);
+        return new Response("Mail envoyé test !");
     }
 }

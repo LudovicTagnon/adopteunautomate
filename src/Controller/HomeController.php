@@ -10,13 +10,14 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Villes;
 use App\Entity\Trajets;
 
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(Request $request, EntityManagerInterface $manager): Response
+    public function index(Request $request, EntityManagerInterface $manager,MailerInterface $mailer): Response
     {
         $current_user = $this->getUser();
-
         if ($current_user) {
             $villes = $manager->getRepository(Villes::class)->findAll();
 
