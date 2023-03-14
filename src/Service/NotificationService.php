@@ -60,6 +60,26 @@ class NotificationService
         $this->entityManager->flush();
     }
 
+    public function addNotificationAbandonneTrajet($message, $user)
+    {
+        $notification = new Notification();
+        $notification->setMessage($message);
+        $notification->setUser($user);
+        $notification->setCreatedAt(new \DateTime());
+        if ($user->getAutorisationMail()) {
+            $email = (new Email())
+            ->from('adopteautomate-noreply@example.com')
+            ->to($user->getEmail())
+            ->subject('Notification - Trajet abandonné')
+            ->text($message);
+
+            $this->mailer->send($email);
+        }
+
+        $this->entityManager->persist($notification);
+        $this->entityManager->flush();
+    }
+
     public function getNotifications(Utilisateurs $user)
     {
         return $this->entityManager->getRepository(Notification::class)->findBy([
