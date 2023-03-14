@@ -11,12 +11,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\NotificationService;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 
 class AdopteController extends AbstractController
 {
     #[Route("/trajet/adopter/{trajetId}/{utilisateurId}", name:"app_trajet.adopter_trajet")]
-    public function adopterUnTrajet(EntityManagerInterface $manager, int $trajetId, int $utilisateurId,NotificationService $notificationService): Response
+    public function adopterUnTrajet(EntityManagerInterface $manager, int $trajetId, int $utilisateurId,NotificationService $notificationService,RequestStack $requestStack): Response
     {
         $trajet = $manager->getRepository(Trajets::class)->find($trajetId);
         $utilisateur = $manager->getRepository(Utilisateurs::class)->find($utilisateurId);
@@ -32,12 +33,15 @@ class AdopteController extends AbstractController
 
         $manager->persist($adopte);
         $manager->flush();
-
-        return new Response('L\'utilisateur ' . $utilisateur->getNom() . ' a adopté le trajet pour : ' . $trajet->getArriveA());//à revoir la redirection
+        $this->addFlash('success', "L'utilisateur ".$utilisateur->getNom(). " a adopté le trajet pour : ". $trajet->getArriveA());
+        // On redirige l'utilisateur à la page où il était
+        $previousUrl = $requestStack->getCurrentRequest()->headers->get('Referer');
+        return $this->redirect($previousUrl);
+        //return new Response('L\'utilisateur ' . $utilisateur->getNom() . ' a adopté le trajet pour : ' . $trajet->getArriveA());//à revoir la redirection
     }
 
     #[Route("/trajet/abandonner/{trajetId}/{utilisateurId}", name:"app_trajet.abandonner_trajet")]
-    public function abandonnerTrajet(AdopteRepository $adopteRepository, EntityManagerInterface $manager, int $trajetId, int $utilisateurId): Response
+    public function abandonnerTrajet(AdopteRepository $adopteRepository, EntityManagerInterface $manager, int $trajetId, int $utilisateurId,RequestStack $requestStack): Response
     {
         dump($trajetId);
         $adopte = $adopteRepository->findOneBy(['trajet' => $trajetId, 'utilisateur' => $utilisateurId]);
@@ -54,8 +58,10 @@ class AdopteController extends AbstractController
         } catch (\Exception $e) {
             throw new \Exception('Une erreur est survenue lors de la suppression de l\'adoption : '.$e->getMessage());
         }
-
-        return new Response('L\'utilisateur a abandonné le trajet.');
+        $this->addFlash('success', "L'utilisateur a abandonné le trajet.");
+        // On redirige l'utilisateur à la page où il était
+        $previousUrl = $requestStack->getCurrentRequest()->headers->get('Referer');
+        return $this->redirect($previousUrl);
     }
 }
 ?>

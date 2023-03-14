@@ -35,16 +35,25 @@
                                         <td>{{ trajet.getNbPassagerCourant() }}/{{ trajet.getNbPassagerMax() }}</td>
                                         <td>
                                             {% if not is_granted('ROLE_ADMIN') %}
-                                                <a href="#" class="btn btn-success">Demande de participation</a>
+                                                {% set trajet_deja_adopte = false %}
+                                                {% for adoption in user.getAdoptions() %}
+                                                    {% if adoption.trajet.id == trajet.id %}
+                                                        {% set trajet_deja_adopte = true %}
+                                                    {% endif %}
+                                                {% endfor %}
+                                                {% if trajet_deja_adopte == false %}
+                                                    <a href="{{ path('app_trajet.adopter_trajet', {'trajetId': trajet.id, 'utilisateurId': user.id}) }}" class="btn btn-success">Participer au trajet</a>                     
+                                                {% else %}
+                                                    <a href="{{ path('app_trajet.abandonner_trajet', {'trajetId': trajet.id, 'utilisateurId': user.id}) }}" class="btn btn-danger">Abandonner le trajet</a>                            {% endif %}
+                                                {% endif %}
                                             {% endif %}
                                         </td>
                                     </tr>
+                                {% endfor %}
                                 {% endif %}
-                            {% endfor %}
+                        {% endfor %}
                         {% endif %}
-                    {% endfor %}
+                {% endif %}
                 </tbody>
             </table>
-    {% endif %}
-    {% endif %}
 {% endblock %}
