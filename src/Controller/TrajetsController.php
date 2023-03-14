@@ -8,7 +8,6 @@ use App\Entity\Trajets;
 use App\Entity\Villes;
 use App\Form\TrajetsType;
 use App\Entity\Utilisateurs;
-use App\Form\TrajetsType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use App\Repository\TrajetsRepository;
 use Doctrine\ORM\EntityManagerInterface;

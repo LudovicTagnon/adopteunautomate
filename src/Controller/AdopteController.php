@@ -10,11 +10,13 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Service\NotificationService;
+
 
 class AdopteController extends AbstractController
 {
     #[Route("/trajet/adopter/{trajetId}/{utilisateurId}", name:"app_trajet.adopter_trajet")]
-    public function adopterUnTrajet(EntityManagerInterface $manager, int $trajetId, int $utilisateurId): Response
+    public function adopterUnTrajet(EntityManagerInterface $manager, int $trajetId, int $utilisateurId,NotificationService $notificationService): Response
     {
         $trajet = $manager->getRepository(Trajets::class)->find($trajetId);
         $utilisateur = $manager->getRepository(Utilisateurs::class)->find($utilisateurId);
@@ -22,6 +24,7 @@ class AdopteController extends AbstractController
         if (!$trajet || !$utilisateur) {
             throw $this->createNotFoundException('Trajet ou utilisateur introuvable.');
         }
+        $notificationService->addNotificationAdopteTrajet("Vous avez adopté un trajet !", $utilisateur);
 
         $adopte = new Adopte();
         $adopte->setTrajet($trajet);
@@ -30,7 +33,7 @@ class AdopteController extends AbstractController
         $manager->persist($adopte);
         $manager->flush();
 
-        return new Response('L\'utilisateur ' . $utilisateur->getNom() . ' a adopté le trajet pour : ' . $trajet->getArriveA());
+        return new Response('L\'utilisateur ' . $utilisateur->getNom() . ' a adopté le trajet pour : ' . $trajet->getArriveA());//à revoir la redirection
     }
 
     #[Route("/trajet/abandonner/{trajetId}/{utilisateurId}", name:"app_trajet.abandonner_trajet")]

@@ -40,6 +40,25 @@ class NotificationService
         $this->entityManager->persist($notification);
         $this->entityManager->flush();
     }
+    public function addNotificationAdopteTrajet($message, $user)
+    {
+        $notification = new Notification();
+        $notification->setMessage($message);
+        $notification->setUser($user);
+        $notification->setCreatedAt(new \DateTime());
+        if ($user->getAutorisationMail()) {
+            $email = (new Email())
+            ->from('adopteautomate-noreply@example.com')
+            ->to($user->getEmail())
+            ->subject('Notification - Trajet adopté')
+            ->text($message);
+
+            $this->mailer->send($email);
+        }
+
+        $this->entityManager->persist($notification);
+        $this->entityManager->flush();
+    }
 
     public function getNotifications(Utilisateurs $user)
     {
