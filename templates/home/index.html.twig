@@ -4,48 +4,97 @@
 
 {% block body %}
 <style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper { margin: 1em auto; max-width: 900px; width: 95%; font: 18px/1.5 sans-serif; }
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>
 
     {% if app.user%} <!--Page visible par une personne connecté -->
-        <!-- Formulaire de recherche -->
-        <div class="container justify-content-center">
-            <form method="get" action="{{path('app_trajets_search')}}">
-                <datalist id="villes">
-                    {% for ville in villes %}
-                        <option value="{{ville.getNomVille()}} " class="ville-option">{{ville.getNomVille()}} <span class="cp">- {{ville.getCP()}}</span></option>
-                    {% endfor %}
-                </datalist>
-                <div class="form-row align-items-center">
-                    <div class="col-sm-3 my-1">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <div class="input-group-text">De</div>
+        <div class = "container-fluid">
+            <div class="row justify-content-center">
+                <div class="col-md-3"> <!-- Volets de navigation -->
+                    Volets de navigation
+                </div>
+                <div class="col-md-9"> <!-- Affichage dashboard -->
+                    <div class="row justify-content-center">
+                        <!-- Formulaire de recherche -->
+                        <form method="get" action="{{path('app_trajets_search')}}">
+                            <datalist id="villes">
+                                {% for ville in villes %}
+                                    <option value="{{ville.getNomVille()}} " class="ville-option">{{ville.getNomVille()}} <span class="cp">- {{ville.getCP()}}</span></option>
+                                {% endfor %}
+                            </datalist>
+                            <div class="form-row align-items-center">
+                                <div class="col-sm-3 my-1">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">De</div>
+                                        </div>
+                                        <input type="text" class="form-control" name="ville_depart" placeholder="Ville de départ" required value="{{ app.request.query.get('ville_depart') }}" autocomplete="off" list="villes">
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 my-1">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">à</div>
+                                        </div>
+                                        <input type="text" class="form-control" name="ville_arrivee" placeholder="Ville d'arrivée" value="{{ app.request.query.get('ville_arrivee') }}" autocomplete="off" list="villes">
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 my-1">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">le</div>
+                                        </div>
+                                        <input type="date" class="form-control" id="date_depart" name="date_depart" min="{{ "now"|date("Y-m-d") }}" value="{{ app.request.query.get('date_depart') }}" required>
+                                    </div>
+                                </div>
+                                    <button class="btn btn-primary" type="submit">Rechercher</button>
+                                </div>
                             </div>
-                            <input type="text" class="form-control" name="ville_depart" placeholder="Ville de départ" required value="{{ app.request.query.get('ville_depart') }}" autocomplete="off" list="villes">
-                        </div>
-                    </div>
-                    <div class="col-sm-3 my-1">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <div class="input-group-text">à</div>
+                        </form>
+                        <!-- Notifications -->
+                        <div class="row justify-content-center">
+                            <div class="col-sm-8">
+                                <div class="card text-dark bg-light">
+                                    <div class="card-header bg-primary text-left text-white"><h4>Mes notifications :</h4></div>                           
+                                    <div class="card-body ">
+                                        <ul>
+                                            {% for notification in notifications %}
+                                                <div class="notifications {% if notification.isRead() %}read-notification{% endif %}">  
+                                                {% if notification.isRead() %}          
+                                                    <li>{{ notification.getMessage() }} (lue)</li>
+                                                {% else %}
+                                                    <li>{{ notification.getMessage() }}</li>
+                                                    <form action="{{ path('app_mark_notification_as_read', {'id': notification.getId()}) }}" method="post" style="display:inline;">
+                                                        <button type="submit" class="btn btn-primary">Marquer comme lu</button>
+                                                    </form>
+                                                {% endif %}
+                                                <a  href="{{ path('app_supprimer_notif', {'id': notification.getId()}) }}">
+                                                <button class="btn btn-danger" >Supprimer la notification</button> 
+                                                </a>
+                                            </div>
+                                            {% endfor %}
+                                        </ul>     
+                                    </div>
+                                </div>
                             </div>
-                            <input type="text" class="form-control" name="ville_arrivee" placeholder="Ville d'arrivée" value="{{ app.request.query.get('ville_arrivee') }}" autocomplete="off" list="villes">
                         </div>
-                    </div>
-                    <div class="col-sm-3 my-1">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <div class="input-group-text">le</div>
+                        <div class="row justify-content-center">
+                            <div class="col-sm-9">
+                                Level 1: .col-sm-9
+                                <div class="row">
+                                <div class="col-8 col-sm-6">
+                                    Level 2: .col-8 .col-sm-6
+                                </div>
+                                <div class="col-4 col-sm-6">
+                                    Level 2: .col-4 .col-sm-6
+                                </div>
+                                </div>
                             </div>
-                            <input type="date" class="form-control" id="date_depart" name="date_depart" min="{{ "now"|date("Y-m-d") }}" value="{{ app.request.query.get('date_depart') }}" required>
                         </div>
-                    </div>
-                        <button class="btn btn-primary" type="submit">Rechercher</button>
                     </div>
                 </div>
-            </form>
+            </div>
         </div>
     {% else %} <!--Page visible par une personne non connecté -->
         <div class="example-wrapper">
