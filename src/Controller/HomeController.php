@@ -18,7 +18,11 @@ class HomeController extends AbstractController
     public function index(Request $request, EntityManagerInterface $manager, NotificationService $notificationService): Response
     {
         $villes = $manager->getRepository(Villes::class)->findAll();
-        $notifications = $notificationService->getNotifications($this->getUser());
+        
+        $notifications = [];//null par défaut
+        if ($this->getUser() != null) {
+            $notifications = $notificationService->getNotifications($this->getUser());
+        }
 
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
