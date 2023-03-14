@@ -52,8 +52,8 @@ class TrajetsRepository extends ServiceEntityRepository
         $villeDepartEntity = $this->getEntityManager()->getRepository(Villes::class)->findByVille($villeDepart);
         $villeArriveeEntity = $this->getEntityManager()->getRepository(Villes::class)->findByVille($villeArrivee);
 
-        dump($villeDepartEntity);
-        dump($villeArriveeEntity);
+        //dump($villeDepartEntity);
+        //dump($villeArriveeEntity);
 
         $queryBuilder->select('t')
             ->from(Trajets::class, 't')

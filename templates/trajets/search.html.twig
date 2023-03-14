@@ -153,7 +153,6 @@
                                                             </div>
                                                             </br>
                                                         </div>
-                                                        {% dump(utilisateur_actuel.getAdoptions()) %}
                                                         {% set trajet_deja_adopte = false %}
                                                         {% for adoption in utilisateur_actuel.getAdoptions() %}
                                                             {% if adoption.trajet.id == trajet.id %}
@@ -163,7 +162,7 @@
                                                         {% if trajet_deja_adopte == false %}
                                                             <button type="button" class="btn btn-lg btn-block btn-primary" onclick="adopterTrajet({{ utilisateur_actuel.id }}, {{ trajet.id }})">Adopter ce trajet</button>
                                                         {% else %}
-                                                            <button type="button" class="btn btn-lg btn-block btn-primary" onclick="lacherTrajet({{ utilisateur_actuel.id }}, {{ trajet.id }})">Abandonner ce trajet</button>
+                                                            <button type="button" class="btn btn-lg btn-block btn-primary" onclick="abandonnerTrajet({{ utilisateur_actuel.id }}, {{ trajet.id }})">Abandonner ce trajet</button>
                                                         {% endif %}
                                                     </div> 
                                                 </div>
@@ -229,9 +228,10 @@
             xhr.send();
             location.reload();
         }
-        function lacherTrajet(utilisateurId, trajetId) {
+        function abandonnerTrajet(utilisateurId, trajetId) {
             var xhr = new XMLHttpRequest();
-            xhr.open('GET', '{{ path('app_trajet.laisser_trajet', { trajetId: '__trajetId__' , utilisateurId: '__utilisateurId__' }) }}'.replace('__utilisateurId__', utilisateurId).replace('__trajetId__', trajetId), true);
+            dump('test');
+            xhr.open('GET', '{{ path('app_trajet.abandonner_trajet', { trajetId: '__trajetId__' , utilisateurId: '__utilisateurId__' }) }}'.replace('__utilisateurId__', utilisateurId).replace('__trajetId__', trajetId), true);
             xhr.send();
             location.reload();
         }

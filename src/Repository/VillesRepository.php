@@ -61,7 +61,7 @@ class VillesRepository extends ServiceEntityRepository
 
         $replacedName = str_replace(' ', '', $ville);
 
-        dump($ville);
+        //dump($ville);
         if(strcmp($ville,"")!=0){
             $queryBuilder->select('v')
                 ->from(Villes::class,'v')
@@ -72,7 +72,7 @@ class VillesRepository extends ServiceEntityRepository
                 ->getResult();
 
             $results = $queryBuilder->getQuery()->getResult();
-            dump($results);
+            //dump($results);
         }
         
         return isset($results[0]) ? $results[0] : null;

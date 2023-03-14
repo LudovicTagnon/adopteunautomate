@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Adopte;
 use App\Entity\Trajets;
 use App\Entity\Utilisateurs;
+use App\Repository\AdopteRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,14 +33,16 @@ class AdopteController extends AbstractController
         return new Response('L\'utilisateur ' . $utilisateur->getNom() . ' a adopté le trajet pour : ' . $trajet->getArriveA());
     }
 
-    #[Route("/trajet/laisser/{trajetId}/{utilisateurId}", name:"app_trajet.laisser_trajet")]
-    public function laisserTrajet(EntityManagerInterface $manager, int $trajetId, int $utilisateurId): Response
+    #[Route("/trajet/abandonner/{trajetId}/{utilisateurId}", name:"app_trajet.abandonner_trajet")]
+    public function abandonnerTrajet(AdopteRepository $adopteRepository, EntityManagerInterface $manager, int $trajetId, int $utilisateurId): Response
     {
-        $adopteRepository = $manager->getRepository(Adopte::class);
-        $adopte = $adopteRepository->findOneBy(['trajets' => $trajetId, 'utilisateurs' => $utilisateurId]);
+        dump($trajetId);
+        $adopte = $adopteRepository->findOneBy(['trajet' => $trajetId, 'utilisateur' => $utilisateurId]);
+
+        dump($adopte);
 
         if (!$adopte) {
-            throw $this->createNotFoundException('L\'utilisateur n\'est plus en attente d\'insciption.');
+            throw $this->createNotFoundException('L\'utilisateur n\'est pas en attente d\'insciption.');
         }
         
         try {
