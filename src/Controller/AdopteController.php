@@ -44,6 +44,7 @@ class AdopteController extends AbstractController
     public function abandonnerTrajet(AdopteRepository $adopteRepository, EntityManagerInterface $manager, int $trajetId, int $utilisateurId,RequestStack $requestStack,NotificationService $notificationService): Response
     {
         dump($trajetId);
+        $trajet = $manager->getRepository(Trajets::class)->find($trajetId);
         $adopte = $adopteRepository->findOneBy(['trajet' => $trajetId, 'utilisateur' => $utilisateurId]);
         $utilisateur = $this->getUser();
 
@@ -59,7 +60,7 @@ class AdopteController extends AbstractController
         } catch (\Exception $e) {
             throw new \Exception('Une erreur est survenue lors de la suppression de l\'adoption : '.$e->getMessage());
         }
-        $notificationService->addNotificationAbandonneTrajet("Vous avez abandonné un trajet !", $utilisateur); //notification
+        $notificationService->addNotificationAbandonneTrajet("Vous avez abandonné un trajet !", $utilisateur,$trajet); //notification
         $this->addFlash('success', "L'utilisateur a abandonné le trajet.");
         // On redirige l'utilisateur à la page où il était
         $previousUrl = $requestStack->getCurrentRequest()->headers->get('Referer');

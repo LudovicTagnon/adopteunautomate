@@ -57,7 +57,7 @@ class NotificationService
         }
         //puis on envoi un mail au chauffeur
         $chauffeur = $trajet->getPublie();
-        $message = $user->getNom()." veut rejoindre votre trajet";
+        $message = $user->getNom()."  : veut participer à votre trajet de ".$trajet->getDemarreA()->getnomVille()." vers ".$trajet->getArriveA()->getnomVille()." du ".$trajet->getJourDepartString();
         $notification = new Notification();
         $notification->setTypeNotif(2);
         $notification->setMessage($message);
@@ -71,7 +71,7 @@ class NotificationService
         $this->entityManager->flush();
     }
 
-    public function addNotificationAbandonneTrajet($message, $user)
+    public function addNotificationAbandonneTrajet($message, $user,$trajet)
     {
         $notification = new Notification();
         $notification->setMessage($message);
@@ -85,6 +85,17 @@ class NotificationService
             ->text($message);
 
             $this->mailer->send($email);
+        }
+
+        //puis on envoi un mail au chauffeur
+        $chauffeur = $trajet->getPublie();
+        $message = $user->getNom()." a abandonné votre trajet de ".$trajet->getDemarreA()." vers ".$trajet->getArriveA()." du ".$trajet->getJourDepartString();
+        $notification = new Notification();
+        $notification->setMessage($message);
+        $notification->setUser($chauffeur);
+        $notification->setCreatedAt(new \DateTime());
+        if($chauffeur->getAutorisationMail()){ //si ses mails sont autorisés
+
         }
 
         $this->entityManager->persist($notification);

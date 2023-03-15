@@ -13,7 +13,7 @@ class Notification
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 300)]
     private ?string $message;
 
     #[ORM\Column]
@@ -26,7 +26,7 @@ class Notification
     private ?Utilisateurs $user = null;
 
     #[ORM\Column(type: 'integer', options: ['default' => 1])]
-    private ?int $typeNotif; // TYPE NOTIF : 1 : Notification message ; 2 : Notification message + action chauffeur 
+    private ?int $typeNotif = 1; // TYPE NOTIF : 1 : Notification message ; 2 : Notification message + action chauffeur 
 
 
     // GETTERS AND SETTERS 
