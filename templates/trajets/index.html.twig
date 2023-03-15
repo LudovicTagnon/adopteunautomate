@@ -62,8 +62,13 @@
                     {#
                         <a href="{{ path('app_trajets_show', {'id': trajet.id}) }}"class= "btn btn-info">Montrer les villes</a>
                     #}
+                    {#
+                    {% set now = date_create() %}#}
+                    {% set now = date() %}
+                    {% if trajet.TDepart  > (now|date_modify('+24 hours')) %}
                         <a href="{{ path('app_trajets_edit', {'id': trajet.id}) }}"class= "btn btn-info">Modifier</a>
                         <a href="{{ path('app_trajets_delete', {'id': trajet.id}) }}"class= "btn btn-info">Supprimer</a>
+                    {% endif %}
                     </td>
                 </tr>
             {% else %}
