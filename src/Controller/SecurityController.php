@@ -89,8 +89,10 @@ class SecurityController extends AbstractController
 
 
     #[Route('/oublie-pass/{token}',name:'reset_pass')]
-    public function resetPass(): Response
+    public function resetPass(string $token , Request $request , UtilisateursRepository $utilisateursRepository ,
+                              EntityManagerInterface $entityManager , UserPasswordHasherInterface $passwordHasher ): Response
     {
+
 
     }
 }
