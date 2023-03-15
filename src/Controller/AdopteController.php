@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Adopte;
+use App\Entity\EstAccepte;
 use App\Entity\Trajets;
 use App\Entity\Utilisateurs;
 use App\Repository\AdopteRepository;
@@ -60,6 +61,19 @@ class AdopteController extends AbstractController
         } catch (\Exception $e) {
             throw new \Exception('Une erreur est survenue lors de la suppression de l\'adoption : '.$e->getMessage());
         }
+        $adopteRepository = $manager->getRepository(Adopte::class);
+        $adopte = $adopteRepository->findOneBy(['utilisateur' => $utilisateur, 'trajet' => $trajet]);
+
+        if ($adopte) {
+            $manager->remove($adopte);
+            $manager->flush();
+        }
+        $estAccepte = $manager->getRepository(EstAccepte::class)->findOneBy(['utilisateur' => $utilisateurId, 'trajet' => $trajetId]);
+        if ($estAccepte) {
+            $manager->remove($estAccepte);
+            $manager->flush();
+        }
+        $trajet->decrementNbPassagerCourant();
         $notificationService->addNotificationAbandonneTrajet("Vous avez abandonné un trajet !", $utilisateur,$trajet); //notification
         $this->addFlash('success', "Le trajet a bien été abandonné");
         // On redirige l'utilisateur à la page où il était

@@ -20,7 +20,7 @@
                     <p> Aucun trajets privé revenez plus tard ! </p>
                 {% else %}
                     {% for trajet in trajets %}
-                        {% if trajet.publie.id != user.id and trajet.getNbPassagerCourant() < trajet.getNbPassagerMax() %} //pour l'instant on n'affiche pas un trajet plein
+                        {% if trajet.publie.id != user.id and trajet.getNbPassagerCourant() < trajet.getNbPassagerMax() %}
                             {% for groupe in groupes %}
                                 {% if groupe.estDansGroupes(user.getId()) %}
                                     <tr>

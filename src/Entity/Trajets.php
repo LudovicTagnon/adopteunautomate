@@ -309,4 +309,23 @@ class Trajets
     return $this;
 }
 
+public function decrementNbPassagerCourant(): self
+{
+    $this->nb_passager_courant--;
+    $this->nb_passager_max++;
+    return $this;
+}
+
+public function __toString(): string
+{
+    $format = 'd-m-Y H:i:s'; // set the format to use for the date/time values
+    $createurTrajet = $this->publie->getNom()." ".$this->publie->getPrenom();
+    $departureCity = $this->demarrea ? $this->demarrea->getnomVille() : '';
+    $arrivalCity = $this->arrivea ? $this->arrivea->getnomVille() : '';
+    $departureDate = $this->T_depart ? $this->T_depart->format($format) : '';
+    $arrivalDate = $this->T_arrivee ? $this->T_arrivee->format($format) : '';
+
+    return sprintf('%s vers %s [%s - %s] par %s ', $departureCity, $arrivalCity, $departureDate, $arrivalDate, $createurTrajet);
+}
+
 }

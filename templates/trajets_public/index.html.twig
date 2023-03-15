@@ -17,7 +17,7 @@
             </thead>
             <tbody>
                 {% for trajet in trajets %}
-                {% if trajet.publie.id != user.id and trajet.getNbPassagerCourant() < trajet.getNbPassagerMax()%} //pour l'instant on n'affiche pas un trajet plein
+                {% if trajet.publie.id != user.id and trajet.getNbPassagerCourant() < trajet.getNbPassagerMax()%}
                     <tr>
                         <td>{{ trajet.getPublie().getNom()}} {{ trajet.getPublie().getPrenom() }}</td>
                         <td>{{ trajet.demarrea.getnomVille() }} - {{ trajet.getJourDepartString() }} {{ trajet.getHeureDepartString() }}</td>

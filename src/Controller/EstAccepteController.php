@@ -21,7 +21,6 @@ class EstAccepteController extends AbstractController
     public function accepterUnUtilisateur(EntityManagerInterface $manager, int $trajetId, int $utilisateurId,NotificationService $notificationService,int $notificationId): Response
     {
         $trajet = $manager->getRepository(Trajets::class)->find($trajetId);
-        $utilisateur = $manager->getRepository(Utilisateurs::class)->find($utilisateurId);
         $notification = $manager->getRepository(Notification::class)->find($notificationId);
         if (!$trajet) {
             throw $this->createNotFoundException('Trajet introuvable.');
@@ -45,7 +44,7 @@ class EstAccepteController extends AbstractController
         $manager->persist($trajet);
         $manager->flush();
 
-        //$notificationService->addNotificationAdopteTrajet("Vous avez adopté un trajet !", $utilisateur,$trajet); //notification
+        $notificationService->addNotificationAccepteTrajet("Vous avez été accepté au trajet : ".$trajet->__toString(), $utilisateur); //notification
         $this->addFlash('success', "L'utilisateur ".$utilisateur->getNom(). " a été accepté pour le trajet de : ". $trajet->getDemarreA()." vers ".$trajet->getArriveA());
         // On redirige l'utilisateur à la page où il était en supprimant la notification
         return $this->redirectToRoute('app_supprimer_notif', ['id' => $notification->getId()]);
@@ -73,7 +72,7 @@ class EstAccepteController extends AbstractController
             $this->addFlash('warning', "L'utilisateur ".$utilisateur->getNom(). " a déjà été supprimé pour ce trajet.");
             return $this->redirectToRoute('app_supprimer_notif', ['id' => $notification->getId()]);
         }
-        //TODO:envoyer les notifs
+        $notificationService->addNotificationRefuseTrajet("Vous avez été refusé au trajet : ".$trajet->__toString(), $utilisateur); //notification
         $this->addFlash('success', "L'utilisateur ".$utilisateur->getNom(). " a été refusé pour le trajet de : ". $trajet->getDemarreA()." vers ".$trajet->getArriveA());
         // Retirer l'utilisateur refusé de la liste des utilisateurs adoptant ce trajet
         $adopteRepository = $manager->getRepository(Adopte::class);
