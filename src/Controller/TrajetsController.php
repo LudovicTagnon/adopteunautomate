@@ -119,36 +119,35 @@ class TrajetsController extends AbstractController
     }
 
     
-    #[Route('/{id}/edit', name: 'app_trajets_edit', methods: ['GET', 'POST'])]
+    #[Route('/trajets/{id}/edit', name: 'app_trajets_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Trajets $trajet, TrajetsRepository $trajetsRepository, EntityManagerInterface $manager): Response
     {
-        $demain = new DateTime('tomorrow');
+        
+        // ne pas pouvoir modifier un trajet qui part dans moins de 24h
+        $demain = new DateTime('+24 hours');
         if ($trajet->getTDepart() <$demain ) {
+            $trajet->setEtat('bloqué');
             $this->addFlash(
                 'warning',
                 'Vous ne pouvez plus modifier ce trajet.'
             );
-            
+            $manager->persist($trajet);
+
+            $manager->flush();
             return $this->redirectToRoute('app_trajets_index');
         }
 
         
         $form = $this->createForm(TrajetsType::class, $trajet);
-        $form->handleRequest($request);
-        $trajet = $form->getData();
-        
-        $demain = new DateTime('tomorrow');
-        if ($trajet->getTDepart() <$demain ) {
-            $this->addFlash(
-                'warning',
-                'Vous ne pouvez plus modifier ce trajet.'
-            );
-            
-            return $this->redirectToRoute('app_trajets_index');
+
+        if ($trajet->getTDepart() < $demain ) {
+            $form->remove('Modifier'); // supprimer le bouton "submit" pour désactiver le formulaire
         }
 
-
-
+        $form->handleRequest($request);
+       // $trajet = $form->getData();
+        
+        
         if ($form->isSubmitted() && $form->isValid()) {
             $trajetsRepository->save($trajet, true);
             
@@ -158,6 +157,7 @@ class TrajetsController extends AbstractController
             return $this->redirectToRoute('app_trajets_index', [], Response::HTTP_SEE_OTHER);
         }
 
+         
         return $this->render('trajets/edit.html.twig', [
             'trajet' => $trajet,
             'form' => $form,
@@ -179,6 +179,9 @@ class TrajetsController extends AbstractController
 
             return $this->redirectToRoute('app_trajets_index');
         }
+
+        // si le trajet est terminé ou que son départ a eu lieu il y a plus de 24h
+        // conditions à écrire, avec update de $trajet.etat
         
         if ($this->isCsrfTokenValid('delete'.$trajet->getId(), $request->request->get('_token'))) {
             $trajet->setEtat('annulé');
