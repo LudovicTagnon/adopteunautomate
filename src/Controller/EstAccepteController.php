@@ -38,9 +38,8 @@ class EstAccepteController extends AbstractController
         $manager->flush();
         //$notificationService->addNotificationAdopteTrajet("Vous avez adopté un trajet !", $utilisateur,$trajet); //notification
         $this->addFlash('success', "L'utilisateur ".$utilisateur->getNom(). " a été accepté pour le trajet de : ". $trajet->getDemarreA()." vers ".$trajet->getArriveA());
-        // On redirige l'utilisateur à la page où il était
-        $previousUrl = $requestStack->getCurrentRequest()->headers->get('Referer');
-        return $this->redirect($previousUrl);
+        // On redirige l'utilisateur à la page où il était en supprimant la notification
+        return $this->redirectToRoute('app_supprimer_notif');//TODO:changer ici
         //return new Response('L\'utilisateur ' . $utilisateur->getNom() . ' a adopté le trajet pour : ' . $trajet->getArriveA());//à revoir la redirection
     }
 
@@ -61,8 +60,9 @@ class EstAccepteController extends AbstractController
         }
         //TODO:envoyer les notifs
         $this->addFlash('success', "L'utilisateur ".$utilisateur->getNom(). " a été refusé pour le trajet de : ". $trajet->getDemarreA()." vers ".$trajet->getArriveA());
-        $previousUrl = $requestStack->getCurrentRequest()->headers->get('Referer');
-        return $this->redirect($previousUrl);
+        //TODO:retirer l'utilisateur refusé de adopte ??
+        // On redirige l'utilisateur à la page où il était en supprimant la notification
+        return $this->redirectToRoute('app_supprimer_notif');//TODO:changer ici
     }
 
 }
