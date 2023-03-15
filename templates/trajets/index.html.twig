@@ -64,11 +64,12 @@
                         <a href="{{ path('app_trajets_show', {'id': trajet.id}) }}"class= "btn btn-info">Montrer les villes</a>
                     #}
                         <a href="{{ path('app_trajets_edit', {'id': trajet.id}) }}"class= "btn btn-info">Modifier</a>
+                         <a href="{{ path('app_trajets_edit', {'id': trajet.id}) }}"class= "btn btn-info">Supprimer</a>
                     </td>
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="10">no records found</td>
+                    <td colspan="10">Aucun trajet enregistré </td>
                 </tr>
             {% endfor %}
             </tbody>
