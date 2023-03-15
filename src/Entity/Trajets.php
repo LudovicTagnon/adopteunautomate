@@ -302,4 +302,11 @@ class Trajets
         return $this->public;
     }
 
+    public function incrementNbPassagerCourant(): self
+{
+    $this->nb_passager_courant++;
+    $this->nb_passager_max--;
+    return $this;
+}
+
 }

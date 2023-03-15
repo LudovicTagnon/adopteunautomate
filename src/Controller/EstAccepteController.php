@@ -32,12 +32,19 @@ class EstAccepteController extends AbstractController
         if (!$utilisateur) {
             throw $this->createNotFoundException('Utilisateur introuvable.');
         }
+        $estAccepte = $manager->getRepository(EstAccepte::class)->findOneBy(['trajet' => $trajet, 'utilisateur' => $utilisateur]);
+        if ($estAccepte) {
+            $this->addFlash('warning', "L'utilisateur ".$utilisateur->getNom(). " a déjà été accepté pour ce trajet.");
+            return $this->redirectToRoute('app_supprimer_notif', ['id' => $notification->getId()]);
+        }
         $accepte = new EstAccepte();
         $accepte->setTrajet($trajet);
         $accepte->setUtilisateur($utilisateur);
-
+        $trajet->incrementNbPassagerCourant();
         $manager->persist($accepte);
+        $manager->persist($trajet);
         $manager->flush();
+
         //$notificationService->addNotificationAdopteTrajet("Vous avez adopté un trajet !", $utilisateur,$trajet); //notification
         $this->addFlash('success', "L'utilisateur ".$utilisateur->getNom(). " a été accepté pour le trajet de : ". $trajet->getDemarreA()." vers ".$trajet->getArriveA());
         // On redirige l'utilisateur à la page où il était en supprimant la notification
@@ -60,6 +67,11 @@ class EstAccepteController extends AbstractController
 
         if (!$utilisateur) {
             throw $this->createNotFoundException('Utilisateur introuvable.');
+        }
+        $estAccepte = $manager->getRepository(EstAccepte::class)->findOneBy(['trajet' => $trajet, 'utilisateur' => $utilisateur]);
+        if (!$estAccepte) {
+            $this->addFlash('warning', "L'utilisateur ".$utilisateur->getNom(). " a déjà été supprimé pour ce trajet.");
+            return $this->redirectToRoute('app_supprimer_notif', ['id' => $notification->getId()]);
         }
         //TODO:envoyer les notifs
         $this->addFlash('success', "L'utilisateur ".$utilisateur->getNom(). " a été refusé pour le trajet de : ". $trajet->getDemarreA()." vers ".$trajet->getArriveA());
