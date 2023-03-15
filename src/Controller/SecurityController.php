@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Form\ResetPasswordRequestFormType;
-
+use App\Form\ResetPasswordFormType;
 use App\Repository\UtilisateursRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -92,7 +92,37 @@ class SecurityController extends AbstractController
     public function resetPass(string $token , Request $request , UtilisateursRepository $utilisateursRepository ,
                               EntityManagerInterface $entityManager , UserPasswordHasherInterface $passwordHasher ): Response
     {
+        $user = $utilisateursRepository->findOneByResetToken($token);
 
+        if($user){
+            $form = $this->createForm(ResetPasswordFormType::class);
+
+
+            $form->handleRequest($request);
+
+            if($form->isSubmitted() && $form->isValid()){
+                $user->setResetToken('');
+                $user->setPassword(
+                    $passwordHasher->hashPassword(
+                        $user,
+                        $form->get('password')->getData()
+                    )
+                );
+                $entityManager->persist($user);
+                $entityManager->flush();
+
+
+                $this->addFlash('success' , 'mot de passe changé avec succés');
+                return   $this->redirectToRoute('app_login');
+            }
+
+
+            return  $this->render('security/reset_password.html.twig', [
+                'passForm' => $form->createView()
+            ]);
+        }
+        $this->addFlash('danger' , 'jeton invalide');
+        return $this->redirectToRoute('app_login');
 
     }
 }
