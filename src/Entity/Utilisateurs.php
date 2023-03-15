@@ -82,11 +82,15 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity:"App\Entity\Adopte", mappedBy:"utilisateur")]
     private $adoptions;
 
+    #[ORM\OneToMany(mappedBy: 'utilisateur', targetEntity: EstAccepte::class, orphanRemoval: true)]
+    private Collection $trajet;
+
     public function __construct()
     {
         $this->notifications = new ArrayCollection();
         $this->trajets = new ArrayCollection();
         $this->adoptions = new ArrayCollection();
+        $this->trajet = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -373,6 +377,14 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->groupes;
     }
+
+        /**
+         * @return Collection<int, EstAccepte>
+         */
+        public function getTrajet(): Collection
+        {
+            return $this->trajet;
+        }
 
 
 
