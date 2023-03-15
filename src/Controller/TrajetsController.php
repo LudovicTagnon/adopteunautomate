@@ -168,6 +168,7 @@ class TrajetsController extends AbstractController
 
     
     #[Route('/{id}', name: 'app_trajets_delete', methods: ['POST'])]
+    //#[Route('/', name: 'app_trajets_index', methods: ['GET'])]
     public function delete(Request $request, Trajets $trajet, TrajetsRepository $trajetsRepository, EntityManagerInterface $manager): Response
     {
         $demain = new DateTime('tomorrow');
@@ -183,6 +184,7 @@ class TrajetsController extends AbstractController
 
         // si le trajet est terminé ou que son départ a eu lieu il y a plus de 24h
         // conditions à écrire, avec update de $trajet.etat
+        // blocage de la suppression via effacement du bouton dans trajets/index
         
         if ($this->isCsrfTokenValid('delete'.$trajet->getId(), $request->request->get('_token'))) {
             $trajet->setEtat('annulé');
