@@ -80,6 +80,19 @@ class TrajetsController extends AbstractController
                 );
                 return $this->redirectToRoute('app_trajets_new');
             }
+            $existingvoyage = $manager->getRepository(Trajets::class)->findBy([
+                'publie' => $user,
+            ]);
+            foreach($existingvoyage as $trip){
+                if($dateDepart->getTimestamp() <= $trip->getTArrivee()->getTimestamp()){
+                    $this->addFlash(
+                        'errordate',
+                        'Vous avez déjà un trajet prévu avant la date de départ'
+                    );
+                    return $this->redirectToRoute('app_trajets_new');
+                }
+            }
+            
 
 
 
