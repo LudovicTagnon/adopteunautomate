@@ -6,9 +6,9 @@
     <div class="container py-5">
         <div class="row justify-content-center">
             <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header" style="background-color: #007bff; color: #fff;">{{ 'Connexion'|trans }}</div>
-                    <div class="card-body" style="background-color: #f8f9fa;">
+                <div class="card" style="border:solid; border-color:yellow;">
+                    <div class="card-header" style="background-color: blue; color: #fff;">{{ 'Connexion'|trans }}</div>
+                    <div class="card-body" style="background-color: white;">
                         <form method="post">
                         {% if error %}
                             <div class="alert alert-danger">Votre email ou votre mot de passe est incorrect</div>
@@ -40,7 +40,7 @@
                             </div>
                             #}
 
-                            <button class="btn btn-lg btn-primary" type="submit" style="background-color: #007bff;">
+                            <button class="btn btn-lg btn-primary" type="submit" style="background-color: blue;">
                                 Se connecter
                             </button>
                         </form>

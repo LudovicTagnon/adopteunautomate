@@ -4,17 +4,13 @@
 
 {% block body %}
 <style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper { margin: 1em auto; max-width: 1270px; width: 95%; font: 18px/1.5 sans-serif; }
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>
 <div class="example-wrapper">
 
-<div class="container mt-4">
-
-</div>
-
     <h1>Liste de vos trajets</h1>
-
+    </br>
     <div class="container">
         {# flash message si succes#}
         {% for message in app.flashes('succes')  %}
@@ -34,7 +30,7 @@
                     <th>Date d'arrivee</th>
                     <th>Ville de départ</th>
                     <th>Ville d'arrivee</th>
-                    <th>Prix</th>
+                    <th>Prix(€)</th>
                     <th>Nb de passager</th>
                     <th>Places restantes</th>
                     <th>Public</th>
@@ -62,7 +58,7 @@
                     {#
                         <a href="{{ path('app_trajets_show', {'id': trajet.id}) }}"class= "btn btn-info">Montrer les villes</a>
                     #}
-                        <a href="{{ path('app_trajets_edit', {'id': trajet.id}) }}"class= "btn btn-info">Modifier</a>
+                        <a href="{{ path('app_trajets_edit', {'id': trajet.id}) }}"class= "btn btn-info" style="background-color:blue;">Modifier</a>
                     </td>
                 </tr>
             {% else %}
@@ -73,9 +69,9 @@
             </tbody>
         </table>
 
-    <a href="{{ path('app_trajets_new') }}"class= "btn btn-info" >Ajouter un trajet </a>
+    <a href="{{ path('app_trajets_new') }}"class= "btn btn-info" style="background-color:blue;">Ajouter un trajet </a>
 
     </div>
 
-    </div>
+</div>
 {% endblock %}

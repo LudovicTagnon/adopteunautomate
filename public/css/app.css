@@ -1,16 +1,103 @@
 h1.center{
     text-align: center;
-}
-
-div.profil{
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    height: 100vh;
-    text-align: left;
-    padding-top: 0;
+    color: black;
+    
     
 }
+
+.nav-link{
+    color: #000000;
+}
+
+
+
+th{
+  background-color: darkgrey;
+  border: solid;
+  border-color: gray;
+  border-collapse : collapse;
+  border: 1px solid black;
+
+  
+}
+
+td{
+  border: 1px solid black;
+  background-color: white;
+}
+
+.profil {
+    margin: 20px auto;
+    width: 80%;
+    max-width: 600px;
+    border: solid;
+    border-color: yellow;
+    
+    border-radius: 10px;
+    padding: 20px;
+    background-color: #FFFFFF;
+  }
+
+
+  .link{
+    color: #000000;
+  }
+
+  fieldset {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 20px;
+    
+}
+
+legend {
+    font-weight: bold;
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+
+.example-wrapper{
+  display: block;
+  margin: 10px auto;
+  width: 80%;
+  max-width: 400px;
+  border: solid;
+  border-radius: 10px;
+  border-color: yellow;
+  padding: 70px;
+  background-color: #FFFFFF;
+ 
+}
+  
+  .profil label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+  .navbar{
+    border: #000000 solid;
+  }
+  
+  .profil ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .profil a {
+    display: block;
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  .profil button {
+    margin: 0 10px;
+  }
+  
+#fond{
+    background-image: url("/images/route7.jpg");
+    background-size: cover;
+  }
 
 ul{
     margin : 0;
@@ -24,6 +111,7 @@ ul{
     align-items: center;
   }
   
+ 
   /* Style pour chaque bouton radio */
   .radio-group label {
     margin-right: 20px;
@@ -102,8 +190,8 @@ ul{
 
 .btn-primary {
   color: #fff;
-  background-color: #007bff;
-  border-color: #007bff;
+  background-color: blue;
+  border-color: yellow;
 }
 
 .btn-primary:hover {

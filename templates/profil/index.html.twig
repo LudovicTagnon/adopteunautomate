@@ -3,39 +3,46 @@
 {% block title %}Consultation de profil{% endblock %}
 {% block body %}
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    <h1 class ="center">Mon compte</h1>
-    <div class ="photo">
-      <img src="{{ asset('uploads/' ~ user.getFichierPhoto()) }}" alt="Profile-picture" style="margin-left :30%;margin-bottom:40px;border-radius: 50%; width: 100px; height: 100px;">
+   <div class="profil">
+    <h1 class ="center" style="margin-top:30px;">Mon compte</h1>
+    <div class="photo">
+      <img src="{{ asset('uploads/profil.jpg' ~ user.getFichierPhoto()) }}" alt="Profile-picture" style="margin-left :10px;margin-bottom:40px; margin-top:30px; border-radius: 50%; width: 150px; height: 150px;border: solid black; background-color: #FFFFFF;">
     </div>
-    <div class="profil">
-    <ul>
-        <li>Nom : {{ user.getNom() }}</li>
-        <li>Prénom : {{user.getPrenom}}</li>
-        <li>Numéro de Téléphone : {{user.getNumTel}}</li>
-        <li>Email : {{ user.email }}</li>
+    
+    <fieldset>
+    <legend >Contact</legend>
+    
+        <label>Nom : {{ user.getNom() }}</label>
+        <label>Prénom : {{user.getPrenom}}</label>
+        <label>Numéro de Téléphone : {{user.getNumTel}}</label>
+        <label>Email : {{ user.email }}</label>
+        </fieldset>
+        <fieldset>
+    <legend>Information personnelles</legend>
         {% if user.vehicule == 1 %}
-            <li>Voiture :   Oui   </li>
+            <label>Voiture :   Oui   </label>
         {% else %}
-            <li>Voiture :   Non   </li>
+            <label>Voiture :   Non   </liabel>
         {% endif %}
-        <li>Genre : {{ user.genre }}</li>
+        <label>Genre : {{ user.genre }}</label>
         {% if user.getAutorisationMail() == 1 %}
-                <li>Autorisation de notification mail : Oui</li>
+                <label>Autorisation de notification mail : Oui</label>
         {% else %}
-                 <li>Autorisation de notification mail : Non</li>
+                 <label>Autorisation de notification mail : Non</label>
         {% endif %}
         {% if user.getFichierPhoto() is not null %}
-          <li>Photo de profil : Oui</li>
+          <label>Photo de profil : Oui</label>
         {% else %}
-            <li>Photo de profil : Aucune photo de profil</li>
+            <label>Photo de profil : Aucune photo de profil</label>
         {% endif %}
+         </fieldset>
         <a href="{{ path('modif_profil') }}">
             <button class="btn btn-primary">Modifier mon profil</button>
         </a>
         <a href="{{ path('supprimer_profil') }}">
           <button class="btn btn-danger" onclick="return confirm('Êtes-vous sûr(e) de vouloir désactiver votre profil ? Cette action est irréversible !');">Désactiver mon profil</button> 
         </a>
-    </ul>
+    
     </div>
 
 

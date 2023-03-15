@@ -108,12 +108,12 @@
          <div class= 'form-group'>
              {{ form_widget(form) }}
              </br>
-                 <button class= "btn btn-info">{{ button_label|default('Enregistrer ce nouveau trajet') }}</button>
+                 <button class= "btn btn-info" style="background-color:blue;">{{ button_label|default('Enregistrer ce nouveau trajet') }}</button>
         </div>
 
         {{ form_end(form) }}
         </br>
-        <a href="{{ path('app_trajets_index') }}" class= "btn btn-info">Retour à la liste de vos trajets</a>
+        <a href="{{ path('app_trajets_index') }}" class= "btn btn-info" style="background-color:blue;">Retour à la liste de vos trajets</a>
     </div>
 
 

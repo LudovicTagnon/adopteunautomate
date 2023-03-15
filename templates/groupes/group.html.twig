@@ -15,7 +15,7 @@
     </div>
 
     <h1>Les groupes:</h1>
-
+    </br>
     <div class="container">
         {# flash message si succes#}
         {% for message in app.flashes('succes')  %}
@@ -38,13 +38,13 @@
             <tbody> <!-- TCorps du tableau -->
                 <!-- Affichage des groupes de l'utilisateur -->
                 {% for groupe in groupes %}
-                <tr class="table-primary">
+                <tr >
                     <td>{{groupe.getNomGroupe()}}</td>
                     <td>{{groupe.getDescription()}}</td>
                     <td>{{groupe.getNbUtilisateurs}}</td>
                     <td>
-                        <a href = "{{ path('app_groupes.edit', {id:groupe.id})}}" class= "btn btn-info" >Modifier</a>
-                        <a href = "{{ path('app_groupes.delete', {id:groupe.id})}}" class= "btn btn-warning" >Supprimer</a>
+                        <a href = "{{ path('app_groupes.edit', {id:groupe.id})}}" class= "btn btn-info" style="background-color:blue;">Modifier</a>
+                        <a href = "{{ path('app_groupes.delete', {id:groupe.id})}}" class= "btn btn-warning" style="background-color:red; color:white;">Supprimer</a>
                     </td>
                 </tr>
                 {% endfor %}
@@ -53,7 +53,7 @@
                 <!-- Bouton permettant de créer un nouveau groupe --> 
                 <td colspan="4">
                     Créer un groupe
-                    <a href ="{{ path('app_groupes.new')}}" class= "btn btn-secondary " >+</a>
+                    <a href ="{{ path('app_groupes.new')}}" class= "btn btn-secondary " style="background-color:green;">+</a>
                 </td>
 
             <tbody>
