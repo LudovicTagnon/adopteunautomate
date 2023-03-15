@@ -32,7 +32,7 @@ class AdopteController extends AbstractController
 
         $manager->persist($adopte);
         $manager->flush();
-        $notificationService->addNotificationAdopteTrajet("Vous avez adopté un trajet !", $utilisateur); //notification
+        $notificationService->addNotificationAdopteTrajet("Vous avez adopté un trajet !", $utilisateur,$trajet); //notification
         $this->addFlash('success', "L'utilisateur ".$utilisateur->getNom(). " a adopté le trajet pour : ". $trajet->getArriveA());
         // On redirige l'utilisateur à la page où il était
         $previousUrl = $requestStack->getCurrentRequest()->headers->get('Referer');

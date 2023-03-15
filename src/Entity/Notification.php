@@ -25,6 +25,9 @@ class Notification
     #[ORM\ManyToOne(inversedBy: 'notifications')]
     private ?Utilisateurs $user = null;
 
+    #[ORM\Column(type: 'integer', options: ['default' => 1])]
+    private ?int $typeNotif; // TYPE NOTIF : 1 : Notification message ; 2 : Notification message + action chauffeur 
+
 
     // GETTERS AND SETTERS 
     public function getId(): ?int
@@ -75,6 +78,18 @@ class Notification
     public function setUser(?Utilisateurs $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getTypeNotif(): ?int
+    {
+        return $this->typeNotif;
+    }
+
+    public function setTypeNotif(int $typeNotif): self
+    {
+        $this->typeNotif = $typeNotif;
 
         return $this;
     }

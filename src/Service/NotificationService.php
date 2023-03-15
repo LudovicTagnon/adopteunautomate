@@ -40,7 +40,7 @@ class NotificationService
         $this->entityManager->persist($notification);
         $this->entityManager->flush();
     }
-    public function addNotificationAdopteTrajet($message, $user)
+    public function addNotificationAdopteTrajet($message, $user,$trajet)
     {
         $notification = new Notification();
         $notification->setMessage($message);
@@ -54,6 +54,17 @@ class NotificationService
             ->text($message);
 
             $this->mailer->send($email);
+        }
+        //puis on envoi un mail au chauffeur
+        $chauffeur = $trajet->getPublie();
+        $message = $user->getNom()." veut rejoindre votre trajet";
+        $notification = new Notification();
+        $notification->setTypeNotif(2);
+        $notification->setMessage($message);
+        $notification->setUser($chauffeur);
+        $notification->setCreatedAt(new \DateTime());
+        if($chauffeur->getAutorisationMail()){ //si ses mails sont autorisés
+
         }
 
         $this->entityManager->persist($notification);
