@@ -86,26 +86,56 @@
                         <div class="col-sm-8">
                             <div class="card text-dark bg-light">
                                 <div class="card-header bg-primary text-left text-white">
-                                    <h4 class="card-title">Mes trajets : <a href="#" style="text-decoration:none"><small class="text-white">(cliquez ici pour toutes les voir)</small></a> </h4>
+                                    <h4 class="card-title">Mes trajets : <a href="{{path('app_trajets_index')}}" style="text-decoration:none"><small class="text-white">(cliquez ici pour toutes les voir)</small></a> </h4>
                                 </div>                           
                                 <div class="card-body">
-                                      
+                                      <ul class="nav nav-tabs justify-content-center" id="tabs" role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" id="propositions-tab" data-toggle="tab" href="#propositions" role="tab" aria-controls="propositions" aria-selected="true">Mes propositions</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="trajets-en-attente-tab" data-toggle="tab" href="#trajets-en-attente" role="tab" aria-controls="trajets-en-attente" aria-selected="false">Trajets en attente</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="trajets-inscrits-tab" data-toggle="tab" href="#trajets-inscrits" role="tab" aria-controls="trajets-inscrits" aria-selected="false">Trajets inscrits</a>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content" id="tabsContent">
+                                        <div class="tab-pane fade show active text-center" id="propositions" role="tabpanel" aria-labelledby="propositions-tab">
+                                            <!-- Afficher les propositions de l'utilisateur -->
+                                            {% for trajet in trajets|slice(0, 3)%} <!-- Limitation à 3 notifications -->
+                                                {% if trajet.publie == app.user %}          
+                                                    <a href="#" class="list-group-item list-group-item-action">{{ trajet.demarrea }} --> {{ trajet.arrivea }}</a>
+                                                {% endif %}
+                                            {% else %} <!-- Si il n'y a pas de notifications dans la boucle--> 
+                                                <div class="row justify-content-center"> Aucune proposition disponible. </div>
+                                            {% endfor %}
+                                            
+                                        </div>
+                                        <div class="tab-pane fade text-center" id="trajets-en-attente" role="tabpanel" aria-labelledby="trajets-en-attente-tab">
+                                            <!-- Afficher les trajets en attente -->
+                                            {% for adoption in adopte|slice(0, 3)%} <!-- Limitation à 3 notifications -->
+                                                {% if adoption.getUtilisateur() == user %}          
+                                                    <a href="#" class="list-group-item list-group-item-action">{{ adoption.getTrajet().demarrea }} --> {{ adoption.getTrajet().arrivea }}</a>
+                                                {% endif %}
+                                            {% else %} <!-- Si il n'y a pas de notifications dans la boucle--> 
+                                                <div class="row justify-content-center"> Aucun trajet en attente. </div>
+                                            {% endfor %}
+                                        </div>
+                                        <div class="tab-pane fade text-center" id="trajets-inscrits" role="tabpanel" aria-labelledby="trajets-inscrits-tab">
+                                            <!-- Afficher les trajets où l'utilisateur est inscrits  -->                          
+                                            {% for adoption in adopte|slice(0, 3)%} <!-- Limitation à 3 notifications -->
+                                                {% if adoption.getUtilisateur() == user %}          
+                                                    <a href="#" class="list-group-item list-group-item-action">{{ adoption.getTrajet().demarrea }} --> {{ adoption.getTrajet().arrivea }}</a>
+                                                {% endif %}
+                                            {% else %} <!-- Si il n'y a pas de notifications dans la boucle--> 
+                                                <div class="row justify-content-center"> Aucun trajet en attente. </div>
+                                            {% endfor %}   
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <!--<div class="row justify-content-center">
-                            <div class="col-sm-9">
-                                Level 1: .col-sm-9
-                                <div class="row">
-                                <div class="col-8 col-sm-6">
-                                    Level 2: .col-8 .col-sm-6
-                                </div>
-                                <div class="col-4 col-sm-6">
-                                    Level 2: .col-4 .col-sm-6
-                                </div>
-                                </div>
-                            </div>
-                        </div>-->
                     </div>
                 </div>
             </div>

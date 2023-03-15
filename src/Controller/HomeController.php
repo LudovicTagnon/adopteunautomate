@@ -11,13 +11,17 @@ use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Villes;
 use App\Entity\Trajets;
+use App\Entity\Adopte;
 
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
     public function index(Request $request, EntityManagerInterface $manager, NotificationService $notificationService): Response
     {
+        $user = $this->getUser();
         $villes = $manager->getRepository(Villes::class)->findAll();
+        $trajets = $manager->getRepository(Trajets::class)->findAll();
+        $adoptions = $manager->getRepository(Adopte::class)->findAll();
         
         $notifications = [];//null par défaut
         if ($this->getUser() != null) {
@@ -25,9 +29,12 @@ class HomeController extends AbstractController
         }
 
         return $this->render('home/index.html.twig', [
+            'user' => $user,
             'controller_name' => 'HomeController',
             'villes' => $villes,
             'notifications' => $notifications,
+            'trajets' => $trajets,
+            'adopte' => $adoptions,
         ]);
 
     }

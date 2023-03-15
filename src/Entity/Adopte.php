@@ -3,9 +3,10 @@ namespace App\Entity;
 
 use App\Entity\Trajets;
 use App\Entity\Utilisateurs;
+use App\Repository\AdopteRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: Adopte::class)]
+#[ORM\Entity(repositoryClass: AdopteRepository::class)]
 #[ORM\Table(name:"adopte")]
 #[ORM\UniqueConstraint(name: "utilisateur_trajet_unique", columns: ["utilisateur_id", "trajet_id"])]
 class Adopte
