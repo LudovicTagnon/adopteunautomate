@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\EstAccepte;
+use App\Entity\Adopte;
 use App\Entity\Trajets;
 use App\Entity\Utilisateurs;
 use App\Entity\Notification;
@@ -62,7 +63,14 @@ class EstAccepteController extends AbstractController
         }
         //TODO:envoyer les notifs
         $this->addFlash('success', "L'utilisateur ".$utilisateur->getNom(). " a été refusé pour le trajet de : ". $trajet->getDemarreA()." vers ".$trajet->getArriveA());
-        //TODO:retirer l'utilisateur refusé de adopte ?? oui
+        // Retirer l'utilisateur refusé de la liste des utilisateurs adoptant ce trajet
+        $adopteRepository = $manager->getRepository(Adopte::class);
+        $adopte = $adopteRepository->findOneBy(['utilisateur' => $utilisateur, 'trajet' => $trajet]);
+
+        if ($adopte) {
+            $manager->remove($adopte);
+            $manager->flush();
+        }
         // On redirige l'utilisateur à la page où il était en supprimant la notification
         return $this->redirectToRoute('app_supprimer_notif', ['id' => $notification->getId()]);
     }
