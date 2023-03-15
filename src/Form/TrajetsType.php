@@ -138,4 +138,16 @@ class TrajetsType extends AbstractType
             'data_class' => Trajets::class,
         ]);
     }
+
+    //Verification si les dates sont valides (dateDepart < date)
+    public function validateDates($value,ExecutionContextInterface $context, $payload)
+    {
+        $dateDepart = $context->getRoot()->get('T_depart')->getData();
+
+        if($value < $dateDepart){
+            $context->buildViolation('La date doit être postérieure à la date de départ')
+                ->atPath('T_arrivee')
+                ->addViolation();
+        }
+    }
 }
