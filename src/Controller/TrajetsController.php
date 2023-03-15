@@ -140,12 +140,13 @@ class TrajetsController extends AbstractController
         
         $form = $this->createForm(TrajetsType::class, $trajet);
 
+/*
         if ($trajet->getTDepart() < $demain ) {
             $form->remove('Modifier'); // supprimer le bouton "submit" pour désactiver le formulaire
         }
-
+*/
         $form->handleRequest($request);
-       // $trajet = $form->getData();
+        $trajet = $form->getData();
         
         
         if ($form->isSubmitted() && $form->isValid()) {
