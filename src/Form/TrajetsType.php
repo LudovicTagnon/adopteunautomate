@@ -7,7 +7,7 @@ use App\Entity\Trajets;
 use ConvertirFormatDate;
 use App\Entity\Utilisateurs;
 use Doctrine\DBAL\Types\BooleanType;
-
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use App\Repository\UtilisateursRepository;
 use Symfony\Component\Form\FormTypeInterface;
@@ -149,6 +149,22 @@ class TrajetsType extends AbstractType
             $context->buildViolation('La date doit être postérieure à la date de départ')
                 ->atPath('T_arrivee')
                 ->addViolation();
+        }
+    }
+
+    //Verifications trajet meme jour 
+    public function validateJour(EntityManagerInterface $manager,ExecutionContextInterface $context){
+        $user = $this->security->getUser();
+        $existingvoyage = $manager->getRepository(Trajets::class)->findBy([
+            'publie' => $user,
+        ]);
+        $dateDepart = $context->getRoot()->get('T_depart')->getData();
+        foreach($existingvoyage as $trip){
+            if($dateDepart->getTimestamp() <= $trip->getTArrivee()->getTimestamp()){
+                $context->buildViolation('La date doit être postérieure à la date de départ')
+                ->atPath('T_arrivee')
+                ->addViolation();
+            }
         }
     }
 }

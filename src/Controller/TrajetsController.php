@@ -166,6 +166,33 @@ class TrajetsController extends AbstractController
 
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $user = $this->getUser();
+            // Check if there is already a trip on the same day
+            $dateDepart = $trajet->getTDepart();
+            $dateArrivee= $trajet->getTArrivee();
+            $existingTrips = $manager->getRepository(Trajets::class)->findBy([
+                'publie' => $user,
+                'T_depart' => $dateDepart
+            ]);
+            if (count($existingTrips) > 0) {
+                $this->addFlash(
+                    'error',
+                    'Vous avez déjà créé un trajet pour cette date. Veuillez choisir une autre date.'
+                );
+                return $this->redirectToRoute('app_trajets_new');
+            }
+            $existingvoyage = $manager->getRepository(Trajets::class)->findBy([
+                'publie' => $user,
+            ]);
+            foreach($existingvoyage as $trip){
+                if($dateDepart->getTimestamp() <= $trip->getTArrivee()->getTimestamp()){
+                    $this->addFlash(
+                        'errordate',
+                        'Vous avez déjà un trajet prévu avant la date de départ'
+                    );
+                    return $this->redirectToRoute('app_trajets_new');
+                }
+            }
             $trajetsRepository->save($trajet, true);
             
             $manager->persist($trajet);
