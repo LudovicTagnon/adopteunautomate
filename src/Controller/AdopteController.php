@@ -33,7 +33,7 @@ class AdopteController extends AbstractController
         $manager->persist($adopte);
         $manager->flush();
         $notificationService->addNotificationAdopteTrajet("Vous avez adopté un trajet !", $utilisateur,$trajet); //notification
-        $this->addFlash('success', "L'utilisateur ".$utilisateur->getNom(). " a adopté le trajet pour : ". $trajet->getArriveA());
+        $this->addFlash('success', "Vous avez bien adopté le trajet de : ". $trajet->getDemarreA()." vers ".$trajet->getArriveA());
         // On redirige l'utilisateur à la page où il était
         $previousUrl = $requestStack->getCurrentRequest()->headers->get('Referer');
         return $this->redirect($previousUrl);
@@ -61,7 +61,7 @@ class AdopteController extends AbstractController
             throw new \Exception('Une erreur est survenue lors de la suppression de l\'adoption : '.$e->getMessage());
         }
         $notificationService->addNotificationAbandonneTrajet("Vous avez abandonné un trajet !", $utilisateur,$trajet); //notification
-        $this->addFlash('success', "L'utilisateur a abandonné le trajet.");
+        $this->addFlash('success', "Le trajet a bien été abandonné");
         // On redirige l'utilisateur à la page où il était
         $previousUrl = $requestStack->getCurrentRequest()->headers->get('Referer');
         return $this->redirect($previousUrl);

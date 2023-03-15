@@ -59,6 +59,8 @@ class NotificationService
         $chauffeur = $trajet->getPublie();
         $message = $user->getNom()."  : veut participer à votre trajet de ".$trajet->getDemarreA()->getnomVille()." vers ".$trajet->getArriveA()->getnomVille()." du ".$trajet->getJourDepartString();
         $notification = new Notification();
+        $notification->setUserQuiDemandeTrajet($user);
+        $notification->setTrajetQuiEstDemande($trajet);
         $notification->setTypeNotif(2);
         $notification->setMessage($message);
         $notification->setUser($chauffeur);

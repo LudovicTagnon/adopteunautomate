@@ -23,14 +23,16 @@
                 {% if notification.isRead() %}        
                     <li>{{ notification.getMessage() }} (lue)</li>
                     {% if notification.getTypeNotif() == 2 %}  
-                        <a href="#" class="btn btn-success">Accepter</a>
-                        <a href="#" class="btn btn-danger">Refuser</a>
+                        <a href="{{ path('app.estAccepte', {'trajetId': notification.getTrajetQuiEstDemande().id, 'utilisateurId': notification.getUserQuiDemandeTrajet().id}) }}" class="btn btn-success">Accepter</a>
+                        <a href="{{ path('app.estRefuse', {'trajetId': notification.getTrajetQuiEstDemande().id, 'utilisateurId': notification.getUserQuiDemandeTrajet().id}) }}" class="btn btn-danger">Refuser</a>
                     {% endif %}
                 {% else %}
                     <li>{{ notification.getMessage() }}</li>
-                    {% if notification.getTypeNotif() == 2 %} 
-                        <a href="#" class="btn btn-success">Accepter ce passager</a>
-                        <a href="#" class="btn btn-danger">Refuser ce passager</a>
+                    {% if notification.getTypeNotif() == 2 %}
+                        {% if notification.getTrajetQuiEstDemande != null and notification.getUserQuiDemandeTrajet().id != null %}
+                        <a href="{{ path('app.estAccepte', {'trajetId': notification.getTrajetQuiEstDemande().id, 'utilisateurId': notification.getUserQuiDemandeTrajet().id}) }}" class="btn btn-success">Accepter ce passager</a>
+                        <a href="{{ path('app.estRefuse', {'trajetId': notification.getTrajetQuiEstDemande().id, 'utilisateurId': notification.getUserQuiDemandeTrajet().id}) }}" class="btn btn-danger">Refuser ce passager</a>
+                        {% endif %}
                     {% endif %}
                     <form action="{{ path('app_mark_notification_as_read', {'id': notification.getId()}) }}" method="post" style="display:inline;">
                         <button type="submit" class="btn btn-primary">Marquer comme lu</button>

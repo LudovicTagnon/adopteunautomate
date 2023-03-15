@@ -90,7 +90,6 @@ class Trajets
 
     #[ORM\OneToMany(mappedBy: 'trajets', targetEntity: Groupes::class)]
     private Collection $groupes;
-
     public function __construct()
     {
         $this->groupes = new ArrayCollection();

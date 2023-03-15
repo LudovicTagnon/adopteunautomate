@@ -21,6 +21,18 @@ class EstAccepteRepository extends ServiceEntityRepository
         parent::__construct($registry, EstAccepte::class);
     }
 
+    public function estAccepte($trajetId, $utilisateurId)
+    {
+        $entityManager = $this->getEntityManager();
+
+        $estAccepte = new EstAccepte();
+        $estAccepte->setTrajet($trajetId);
+        $estAccepte->setUtilisateur($utilisateurId);
+
+        $entityManager->persist($estAccepte);
+        $entityManager->flush();
+    }
+
     public function save(EstAccepte $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);

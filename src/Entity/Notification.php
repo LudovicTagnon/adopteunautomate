@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
@@ -26,7 +28,13 @@ class Notification
     private ?Utilisateurs $user = null;
 
     #[ORM\Column(type: 'integer', options: ['default' => 1])]
-    private ?int $typeNotif = 1; // TYPE NOTIF : 1 : Notification message ; 2 : Notification message + action chauffeur 
+    private ?int $typeNotif = 1;
+
+    #[ORM\ManyToOne]
+    private ?Utilisateurs $userQuiDemandeTrajet = null;
+
+    #[ORM\ManyToOne]
+    private ?Trajets $TrajetQuiEstDemande = null; // TYPE NOTIF : 1 : Notification message ; 2 : Notification message + action chauffeur 
 
 
     // GETTERS AND SETTERS 
@@ -93,5 +101,31 @@ class Notification
 
         return $this;
     }
+
+    public function getUserQuiDemandeTrajet(): ?Utilisateurs
+    {
+        return $this->userQuiDemandeTrajet;
+    }
+
+    public function setUserQuiDemandeTrajet(?Utilisateurs $userQuiDemandeTrajet): self
+    {
+        $this->userQuiDemandeTrajet = $userQuiDemandeTrajet;
+
+        return $this;
+    }
+
+    public function getTrajetQuiEstDemande(): ?Trajets
+    {
+        return $this->TrajetQuiEstDemande;
+    }
+
+    public function setTrajetQuiEstDemande(?Trajets $TrajetQuiEstDemande): self
+    {
+        $this->TrajetQuiEstDemande = $TrajetQuiEstDemande;
+
+        return $this;
+    }
+
+
 }
 ?>
