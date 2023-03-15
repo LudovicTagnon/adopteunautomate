@@ -1,54 +1,83 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Trajets{% endblock %}
+{% block title %}Détails de votre trajet{% endblock %}
 
 {% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+<div class="example-wrapper">
+
+<div class="container mt-4">
+
+</div>
     <h1>Trajets</h1>
 
     <table class="table">
         <tbody>
+        {#
             <tr>
                 <th>Id</th>
                 <td>{{ trajet.id }}</td>
             </tr>
+            #}
             <tr>
-                <th>Etat</th>
+                
+               <th>Etat</th>
                 <td>{{ trajet.etat }}</td>
             </tr>
+             <tr>
+                <th>Ville de départ: </th>
+                <td>{{ trajet.demarrea.nomville }}</td>
+            </tr>
+             <tr>
+                <th>Ville d'arrivée: </th>
+                <td>{{ trajet.arrivea.nomville }}</td>
+            </tr>
             <tr>
-                <th>T_depart</th>
+                <th>jour et  heure de départ: </th>
                 <td>{{ trajet.TDepart ? trajet.TDepart|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
             <tr>
-                <th>T_arrivee</th>
+                <th>jour et  heure d'arrivée :</th>
                 <td>{{ trajet.TArrivee ? trajet.TArrivee|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
             <tr>
-                <th>Prix</th>
-                <td>{{ trajet.prix }}</td>
+                <th>Prix par passager en € :</th>
+                <td>{{ trajet.prix ? '0' }} </td>
             </tr>
             <tr>
-                <th>Nb_passager_max</th>
+                <th>Nb de places proposées: </th>
                 <td>{{ trajet.nbPassagerMax }}</td>
             </tr>
             <tr>
-                <th>Nb_passager_courant</th>
-                <td>{{ trajet.nbPassagerCourant }}</td>
+                <th>Nb de places disponibles: </th>
+                 <td>{{ trajet.nbPassagerMax - trajet.nbPassagerCourant }}</td>
+            </tr>
+             <tr>
+                <th>Passagers confirmés: </th>
+                 <td>{{ 'affichage de la liste: à faire' }}</td>
             </tr>
             <tr>
-                <th>Public</th>
-                <td>{{ trajet.public ? 'Yes' : 'No' }}</td>
+                <th>Passagers en attente de votre accord: </th>
+                 <td>{{ 'affichage de la liste: à faire' }}</td>
             </tr>
             <tr>
-                <th>Renseignement</th>
+                <th>Public: </th>
+                <td>{{ trajet.public ? 'Oui' : 'Non' }}</td>
+            </tr>
+            <tr>
+                <th>Renseignement : </th>
                 <td>{{ trajet.renseignement }}</td>
             </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('app_trajets_index') }}">Retour à la liste</a>
+    <a href="{{ path('app_trajets_index') }}" class= "btn btn-info">Retour à la liste de vos trajets </a>
 
-    <a href="{{ path('app_trajets_edit', {'id': trajet.id}) }}"class= "btn btn-info">Modifier</a>
+    <a href="{{ path('app_trajets_edit', {'id': trajet.id}) }}" class= "btn btn-info">Modifier</a>
 
     {{ include('trajets/_delete_form.html.twig') }}
+</div>    
 {% endblock %}
