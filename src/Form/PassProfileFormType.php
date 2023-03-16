@@ -28,7 +28,7 @@ class PassProfileFormType extends AbstractType
                     new NotBlank(),
                     new Length([
                         'min' => 6,
-                        'minMessage' => 'Your password should be at least {{ limit }} characters',
+                        'minMessage' => 'Votre mot de passe doit contenir au moins {{ limit }} caratères',
                         // max length allowed by Symfony for security reasons
                         'max' => 4096,
                     ]),
