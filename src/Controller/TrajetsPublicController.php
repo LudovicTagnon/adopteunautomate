@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use App\Entity\Trajets;
 use Doctrine\ORM\EntityManagerInterface;
-
+#[Route('/trajets')]
 class TrajetsPublicController extends AbstractController
 {
     private $entityManager;
