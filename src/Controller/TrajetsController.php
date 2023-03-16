@@ -58,7 +58,7 @@ class TrajetsController extends AbstractController
             $villeDepart = $manager->getRepository(Villes::class)->find(['id' => $form->getData()->getDemarreA()]);
             $villeArrivee = $manager->getRepository(Villes::class)->find(['id' => $form->getData()->getArriveA()]);
             $trajet->setArriveA($villeArrivee);
-            $trajet->setDemarreA($villeDepart);
+             $trajet->setDemarreA($villeDepart);
 
 
             // Check if there is already a trip on the same day
@@ -154,9 +154,8 @@ class TrajetsController extends AbstractController
         $form = $this->createForm(TrajetsType::class, $trajet);
         $form->handleRequest($request);
         $trajet = $form->getData();
-        
         $demain = new DateTime('tomorrow');
-        if ($trajet->getTDepart() <$demain ) {
+        if ($trajet->getTDepart() < $demain ) {
             $this->addFlash(
                 'warning',
                 'Vous ne pouvez plus modifier ce trajet.'
