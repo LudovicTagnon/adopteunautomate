@@ -170,4 +170,26 @@ class NotificationService
 
         $this->entityManager->flush();
     }
+
+    public function markAllAsRead(Utilisateurs $user)
+    {
+        $notifications = $this->entityManager->getRepository(Notification::class)->findBy(['user' => $user, 'isRead' => false]);
+
+        foreach ($notifications as $notification) {
+            $notification->setIsRead(true);
+        }
+
+        $this->entityManager->flush();
+    }
+
+    public function deleteAll(Utilisateurs $user)
+    {
+        $notifications = $this->entityManager->getRepository(Notification::class)->findBy(['user' => $user]);
+
+        foreach ($notifications as $notification) {
+            $this->entityManager->remove($notification);
+        }
+
+        $this->entityManager->flush();
+    }
 }
