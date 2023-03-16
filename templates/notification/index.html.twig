@@ -39,10 +39,10 @@
             <div class="notifications {% if notification.isRead() %}read-notification{% endif %}"> 
                 {% if notification.isRead() %}          
                     <li>{{ notification.getMessage() }}</li>
+            </div> 
                 <a  href="{{ path('app_supprimer_notif', {'id': notification.getId()}) }}">
+                <button class="btn btn-danger" >Supprimer la notification</button>
                 </a>
-            </div>
-            <button class="btn btn-danger" >Supprimer la notification</button> 
                 {% endif %}
             {% endfor %}
         </ul>
