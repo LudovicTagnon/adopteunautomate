@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Villes;
 use App\Entity\Trajets;
+use App\Repository\GroupesRepository;
 use ConvertirFormatDate;
 use App\Entity\Utilisateurs;
 use Doctrine\DBAL\Types\BooleanType;
@@ -26,17 +27,27 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeImmutableType;
 
+
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormErrorIterator;
+use Symfony\Component\Validator\Constraints\NotBlank;
+
 // ajout en ligne de commande: composer require doctrine/doctrine-bundle
 
 class TrajetsType extends AbstractType
 {
     private UtilisateursRepository $utilisateursRepository;
+    private GroupesRepository $groupesRepository;
     private $security;
 
-    public function __construct(UtilisateursRepository $utilisateursRepository, Security $security)
+    public function __construct(UtilisateursRepository $utilisateursRepository, GroupesRepository $groupesRepository, Security $security)
     {
         //$this->utilisateursRepository = $utilisateursRepository;
        // $this->security = $security;
+       $this->utilisateursRepository = $utilisateursRepository;
+       $this->groupesRepository = $groupesRepository;
+       $this->security = $security;
     }
 
     
@@ -46,6 +57,7 @@ class TrajetsType extends AbstractType
         $tomorrow = new \DateTime('tomorrow');
         $demain = new \DateTime('+24 hours');
         $user = new Utilisateurs();
+        $userConnected = $this->security->getUser();
 
         $builder
             //->add('etat')
@@ -121,7 +133,30 @@ class TrajetsType extends AbstractType
                 'label' => 'Nombre de places * :   '
             ])
 
-            ->add('public')
+            ->add('public', ChoiceType::class, [
+                'choices' => [
+                    ' Public ' => true,
+                    ' Privé' => false,
+                ],
+                'required' => true,
+                'expanded' => true,
+                'multiple' => false,
+                'label' => 'Trajet public ou privé :   '
+            ])
+            ->add('groupes', EntityType::class, [
+                'class' => Groupes::class,
+                'choices' => $this->groupesRepository->findBy(['createur' => $userConnected]),
+                'choice_label' => 'nom_groupe',
+                'multiple' => true,
+                'expanded' => true,
+                'required' => false,
+                'label' => 'Groupes à inviter',
+                'mapped' => false, // add this line
+
+            ])
+            
+            //a ajouter la selection des groupes
+            
             ->add('renseignement', TextareaType::class, [
                 'required'   => false,
                 'label' => 'Informations additionnelles :   '

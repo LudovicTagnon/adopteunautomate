@@ -28,6 +28,9 @@ class Groupes
     #[ORM\OneToMany(mappedBy: 'groupes', targetEntity: EstDans::class)]
     protected $estDans;
 
+    #[ORM\ManyToOne(inversedBy: 'groupes')]
+    private ?Trajets $trajets = null;
+
     public function __construct()
     {
         $this->estDans = new ArrayCollection();;
@@ -80,6 +83,28 @@ class Groupes
     public function getNbUtilisateurs(): int
     {
         return count($this->estDans);
+    }
+
+    public function estDansGroupes(int $userId): bool
+{
+    foreach ($this->estDans as $estDans) {
+        if ($estDans->getIdUtilisateur() == $userId) {
+            return true;
+        }
+    }
+    return false;
+}
+
+    public function getTrajets(): ?Trajets
+    {
+        return $this->trajets;
+    }
+
+    public function setTrajets(?Trajets $trajets): self
+    {
+        $this->trajets = $trajets;
+
+        return $this;
     }
 
 }

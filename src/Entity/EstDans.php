@@ -66,6 +66,7 @@ class EstDans
         $format = "Groupe (Id: %s, %s, %s)\n";
         return sprintf($format, $this->id, $this->utilisateurs, $this->groupes);
     }
+
 }
 
 ?>
