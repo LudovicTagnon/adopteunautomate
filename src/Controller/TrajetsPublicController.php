@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use App\Entity\Trajets;
 use Doctrine\ORM\EntityManagerInterface;
 
+
 class TrajetsPublicController extends AbstractController
 {
     private $entityManager;
