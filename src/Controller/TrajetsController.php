@@ -163,13 +163,39 @@ class TrajetsController extends AbstractController
     }
     
     #[Route('/{id}/edit', name: 'app_trajets_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Trajets $trajet, TrajetsRepository $trajetsRepository): Response
+    public function edit(Request $request, Trajets $trajet, TrajetsRepository $trajetsRepository,EntityManagerInterface $manager): Response
     {
         $form = $this->createForm(TrajetsType::class, $trajet);
         $form->handleRequest($request);
+        $user = $this->getUser();
 
         if ($form->isSubmitted() && $form->isValid()) {
             $trajetsRepository->save($trajet, true);
+            //verification si le trajet est possible
+            $refus = false;
+            $existingvoyage = $manager->getRepository(Trajets::class)->findBy([
+                'publie' => $user,
+            ]);
+            foreach($existingvoyage as $voyage){
+                //si heure arrivée du trajet en BDD = null on le set à HDepart +24heures
+                if($voyage->getTArrivee() == 'null'){
+                    $voyage->setTArrive($voyage->getTDepart()+'24 hours');
+                }
+                //si heure arrivée du trajet crée = null on le set à HDepart +24heures
+                if($trajet->getTArrivee() == 'null'){
+                    $trajet->setTArrivee($trajet->getTDepart()+'24 hours');
+                }
+                //verification sur les contraintes de dates
+                if(($trajet->getTArrivee() < $voyage->getTDepart()) && ($voyage->getTDepart() < $voyage->getTArrivee())){
+                    $refus = true;
+                    $this->addFlash(
+                        'errordate',
+                        'Vous avez déjà un trajet prévu à cette date'
+                    );
+                    return $this->redirectToRoute('app_trajets_new');
+                }
+                
+            }
 
             return $this->redirectToRoute('app_trajets_index', [], Response::HTTP_SEE_OTHER);
         }
