@@ -142,6 +142,12 @@ class TrajetsType extends AbstractType
 <<<<<<< Updated upstream
 =======
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+=======
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 
@@ -159,9 +165,19 @@ class TrajetsType extends AbstractType
 
     //Verifications trajet meme jour 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
     public function validateJour(EntityManagerInterface $manager,ExecutionContextInterface $context){
 =======
     /*public function validateJour(EntityManagerInterface $manager,ExecutionContextInterface $context){
+>>>>>>> Stashed changes
+<<<<<<< Updated upstream
+=======
+=======
+    /*public function validateJour(EntityManagerInterface $manager,ExecutionContextInterface $context){
+>>>>>>> Stashed changes
 >>>>>>> Stashed changes
         $user = $this->security->getUser();
         $existingvoyage = $manager->getRepository(Trajets::class)->findBy([
@@ -176,9 +192,20 @@ class TrajetsType extends AbstractType
             }
         }
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
     }
 =======
     }*/
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
+<<<<<<< Updated upstream
+=======
+=======
+    }*/
+>>>>>>> Stashed changes
 >>>>>>> Stashed changes
 >>>>>>> Stashed changes
 }
