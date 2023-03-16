@@ -2,30 +2,29 @@
 
 namespace App\Form;
 
-use App\Entity\Trajets;
-use App\Entity\Utilisateurs;
 use App\Entity\Villes;
-use App\Entity\Groupes;
+use App\Entity\Trajets;
 use ConvertirFormatDate;
+use App\Entity\Utilisateurs;
 use Doctrine\DBAL\Types\BooleanType;
 
 use Symfony\Component\Form\AbstractType;
 use App\Repository\UtilisateursRepository;
+use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+// use Symfony\Component\Form\Extension\Core\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-// use Symfony\Component\Form\Extension\Core\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeImmutableType;
-use Symfony\Component\Form\FormTypeInterface;
-use App\Repository\GroupesRepository;
 
 
 use Symfony\Component\Form\FormError;
@@ -63,22 +62,28 @@ class TrajetsType extends AbstractType
             //->add('etat')
             ->add('T_depart', DateTimeType::class, [
                 'widget' => 'single_text',
-                'label' => 'Jour et heure de départ :   '
+                'label' => 'Jour et heure de départ * :   '
             ])
             ->add('T_arrivee', DateTimeType::class, [
                 'widget' => 'single_text',
                 'required'   => false,
-                'label' => 'Jour et heure d\'arrivée    :',
+                'label' => 'Jour et heure d\'arrivée    :      ',
+                'constraints' => [
+                    new GreaterThanOrEqual([
+                        'value' => 'tomorrow',
+                        'message' => 'Votre trajet doit commencer dans plus de 24h.'
+                    ])
+                ]
             ]) 
             ->add('demarrea', EntityType::class, [
                 'class' => Villes::class,
                 'choice_label' => 'nomVille',
-                'label' => 'Ville de départ',
+                'label' => 'Ville de départ * :'
             ])
             ->add('arrivea', EntityType::class, [
                 'class' => Villes::class,
                 'choice_label' => 'nomVille',
-                'label' => "Ville d''arrivée"
+                'label' => "Ville d''arrivée * :"
             ])
 
 

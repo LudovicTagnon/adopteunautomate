@@ -5,15 +5,16 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 #use Assert\Choice;
+use App\Entity\Villes;
+use Assert\GreaterThan;
 use Doctrine\DBAL\Types\Types;
+use Monolog\DateTimeImmutable;
+//use Symfony\Component\Validator\Constraints\DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\TrajetsRepository;
 use Symfony\Component\Validator\Constraints\DateTime;
-//use Symfony\Component\Validator\Constraints\DateTimeImmutable;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
-use Monolog\DateTimeImmutable;
-use App\Entity\Villes;
 
 
 #[ORM\Entity(repositoryClass: TrajetsRepository::class)]
@@ -27,12 +28,20 @@ class Trajets
     {
         $nbPassagerCourant = $this->getNbPassagerCourant();
         $nbPassagerMax = $this->getNbPassagerMax();
+        //
 
         if ($nbPassagerCourant >= $nbPassagerMax) {
             $context->buildViolation('Le nombre de passagers courant doit être inférieur au nombre de passagers maximal.')
                 ->atPath('nbPassagersCourant')
                 ->addViolation();
         }
+/*
+        if ($T_depart < 'tomorrow') {
+            $context->buildViolation('Le départ doit avoir lieu dans plus de 24h.')
+                ->atPath('T_depart')
+                ->addViolation();
+        }
+        */
     }
 
     #[ORM\Id]
@@ -48,6 +57,8 @@ class Trajets
     # 24h de délai
     #[ORM\Column]
     #[Assert\GreaterThan('tomorrow')]
+    //#[Assert\GreaterThan( value="today",
+    // message="La date doit être supérieure ou égale à la date du jour.")]
     private ?\DateTime $T_depart = null;
 
     // arrivée après le départ

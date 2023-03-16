@@ -14,9 +14,11 @@
 
 <div class="example-wrapper">
     <h1>Notifications</h1>
+    <br>
     {% if notifications|length == 0 %}
         <p>Aucune notification</p>
     {% else %}
+    <h2> Notifications non-lues : </h2>
         <ul>
             {% for notification in notifications %} 
                 <div class="notifications {% if notification.isRead() %}read-notification{% endif %}">  
@@ -42,7 +44,20 @@
                 <a  href="{{ path('app_supprimer_notif', {'id': notification.getId()}) }}">
                 <button class="btn btn-warning" >Supprimer la notification</button> 
                 </a>
+                {% endif %}
             </div>
+            {% endfor %}
+            <br>
+            <h2> Notifications lues : </h2> 
+            {% for notification in notifications %}
+            <div class="notifications {% if notification.isRead() %}read-notification{% endif %}"> 
+                {% if notification.isRead() %}          
+                    <li>{{ notification.getMessage() }}</li>
+            </div> 
+                <a  href="{{ path('app_supprimer_notif', {'id': notification.getId()}) }}">
+                <button class="btn btn-danger" >Supprimer la notification</button>
+                </a>
+                {% endif %}
             {% endfor %}
         </ul>
     {% endif %}
