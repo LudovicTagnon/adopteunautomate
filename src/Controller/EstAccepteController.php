@@ -43,6 +43,14 @@ class EstAccepteController extends AbstractController
         $manager->persist($accepte);
         $manager->persist($trajet);
         $manager->flush();
+        // Retirer l'utilisateur accepté de la liste des utilisateurs adoptant ce trajet
+        $adopteRepository = $manager->getRepository(Adopte::class);
+        $adopte = $adopteRepository->findOneBy(['utilisateur' => $utilisateur, 'trajet' => $trajet]);
+
+        if ($adopte) {
+            $manager->remove($adopte);
+            $manager->flush();
+        }
 
         $notificationService->addNotificationAccepteTrajet("Vous avez été accepté au trajet : ".$trajet->__toString(), $utilisateur); //notification
         $this->addFlash('success', "L'utilisateur ".$utilisateur->getNom(). " a été accepté pour le trajet de : ". $trajet->getDemarreA()." vers ".$trajet->getArriveA());

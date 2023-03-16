@@ -320,12 +320,13 @@ public function __toString(): string
 {
     $format = 'd-m-Y H:i:s'; // set the format to use for the date/time values
     $createurTrajet = $this->publie->getNom()." ".$this->publie->getPrenom();
+    $createurTrajetTel = $this->publie->getNumTel();
     $departureCity = $this->demarrea ? $this->demarrea->getnomVille() : '';
     $arrivalCity = $this->arrivea ? $this->arrivea->getnomVille() : '';
     $departureDate = $this->T_depart ? $this->T_depart->format($format) : '';
     $arrivalDate = $this->T_arrivee ? $this->T_arrivee->format($format) : '';
 
-    return sprintf('%s vers %s [%s - %s] par %s ', $departureCity, $arrivalCity, $departureDate, $arrivalDate, $createurTrajet);
+    return sprintf('%s vers %s [%s - %s] par %s (tel : %s) ', $departureCity, $arrivalCity, $departureDate, $arrivalDate, $createurTrajet,$createurTrajetTel);
 }
 
 }
