@@ -66,7 +66,13 @@ class NotificationService
         $notification->setUser($chauffeur);
         $notification->setCreatedAt(new \DateTime());
         if($chauffeur->getAutorisationMail()){ //si ses mails sont autorisés
+            $email = (new Email())
+            ->from('adopteautomate-noreply@example.com')
+            ->to($chauffeur->getEmail())
+            ->subject('Notification - Demande de trajet')
+            ->text($message);
 
+            $this->mailer->send($email);
         }
 
         $this->entityManager->persist($notification);
@@ -97,7 +103,13 @@ class NotificationService
         $notification->setUser($chauffeur);
         $notification->setCreatedAt(new \DateTime());
         if($chauffeur->getAutorisationMail()){ //si ses mails sont autorisés
+            $email = (new Email())
+            ->from('adopteautomate-noreply@example.com')
+            ->to($chauffeur->getEmail())
+            ->subject('Notification - Trajet abandonné')
+            ->text($message);
 
+            $this->mailer->send($email);
         }
 
         $this->entityManager->persist($notification);
