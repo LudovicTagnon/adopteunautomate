@@ -2,35 +2,32 @@
 
 namespace App\Form;
 
-use App\Entity\Villes;
 use App\Entity\Trajets;
-use ConvertirFormatDate;
 use App\Entity\Utilisateurs;
+use App\Entity\Villes;
+use App\Repository\GroupesRepository;
+use ConvertirFormatDate;
 use Doctrine\DBAL\Types\BooleanType;
 
 use Symfony\Component\Form\AbstractType;
 use App\Repository\UtilisateursRepository;
-use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-// use Symfony\Component\Form\Extension\Core\Type\EntityType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+// use Symfony\Component\Form\Extension\Core\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeImmutableType;
+use Symfony\Component\Form\FormTypeInterface;
+use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 
 
-use Symfony\Component\Form\FormError;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormErrorIterator;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 // ajout en ligne de commande: composer require doctrine/doctrine-bundle
 
