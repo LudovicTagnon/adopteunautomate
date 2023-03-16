@@ -8,7 +8,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use App\Entity\Trajets;
 use Doctrine\ORM\EntityManagerInterface;
-#[Route('/trajets')]
 class TrajetsPublicController extends AbstractController
 {
     private $entityManager;
@@ -18,7 +17,7 @@ class TrajetsPublicController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
-    #[Route('/trajets/public', name: 'app_trajets_public')]
+    #[Route('/public', name: 'app_trajets_publics')]
     #[IsGranted('ROLE_USER')]
     public function index(): Response
     {

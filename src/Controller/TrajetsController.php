@@ -112,6 +112,9 @@ class TrajetsController extends AbstractController
     #[Route('/{id}', name: 'app_trajets_show', methods: ['GET'])]
     public function show(Trajets $trajet, Request $request, EntityManagerInterface $manager): Response
     {
+        if (!$trajet) {
+            throw $this->createNotFoundException('The Trajets object was not found.');
+        }
         // modifications automatiques de l'état d'un trajet
         // dans l'affichage
         $demain = new DateTime('tomorrow');
