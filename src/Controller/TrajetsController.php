@@ -2,19 +2,22 @@
 
 namespace App\Controller;
 
-use App\Entity\Villes;
+use DateTime;
+use Symfony\Component\VarDumper\VarDumper;
 use App\Entity\Trajets;
+use App\Entity\Villes;
 use App\Form\TrajetsType;
 use App\Entity\Utilisateurs;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use App\Repository\TrajetsRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\VarDumper\VarDumper;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Form\FormError;
+
 
 #[Route('/trajets')]
 class TrajetsController extends AbstractController
@@ -42,8 +45,6 @@ class TrajetsController extends AbstractController
         
         $user = $this->getUser();
         $trajet = new Trajets();
-        //$villedepart= new Villes();
-        //$villearrivee= new Villes();
         $form = $this->createForm(TrajetsType::class, $trajet);
         $form->handleRequest($request);
 
@@ -59,6 +60,29 @@ class TrajetsController extends AbstractController
             $villeArrivee = $manager->getRepository(Villes::class)->find(['id' => $form->getData()->getArriveA()]);
             $trajet->setArriveA($villeArrivee);
             $trajet->setDemarreA($villeDepart);
+            $public = $form->get('public')->getData();
+            if ($trajet->getPublic() === false && $form->get('groupes')->getData()->isEmpty()) {
+                $form->get('groupes')->addError(new FormError('Veuillez choisir au moins un groupe pour un trajet privé'));
+                $this->addFlash(
+                    'warning',
+                    'Vous devez sélectionner au moins 1 groupe !'
+                );
+                return $this->render('trajets/new.html.twig', [
+                    'form' => $form->createView(),
+                    'trajet' => $trajet,
+                    'user' => $user,
+                ]);
+            }
+            if (!$public) {
+                // Get the selected groups
+                $groupes = $form->get('groupes')->getData();
+                if (!empty($groupes)) {
+                    foreach ($groupes as $groupe) {
+                        $trajet->addGroupe($groupe);
+                    }
+                }
+            }
+
 
            
             // champs remplis d'office:
@@ -178,6 +202,46 @@ class TrajetsController extends AbstractController
 
         $manager->flush();
         return $this->redirectToRoute('app_trajets_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+   #[Route('/rechercher-trajet', name: 'app_trajets_search', methods: ['GET'])]
+    public function search(Request $request, EntityManagerInterface $manager): Response
+    {
+        $current_user = $this->getUser();
+
+        if ($current_user) {
+            $villes = $manager->getRepository(Villes::class)->findAll();
+
+            $villeDepart = $request->query->get('ville_depart');
+            $villeArrivee = $request->query->get('ville_arrivee');
+            $jourDepart = $request->query->get('date_depart');
+
+            $trajets = $manager->getRepository(Trajets::class)->findByCritere($current_user, $villeDepart, $villeArrivee,  $jourDepart);
+
+            $dateA = DateTime::createFromFormat('Y-m-d', $jourDepart);
+
+            $dateDepart = null;
+
+            if ($dateA instanceof DateTime) {
+                $dateDepart = $dateA->format('d-m-Y');
+            } else {
+                // handle the case where the date string is invalid
+            }
+
+            return $this->render('trajets/search.html.twig', [
+                'trajets' => $trajets,
+                'nb_trajets' => count($trajets),
+                'villes' => $villes,
+                'depart' => $villeDepart,
+                'arrivee' => $villeArrivee,
+                'date' => $dateDepart,
+                'utilisateur_actuel' => $current_user,
+            ]);
+        } else {
+            return $this->render('home/index.html.twig', [
+                'controller_name' => 'HomeController',
+            ]);
+        }
     }
     
 }

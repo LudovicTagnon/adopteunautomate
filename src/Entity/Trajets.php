@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 #use Assert\Choice;
 use App\Entity\Villes;
 use Assert\GreaterThan;
@@ -42,12 +44,6 @@ class Trajets
         */
     }
 
-    //public function setLessthan(): void
-    //{
-    //    $this->nb_passager_courant <$this->nb_passager_max;
-    //}
-
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -82,9 +78,6 @@ class Trajets
     # places prises: entre 0 et nb_passager_max
     #[ORM\Column]
     #[Assert\PositiveOrZero]
-    //#[Assert\PositiveOrZero($nb_passager_max - $nb_passager_courant)]
-    //#[Assert\Range(min: 0, max: $this.$nb_passager_max)]
-    //#[Assert\LessThanOrEqual('$this.$nb_passager_max')]
     private ?int $nb_passager_courant = 0;
 
     # le voyage est public a priori
@@ -105,15 +98,14 @@ class Trajets
     #[ORM\ManyToOne(inversedBy: 'arrivant', cascade:["persist"])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Villes $arrivea = null;
-/*
-    #[ORM\OneToOne(inversedBy: 'depart_de', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Villes $demarre_de = null;
 
-    #[ORM\OneToOne(inversedBy: 'arrivee_de', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Villes $arrive_a = null;
-*/
+    #[ORM\OneToMany(mappedBy: 'trajets', targetEntity: Groupes::class)]
+    private Collection $groupes;
+    public function __construct()
+    {
+        $this->groupes = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -134,6 +126,31 @@ class Trajets
     public function getTDepart(): ?\DateTime
     {
         return $this->T_depart;
+    }
+
+    public function getJourDepartString(): ?string
+    {
+        return $this->T_depart->format('d-m-y');
+    }
+
+    public function getHeureDepartString(): ?string
+    {
+        return $this->T_depart->format('H-i');
+    }
+
+    public function getJourArriveeString(): ?string
+    {
+        return $this->T_arrivee->format('d-m-y');
+    }
+
+    public function getHeureArriveeString(): ?string
+    {
+        return $this->T_arrivee->format('H-i');
+    }
+
+    public function getTempsTrajetString(): ?String
+    {
+        return date_diff($this->T_depart,$this->T_arrivee)->format('%H-%I');
     }
 
     public function setTDepart(\DateTime $T_depart): self
@@ -227,57 +244,32 @@ class Trajets
 
         return $this;
     }
-/*
-    public function getDemarreDe(): ?Villes
+
+    public function getDemarreA(): ?Villes
     {
-        return $this->demarre_de;
+        return $this->demarrea;
     }
 
-    public function setDemarreDe(Villes $demarre_de): self
+    public function setDemarreA(?Villes $demarrea): self
     {
-        $this->demarre_de = $demarre_de;
+        $this->demarrea = $demarrea;
 
         return $this;
     }
 
     public function getArriveA(): ?Villes
     {
-        return $this->arrive_a;
+        return $this->arrivea;
     }
 
-    public function setArriveA(Villes $arrive_a): self
+    public function setArriveA(?Villes $arrivea): self
     {
-        $this->arrive_a = $arrive_a;
+        $this->arrivea = $arrivea;
 
         return $this;
     }
-*/
 
-public function getDemarreA(): ?Villes
-{
-    return $this->demarrea;
-}
-
-public function setDemarreA(?Villes $demarrea): self
-{
-    $this->demarrea = $demarrea;
-
-    return $this;
-}
-
-public function getArriveA(): ?Villes
-{
-    return $this->arrivea;
-}
-
-public function setArriveA(?Villes $arrivea): self
-{
-    $this->arrivea = $arrivea;
-
-    return $this;
-}
-
-public function addDepart(Villes $ville): self
+    public function addDepart(Villes $ville): self
     {
         if (!$this->demarrea->contains($ville)) {
             $this->demarrea = $ville;
@@ -286,5 +278,68 @@ public function addDepart(Villes $ville): self
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Groupes>
+     */
+    public function getGroupes(): Collection
+    {
+        return $this->groupes;
+    }
+
+    public function addGroupe(Groupes $groupe): self
+    {
+        if (!$this->groupes->contains($groupe)) {
+            $this->groupes->add($groupe);
+            $groupe->setTrajets($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGroupe(Groupes $groupe): self
+    {
+        if ($this->groupes->removeElement($groupe)) {
+            // set the owning side to null (unless already changed)
+            if ($groupe->getTrajets() === $this) {
+                $groupe->setTrajets(null);
+            }
+        }
+
+        return $this;
+    }
+    public function getPublic(): ?bool
+    {
+        return $this->public;
+    }
+
+    public function incrementNbPassagerCourant(): self
+{
+    $this->nb_passager_courant++;
+    $this->nb_passager_max--;
+    return $this;
+}
+
+public function decrementNbPassagerCourant(): self
+{
+    if($this->nb_passager_courant!=0){
+        $this->nb_passager_courant--;
+        $this->nb_passager_max++;
+    }
+    return $this;
+}
+
+public function __toString(): string
+{
+    $format = 'd-m-Y H:i:s'; // set the format to use for the date/time values
+    $createurTrajet = $this->publie->getNom()." ".$this->publie->getPrenom();
+    $createurTrajetTel = $this->publie->getNumTel();
+    $departureCity = $this->demarrea ? $this->demarrea->getnomVille() : '';
+    $arrivalCity = $this->arrivea ? $this->arrivea->getnomVille() : '';
+    $departureDate = $this->T_depart ? $this->T_depart->format($format) : '';
+    $arrivalDate = $this->T_arrivee ? $this->T_arrivee->format($format) : '';
+
+    return sprintf('%s vers %s [%s - %s] par %s (tel : %s) ', $departureCity, $arrivalCity, $departureDate, $arrivalDate, $createurTrajet,$createurTrajetTel);
+}
 
 }

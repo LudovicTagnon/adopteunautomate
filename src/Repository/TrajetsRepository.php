@@ -3,7 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\Trajets;
+use App\Entity\Villes;
+use App\Repository\VillesRepository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -16,9 +19,12 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class TrajetsRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private EntityManagerInterface $entityManager;
+
+    public function __construct(ManagerRegistry $registry,EntityManagerInterface $entityManager)
     {
         parent::__construct($registry, Trajets::class);
+        $this->entityManager = $entityManager;
     }
 
     public function save(Trajets $entity, bool $flush = false): void
@@ -38,29 +44,36 @@ class TrajetsRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+    
+    public function findByCritere($user, $villeDepart, $villeArrivee, $jourDepart)
+    {
+        $queryBuilder = $this->entityManager->createQueryBuilder();
 
-//    /**
-//     * @return Trajets[] Returns an array of Trajets objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('t')
-//            ->andWhere('t.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('t.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+        $villeDepartEntity = $this->getEntityManager()->getRepository(Villes::class)->findByVille($villeDepart);
+        $villeArriveeEntity = $this->getEntityManager()->getRepository(Villes::class)->findByVille($villeArrivee);
 
-//    public function findOneBySomeField($value): ?Trajets
-//    {
-//        return $this->createQueryBuilder('t')
-//            ->andWhere('t.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        //dump($villeDepartEntity);
+        //dump($villeArriveeEntity);
+
+        $queryBuilder->select('t')
+            ->from(Trajets::class, 't')
+            ->where('t.publie != :user')
+            ->setParameter('user',$user)
+            ->andWhere('t.T_depart >= :dateDepart')
+            ->setParameter('dateDepart', $jourDepart);
+
+        if (!is_null($villeDepartEntity)) {
+            $queryBuilder->andWhere('t.demarrea = :villeDepart');
+            $queryBuilder->setParameter('villeDepart', $villeDepartEntity->getId());
+        }
+
+        if (!is_null($villeArriveeEntity)) {
+            $queryBuilder->andWhere('t.arrivea = :villeArrivee');
+            $queryBuilder->setParameter('villeArrivee', $villeArriveeEntity->getId());
+        }
+
+        $query = $queryBuilder->getQuery();
+
+        return $query->getResult();
+    }
 }

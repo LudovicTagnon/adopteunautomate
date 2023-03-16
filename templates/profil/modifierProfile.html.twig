@@ -21,6 +21,11 @@
             {{ form_label(form.email, 'Adresse Mail') }}
             {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
         </div>
+        {# AUTORISATION MAIL #}
+        <div class="form-group">
+        {{ form_label(form.autorisation_mail, 'Autorisation de notification mail :') }}
+        {{ form_widget(form.autorisation_mail, {'attr': {'class': 'form-control'}}) }}
+        </div>
         {# NOM #}
         <div class="form-group">
         {{form_errors(form.nom)}}

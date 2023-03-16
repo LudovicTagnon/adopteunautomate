@@ -15,13 +15,14 @@ class NotificationController extends AbstractController
 {
     #[Route('/notification', name: 'app_notification')]
     #[IsGranted('ROLE_USER')]
-    public function index(NotificationService $notificationService): Response
+    public function index(NotificationService $notificationService,EntityManagerInterface $manager): Response
     {
         $notifications = $notificationService->getNotifications($this->getUser());
 
         return $this->render('notification/index.html.twig', [
             'controller_name' => 'NotificationController',
             'notifications' => $notifications,
+            'trajets' => $notifications,
         ]);
     }
 
