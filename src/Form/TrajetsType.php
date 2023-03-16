@@ -139,6 +139,11 @@ class TrajetsType extends AbstractType
             'data_class' => Trajets::class,
         ]);
     }
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+=======
+>>>>>>> Stashed changes
 
     //Verification si les dates sont valides (dateDepart < date)
     public function validateDates($value,ExecutionContextInterface $context, $payload)
@@ -153,7 +158,11 @@ class TrajetsType extends AbstractType
     }
 
     //Verifications trajet meme jour 
+<<<<<<< Updated upstream
     public function validateJour(EntityManagerInterface $manager,ExecutionContextInterface $context){
+=======
+    /*public function validateJour(EntityManagerInterface $manager,ExecutionContextInterface $context){
+>>>>>>> Stashed changes
         $user = $this->security->getUser();
         $existingvoyage = $manager->getRepository(Trajets::class)->findBy([
             'publie' => $user,
@@ -166,5 +175,10 @@ class TrajetsType extends AbstractType
                 ->addViolation();
             }
         }
+<<<<<<< Updated upstream
     }
+=======
+    }*/
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 }

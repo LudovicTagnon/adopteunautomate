@@ -60,6 +60,11 @@ class TrajetsController extends AbstractController
             $trajet->setArriveA($villeArrivee);
             $trajet->setDemarreA($villeDepart);
 
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+=======
+>>>>>>> Stashed changes
             // Check if there is already a trip on the same day
             $dateDepart = $trajet->getTDepart();
             $dateArrivee= $trajet->getTArrivee();
@@ -77,7 +82,11 @@ class TrajetsController extends AbstractController
             $existingvoyage = $manager->getRepository(Trajets::class)->findBy([
                 'publie' => $user,
             ]);
+<<<<<<< Updated upstream
             foreach($existingvoyage as $trip){
+=======
+            /*foreach($existingvoyage as $trip){
+>>>>>>> Stashed changes
                 if($dateDepart->getTimestamp() <= $trip->getTArrivee()->getTimestamp()){
                     $this->addFlash(
                         'errordate',
@@ -85,8 +94,41 @@ class TrajetsController extends AbstractController
                     );
                     return $this->redirectToRoute('app_trajets_new');
                 }
+<<<<<<< Updated upstream
             }
 
+=======
+            }*/
+            $jourdepartstring = $dateDepart->format('Y-m-d');
+            $jourdeparttest = new DateTime();
+            $jourdeparttest = $dateDepart;
+            $jourvoyagetest = new DateTime(); 
+            foreach($existingvoyage as $voyage){
+                $jourvoyagetest = $voyage->getTDepart();
+                $jourvoyage = $voyage->getTDepart()->format('Y-m-d');
+                /*if($dateDepart->format('Y-m-d') == $jourvoyage->format('Y-m-d')){
+                    $this->addFlash(
+                        'errordate',
+                        'Vous avez deja un trajet prévu à ce jour.'
+                    );
+                }*/
+                /*if(strcmp($jourdepartstring,$jourvoyage) == 0){
+                    $this->addFlash(
+                        'errordate',
+                        'Vous avez deja un trajet prévu à ce jour.'
+                    );
+                }*/
+                if($jourdeparttest->format('Y-m-d') == $jourvoyagetest->format('Y-m-d')){
+                    $this->addFlash(
+                        'errordate',
+                        'Vous avez deja un trajet prévu à ce jour.'
+                    );
+                }
+                
+            }
+
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
            
             // champs remplis d'office:
             $trajet->setPublie($this->getUser());
@@ -166,6 +208,11 @@ class TrajetsController extends AbstractController
 
 
         if ($form->isSubmitted() && $form->isValid()) {
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+=======
+>>>>>>> Stashed changes
             $user = $this->getUser();
             // Check if there is already a trip on the same day
             $dateDepart = $trajet->getTDepart();
@@ -184,7 +231,11 @@ class TrajetsController extends AbstractController
             $existingvoyage = $manager->getRepository(Trajets::class)->findBy([
                 'publie' => $user,
             ]);
+<<<<<<< Updated upstream
             foreach($existingvoyage as $trip){
+=======
+            /*foreach($existingvoyage as $trip){
+>>>>>>> Stashed changes
                 if($dateDepart->getTimestamp() <= $trip->getTArrivee()->getTimestamp()){
                     $this->addFlash(
                         'errordate',
@@ -192,7 +243,20 @@ class TrajetsController extends AbstractController
                     );
                     return $this->redirectToRoute('app_trajets_new');
                 }
+<<<<<<< Updated upstream
             }
+=======
+            }*/
+            foreach($existingvoyage as $voyage){
+                if($dateDepart->format('d') == $voyage->format('d')){
+                    $this->addFlash(
+                        'errordate',
+                        'Vous avez deja un trajet prévu à ce jour.'
+                    );
+                }
+            }
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
             $trajetsRepository->save($trajet, true);
             
             $manager->persist($trajet);
