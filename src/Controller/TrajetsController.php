@@ -61,7 +61,7 @@ class TrajetsController extends AbstractController
              $trajet->setDemarreA($villeDepart);
 
 
-            // Check if there is already a trip on the same day
+            /*// Check if there is already a trip on the same day
             $dateDepart = $trajet->getTDepart();
             $dateArrivee= $trajet->getTArrivee();
             $existingTrips = $manager->getRepository(Trajets::class)->findBy([
@@ -86,7 +86,34 @@ class TrajetsController extends AbstractController
                     );
                     return $this->redirectToRoute('app_trajets_new');
                 }
+            }*/
+            //verification si le trajet est possible
+            $refus = false;
+            $existingvoyage = $manager->getRepository(Trajets::class)->findBy([
+                'publie' => $user,
+            ]);
+            foreach($existingvoyage as $voyage){
+                //si heure arrivée du trajet en BDD = null on le set à HDepart +24heures
+                if($voyage->getTArrivee() == 'null'){
+                    $voyage->setTArrive($voyage->getTDepart()+'24 hours');
+                }
+                //si heure arrivée du trajet crée = null on le set à HDepart +24heures
+                if($trajet->getTArrivee() == 'null'){
+                    $trajet->setTArrivee($trajet->getTDepart()+'24 hours');
+                }
+                //verification sur les contraintes de dates
+                if(($trajet->getTArrivee() < $voyage->getTDepart()) && ($voyage->getTDepart() < $voyage->getTArrivee())){
+                    $refus = true;
+                    $this->addFlash(
+                        'errordate',
+                        'Vous avez déjà un trajet prévu à cette date'
+                    );
+                    return $this->redirectToRoute('app_trajets_new');
+                }
+                
             }
+
+
             
 
 
