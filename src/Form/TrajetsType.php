@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Groupes;
 use App\Entity\Villes;
 use App\Entity\Trajets;
 use App\Repository\GroupesRepository;
