@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Villes;
 use App\Entity\Trajets;
+use App\Entity\Groupes;
 use App\Repository\GroupesRepository;
 use ConvertirFormatDate;
 use App\Entity\Utilisateurs;
@@ -143,7 +144,9 @@ class TrajetsType extends AbstractType
                 'multiple' => false,
                 'label' => 'Trajet public ou privé :   '
             ])
+            
             ->add('groupes', EntityType::class, [
+                // la ligne qui suit met le bazar
                 'class' => Groupes::class,
                 'choices' => $this->groupesRepository->findBy(['createur' => $userConnected]),
                 'choice_label' => 'nom_groupe',
