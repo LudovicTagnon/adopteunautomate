@@ -141,7 +141,12 @@ class Trajets
 
     public function getTempsTrajetString(): ?String
     {
+        if ($this->T_arrivee == null)
+        { $this->T_arrivee = $this->T_depart ;
+        $this->T_arrivee->modify('+12 hours');
+        }
         return date_diff($this->T_depart,$this->T_arrivee)->format('%H-%I');
+        
     }
 
     public function setTDepart(\DateTime $T_depart): self
