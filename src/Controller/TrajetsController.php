@@ -50,10 +50,6 @@ class TrajetsController extends AbstractController
 
         
         if ($form->isSubmitted() && $form->isValid()) {
-<<<<<<<<< Temporary merge branch 1
-=========
-           
->>>>>>>>> Temporary merge branch 2
             //On récupère les données du formulaire
             $trajet = $form->getData();
 
