@@ -10,6 +10,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Entity\Groupes;
 
 #[ORM\Entity(repositoryClass: UtilisateursRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
@@ -69,8 +70,8 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: "boolean")]
     private ?bool $compte_actif = true;
 
-    #[ORM\OneToMany(mappedBy: 'utilisateurs', targetEntity: Groupes::class, orphanRemoval: true)]
-    private $groupes;
+    #[ORM\OneToMany(mappedBy: 'createur', targetEntity: Groupes::class, orphanRemoval: true)]
+    public $groupes;
 
     #[ORM\OneToMany(mappedBy: 'publie', targetEntity: Trajets::class)]
     private Collection $trajets;
@@ -81,11 +82,15 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity:"App\Entity\Adopte", mappedBy:"utilisateur")]
     private $adoptions;
 
+    #[ORM\OneToMany(mappedBy: 'utilisateur', targetEntity: EstAccepte::class, orphanRemoval: true)]
+    private Collection $trajet;
+
     public function __construct()
     {
         $this->notifications = new ArrayCollection();
         $this->trajets = new ArrayCollection();
         $this->adoptions = new ArrayCollection();
+        $this->trajet = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -367,5 +372,20 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+        public function getGroupes(): Collection
+    {
+        return $this->groupes;
+    }
+
+        /**
+         * @return Collection<int, EstAccepte>
+         */
+        public function getTrajet(): Collection
+        {
+            return $this->trajet;
+        }
+
+
 
 }

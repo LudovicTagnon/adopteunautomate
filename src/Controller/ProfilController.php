@@ -63,7 +63,7 @@ class ProfilController extends AbstractController
         }
             $user = $form->getData();
             //envoi de notifications pour la modif de compte
-            $notifs = $notificationService->addNotification("Le compte à été modifié", $user);
+            $notifs = $notificationService->addNotificationModifProfil("Le compte à été modifié", $user);
             /*$notification = new Notification();
             $message = "Le compte à été modifié";
             $notification->setMessage($message);

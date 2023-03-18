@@ -23,13 +23,29 @@
                 {% if notification.isRead() %}          
                     <li>{{ notification.getMessage() }} (lue)</li>
                 {% else %}
+            {% for notification in notifications %} 
+                <div class="notifications {% if notification.isRead() %}read-notification{% endif %}">  
+                {% if notification.isRead() %}        
+                    <li>{{ notification.getMessage() }} (lue)</li>
+                    {% if notification.getTypeNotif() == 2 %}  
+                        <a href="{{ path('app.estAccepte', {'trajetId': notification.getTrajetQuiEstDemande().id, 'utilisateurId': notification.getUserQuiDemandeTrajet().id,'notificationId': notification.getId()}) }}" class="btn btn-success">Accepter</a>
+                        <a href="{{ path('app.estRefuse', {'trajetId': notification.getTrajetQuiEstDemande().id, 'utilisateurId': notification.getUserQuiDemandeTrajet().id,'notificationId': notification.getId()}) }}" class="btn btn-danger">Refuser</a>
+                    {% endif %}
+                {% else %}
                     <li>{{ notification.getMessage() }}</li>
+                    {% if notification.getTypeNotif() == 2 %}
+                        {% if notification.getTrajetQuiEstDemande() != null and notification.getUserQuiDemandeTrajet() != null %}
+                        <a href="{{ path('app.estAccepte', {'trajetId': notification.getTrajetQuiEstDemande().id, 'utilisateurId': notification.getUserQuiDemandeTrajet().id, 'notificationId': notification.getId()}) }}" class="btn btn-success">Accepter ce passager</a>
+                        <a href="{{ path('app.estRefuse', {'trajetId': notification.getTrajetQuiEstDemande().id, 'utilisateurId': notification.getUserQuiDemandeTrajet().id,'notificationId': notification.getId()}) }}" class="btn btn-danger">Refuser ce passager</a>
+                        {% endif %}
+                    {% endif %}
                     <form action="{{ path('app_mark_notification_as_read', {'id': notification.getId()}) }}" method="post" style="display:inline;">
                         <button type="submit" class="btn btn-primary">Marquer comme lu</button>
                     </form>
+
                 {% endif %}
                 <a  href="{{ path('app_supprimer_notif', {'id': notification.getId()}) }}">
-                <button class="btn btn-danger" >Supprimer la notification</button> 
+                <button class="btn btn-warning" >Supprimer la notification</button> 
                 </a>
             </div>
             {% endfor %}

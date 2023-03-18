@@ -13,10 +13,12 @@ use App\Entity\Villes;
 use App\Entity\Trajets;
 use App\Entity\Adopte;
 
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(Request $request, EntityManagerInterface $manager, NotificationService $notificationService): Response
+    public function index(Request $request, EntityManagerInterface $manager, NotificationService $notificationService,MailerInterface $mailer): Response
     {
         $user = $this->getUser();
         $villes = $manager->getRepository(Villes::class)->findAll();

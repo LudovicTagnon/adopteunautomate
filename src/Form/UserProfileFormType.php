@@ -59,6 +59,10 @@ class UserProfileFormType extends AbstractType
                 ],
                 'required' => true,
             ])
+            ->add('autorisation_mail', CheckboxType::class, [
+                'required' => false,
+                'attr' => ['autocomplete' => 'autorisation_mail'],
+            ])
             ->add('imageFile', FileType::class, [
                 'required' => false,
                 'mapped' => false,

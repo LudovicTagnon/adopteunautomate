@@ -2,14 +2,19 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+#use Assert\Choice;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 #use Assert\Choice;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\TrajetsRepository;
 use Symfony\Component\Validator\Constraints\DateTime;
-//use Symfony\Component\Validator\Constraints\DateTimeImmutable;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
+////use Symfony\Component\Validator\Constraints\DateTimeImmutable;
+use Symfony\Component\Validator\Constraints\DateTimeImmutable;
+
 use Monolog\DateTimeImmutable;
 use App\Entity\Villes;
 
@@ -85,6 +90,13 @@ class Trajets
     #[ORM\ManyToOne(inversedBy: 'arrivant', cascade:["persist"])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Villes $arrivea = null;
+
+    #[ORM\OneToMany(mappedBy: 'trajets', targetEntity: Groupes::class)]
+    private Collection $groupes;
+    public function __construct()
+    {
+        $this->groupes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -258,5 +270,68 @@ class Trajets
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Groupes>
+     */
+    public function getGroupes(): Collection
+    {
+        return $this->groupes;
+    }
+
+    public function addGroupe(Groupes $groupe): self
+    {
+        if (!$this->groupes->contains($groupe)) {
+            $this->groupes->add($groupe);
+            $groupe->setTrajets($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGroupe(Groupes $groupe): self
+    {
+        if ($this->groupes->removeElement($groupe)) {
+            // set the owning side to null (unless already changed)
+            if ($groupe->getTrajets() === $this) {
+                $groupe->setTrajets(null);
+            }
+        }
+
+        return $this;
+    }
+    public function getPublic(): ?bool
+    {
+        return $this->public;
+    }
+
+    public function incrementNbPassagerCourant(): self
+{
+    $this->nb_passager_courant++;
+    $this->nb_passager_max--;
+    return $this;
+}
+
+public function decrementNbPassagerCourant(): self
+{
+    if($this->nb_passager_courant!=0){
+        $this->nb_passager_courant--;
+        $this->nb_passager_max++;
+    }
+    return $this;
+}
+
+public function __toString(): string
+{
+    $format = 'd-m-Y H:i:s'; // set the format to use for the date/time values
+    $createurTrajet = $this->publie->getNom()." ".$this->publie->getPrenom();
+    $createurTrajetTel = $this->publie->getNumTel();
+    $departureCity = $this->demarrea ? $this->demarrea->getnomVille() : '';
+    $arrivalCity = $this->arrivea ? $this->arrivea->getnomVille() : '';
+    $departureDate = $this->T_depart ? $this->T_depart->format($format) : '';
+    $arrivalDate = $this->T_arrivee ? $this->T_arrivee->format($format) : '';
+
+    return sprintf('%s vers %s [%s - %s] par %s (tel : %s) ', $departureCity, $arrivalCity, $departureDate, $arrivalDate, $createurTrajet,$createurTrajetTel);
+}
 
 }
