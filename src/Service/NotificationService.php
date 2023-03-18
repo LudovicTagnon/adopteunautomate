@@ -34,7 +34,11 @@ class NotificationService
             ->subject('Notification - Modification du profil')
             ->text($message);
 
-            $this->mailer->send($email);
+            try {
+                $this->mailer->send($email);
+            } catch (\Symfony\Component\Mailer\Exception\TransportExceptionInterface $e) {
+                // Handle the exception here
+            }
         }
 
         $this->entityManager->persist($notification);
@@ -52,7 +56,6 @@ class NotificationService
             ->to($user->getEmail())
             ->subject('Notification - Trajet adopté')
             ->text($message);
-
             $this->mailer->send($email);
         }
         //puis on envoi un mail au chauffeur
