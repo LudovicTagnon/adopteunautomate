@@ -16,8 +16,9 @@
                 </tr>
             </thead>
             <tbody>
+                {% set now = date() %}
                 {% for trajet in trajets %}
-                {% if trajet.publie.id != user.id and trajet.getNbPassagerCourant() < trajet.getNbPassagerMax()%}
+                {% if trajet.publie.id != user.id and trajet.getNbPassagerCourant() < trajet.getNbPassagerMax() and trajet.getTDepart() > now %}
                     <tr>
                         <td>{{ trajet.getPublie().getNom()}} {{ trajet.getPublie().getPrenom() }}</td>
                         <td>{{ trajet.demarrea.getnomVille() }} - {{ trajet.getJourDepartString() }} {{ trajet.getHeureDepartString() }}</td>
@@ -36,11 +37,16 @@
                                     {% set trajet_deja_adopte = true %}
                                 {% endif %}
                             {% endfor %}
-                            {% if trajet_deja_adopte == false %}
-                            <a href="{{ path('app_trajet.adopter_trajet', {'trajetId': trajet.id, 'utilisateurId': user.id}) }}" class="btn btn-success">Adopter le trajet</a>                     
-                            {% else %}
-                            <a href="{{ path('app_trajet.abandonner_trajet', {'trajetId': trajet.id, 'utilisateurId': user.id}) }}" class="btn btn-danger">Abandonner le trajet</a>                            {% endif %}
-                            {% endif %}
+
+                             
+                             {% if (trajet.TDepart  > now)  %}
+
+                                {% if trajet_deja_adopte == false %}
+                                <a href="{{ path('app_trajet.adopter_trajet', {'trajetId': trajet.id, 'utilisateurId': user.id}) }}" class="btn btn-success">Adopter le trajet</a>                     
+                                {% else %}
+                                <a href="{{ path('app_trajet.abandonner_trajet', {'trajetId': trajet.id, 'utilisateurId': user.id}) }}" class="btn btn-danger">Abandonner le trajet</a>                            {% endif %}
+                                {% endif %}
+                            {% endif %}    
                         </td>
                     </tr>
                 {% endif %}
