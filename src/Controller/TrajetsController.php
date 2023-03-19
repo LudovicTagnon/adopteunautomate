@@ -17,7 +17,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Form\FormError;
-
+use App\Service\NotificationService;
+use App\Entity\EstAccepte;
 
 #[Route('/trajets')]
 class TrajetsController extends AbstractController
@@ -147,8 +148,9 @@ class TrajetsController extends AbstractController
 
     
     #[Route('/{id}/edit', name: 'app_trajets_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Trajets $trajet, TrajetsRepository $trajetsRepository, EntityManagerInterface $manager): Response
+    public function edit(Request $request, Trajets $trajet, TrajetsRepository $trajetsRepository, EntityManagerInterface $manager, NotificationService $notificationService): Response
     {
+        $trajetAncien = $trajet->__toString();
         $form = $this->createForm(TrajetsType::class, $trajet);
         $form->handleRequest($request);
         $trajet = $form->getData();
@@ -171,6 +173,16 @@ class TrajetsController extends AbstractController
             $manager->persist($trajet);
 
             $manager->flush();
+            $users = [];
+            //ENVOI DE LA NOTIFICATION A TOUS LES UTILISATEURS INSCRITS AU TRAJET
+            $estAcceptes = $manager->getRepository(EstAccepte::class)->findBy(['trajet' => $trajet]);
+            foreach ($estAcceptes as $estAccepte) {
+                $users[] = $estAccepte->getUtilisateur();
+            }
+    
+            foreach ($users as $user) {
+                $notificationService->addNotificationModifTrajet("Le trajet : ".$trajetAncien." a été modifié, voici le nouveau trajet : ".$trajet->__toString(),$user);
+            }
             return $this->redirectToRoute('app_trajets_index', [], Response::HTTP_SEE_OTHER);
         }
 
