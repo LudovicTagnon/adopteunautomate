@@ -12,10 +12,10 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * @extends ServiceEntityRepository<Adopte>
  *
- * @method EstDans|null find($id, $lockMode = null, $lockVersion = null)
- * @method EstDans|null findOneBy(array $criteria, array $orderBy = null)
- * @method EstDans[]    findAll()
- * @method EstDans[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Adopte|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Adopte|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Adopte[]    findAll()
+ * @method Adopte[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class AdopteRepository extends ServiceEntityRepository
 {

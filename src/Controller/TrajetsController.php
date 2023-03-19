@@ -50,12 +50,11 @@ class TrajetsController extends AbstractController
 
         
         if ($form->isSubmitted() && $form->isValid()) {
-           
             //On récupère les données du formulaire
             $trajet = $form->getData();
 
             //On vérifie d'abord si les villes existent déjà dans la base de donnée
-
+            // var_dump($form->get('demarrea')->getData());
             $villeDepart = $manager->getRepository(Villes::class)->find(['id' => $form->getData()->getDemarreA()]);
             $villeArrivee = $manager->getRepository(Villes::class)->find(['id' => $form->getData()->getArriveA()]);
             $trajet->setArriveA($villeArrivee);
@@ -84,7 +83,6 @@ class TrajetsController extends AbstractController
             }
 
 
-           
             // champs remplis d'office:
             $trajet->setPublie($this->getUser());
             $trajet->setEtat('ouvert');
@@ -109,8 +107,8 @@ class TrajetsController extends AbstractController
     }
     
 
-    #[Route('/{id}', name: 'app_trajets_show', methods: ['GET'])]
-    public function show(Trajets $trajet, Request $request, EntityManagerInterface $manager): Response
+    #[Route('/{id}/visualiser', name: 'app_trajets_show', methods: ['GET'])]
+    public function show(Trajets $trajet, EntityManagerInterface $manager): Response
     {
         if (!$trajet) {
             throw $this->createNotFoundException('The Trajets object was not found.');
@@ -148,7 +146,7 @@ class TrajetsController extends AbstractController
 
     
     #[Route('/{id}/edit', name: 'app_trajets_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Trajets $trajet, TrajetsRepository $trajetsRepository, EntityManagerInterface $manager): Response
+    public function edit(Request $request, Trajets $trajet, TrajetsRepository $trajetsRepository): Response
     {
         $form = $this->createForm(TrajetsType::class, $trajet);
         $form->handleRequest($request);
@@ -168,10 +166,7 @@ class TrajetsController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $trajetsRepository->save($trajet, true);
-            
-            $manager->persist($trajet);
 
-            $manager->flush();
             return $this->redirectToRoute('app_trajets_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -184,9 +179,9 @@ class TrajetsController extends AbstractController
 
     
     #[Route('/{id}', name: 'app_trajets_delete', methods: ['POST'])]
-    public function delete(Request $request, Trajets $trajet, TrajetsRepository $trajetsRepository, EntityManagerInterface $manager): Response
+    public function delete(Request $request, Trajets $trajet, TrajetsRepository $trajetsRepository): Response
     {
-        $demain = new DateTime('+24 hours');
+        $demain = new DateTime('tomorrow');
         if ($trajet->getTDepart() <$demain ) {
             $trajet->setEtat('bloqué');
             $this->addFlash(
@@ -198,13 +193,12 @@ class TrajetsController extends AbstractController
         }
         
         if ($this->isCsrfTokenValid('delete'.$trajet->getId(), $request->request->get('_token'))) {
-            //$trajet->setEtat('annulé');
+            $trajet->setEtat('annulé');
             // si on l'enlève carrément:
             $trajetsRepository->remove($trajet, true);
         }
-        //$manager->persist($trajet);
+        $manager->persist($trajet);
 
-        $manager->flush();
         return $this->redirectToRoute('app_trajets_index', [], Response::HTTP_SEE_OTHER);
     }
 
