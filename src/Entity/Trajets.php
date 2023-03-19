@@ -4,15 +4,12 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-#use Assert\Choice;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
-#use Assert\Choice;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\TrajetsRepository;
 use Symfony\Component\Validator\Constraints\DateTime;
-////use Symfony\Component\Validator\Constraints\DateTimeImmutable;
 
 use Monolog\DateTimeImmutable;
 use App\Entity\Villes;
@@ -136,12 +133,22 @@ class Trajets
 
     public function getHeureArriveeString(): ?string
     {
-        return $this->T_arrivee->format('H-i');
+        $heure = "nr";
+        
+        if($this->T_arrivee != null){
+            $heure = $this->T_arrivee->format('H-i');
+        }
+        
+        return $heure;
     }
 
     public function getTempsTrajetString(): ?String
     {
-        return date_diff($this->T_depart,$this->T_arrivee)->format('%H-%I');
+        $temps = "00-00";
+        if($this->T_arrivee != null){
+            $temps = date_diff($this->T_depart,$this->T_arrivee)->format('%H-%I');
+        }
+        return $temps;
     }
 
     public function setTDepart(\DateTime $T_depart): self

@@ -129,7 +129,11 @@
                                                                     <small class="text-muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{trajet.getTempsTrajetString()}}</small>
                                                                     <br/>
                                                                     <!-- Heure d'arrivée --> 
-                                                                    <h4 class="my-0 font-weight-normal">{{trajet.getHeureArriveeString()}}</h4>
+                                                                    {% if trajet.getHeureArriveeString() == "nr" %}
+                                                                        <small class="text-muted">non renseigné</small>
+                                                                    {% else %}
+                                                                        <h4 class="my-0 font-weight-normal">{{trajet.getHeureArriveeString()}}</h4>
+                                                                    {% endif %}
                                                                 </div>
                                                                 <div class="col-lg-3">
                                                                     <!-- Ville de départ -->
