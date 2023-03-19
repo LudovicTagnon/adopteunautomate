@@ -56,7 +56,6 @@ class TrajetsPrivateController extends AbstractController
                 'estDans' => $estDans,
                 'groupes' => $groupes,
                 'estDedans' => $estDedans,
-                'groupesUser' => $groupesUser,
             ]);
         }
     }
