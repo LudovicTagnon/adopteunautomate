@@ -18,6 +18,13 @@
     {% if notifications|length == 0 %}
         <p>Aucune notification</p>
     {% else %}
+    <a  href="{{ path('app_mark_all_notifications_as_read') }}">
+    <button id="mark-all-read" class="btn btn-primary mb-2">Marquer tout comme lu</button>
+    </a>
+    <a  href="{{ path('app_delete_all_notifications') }}">
+    <button id="delete-all" class="btn btn-danger mb-2">Supprimer tout</button>
+    </a>
+    <br>
     <h2> Notifications non-lues : </h2>
         <ul>
             {% for notification in notifications %}
@@ -35,7 +42,7 @@
                         <button type="submit" class="btn btn-primary">Marquer comme lu</button>
                     </form>
                 <a  href="{{ path('app_supprimer_notif', {'id': notification.getId()}) }}">
-                <button class="btn btn-warning" >Supprimer la notification</button> 
+                <button class="btn btn-danger" >Supprimer la notification</button> 
                 </a>
                 {% endif %}
             </div>
