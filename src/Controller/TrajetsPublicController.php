@@ -8,6 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use App\Entity\Trajets;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\EstAccepte;
 class TrajetsPublicController extends AbstractController
 {
     private $entityManager;
@@ -24,9 +25,12 @@ class TrajetsPublicController extends AbstractController
         $user = $this->getUser();
         $trajetsRepository = $this->entityManager->getRepository(Trajets::class);
         $trajets = $trajetsRepository->findBy(['public' => true]);
+        $estAccepteRepository = $this->entityManager->getRepository(EstAccepte::class);
+        $estAccepte = $estAccepteRepository->findAll();
         return $this->render('trajets_public/index.html.twig', [
             'trajets' => $trajets,
             'user' => $user,
+            'estAccepte' => $estAccepte,
         ]);
     }
 }

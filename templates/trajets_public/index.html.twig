@@ -18,6 +18,13 @@
             <tbody>
                 {% set now = date() %}
                 {% for trajet in trajets %}
+                {% set skip_trajet = false %}
+                    {% for accepte in estAccepte %}
+                        {% if user.id == accepte.utilisateur.id and trajet.id == accepte.trajet.id %}
+                            {% set skip_trajet = true %}
+                        {% endif %}
+                    {% endfor %}
+                {% if not skip_trajet %}
                 {% if trajet.publie.id != user.id and trajet.getNbPassagerCourant() < trajet.getNbPassagerMax() and trajet.getTDepart() > now %}
                     <tr>
                         <td>{{ trajet.getPublie().getNom()}} {{ trajet.getPublie().getPrenom() }}</td>
@@ -49,6 +56,7 @@
                             {% endif %}    
                         </td>
                     </tr>
+                {% endif %}
                 {% endif %}
                 {% endfor %}
             </tbody>
