@@ -21,7 +21,14 @@
                     <p> Aucun trajets privé revenez plus tard ! </p>
                 {% else %}
                     {% for trajet in trajets %}
-                        {% if trajet.publie.id != user.id and trajet.getNbPassagerCourant() < trajet.getNbPassagerMax() and trajet.getTDepart() > now%}
+                    {% set skip_trajet = false %}
+                    {% for accepte in estAccepte %}
+                        {% if user.id == accepte.utilisateur.id and trajet.id == accepte.trajet.id %}
+                            {% set skip_trajet = true %}
+                        {% endif %}
+                    {% endfor %}
+                    {% if not skip_trajet %}
+                        {% if trajet.publie.id != user.id and trajet.getNbPassagerCourant() < trajet.getNbPassagerMax() and trajet.getTDepart() > now %}
                                 {% for groupe in groupes %}
                                     {% if groupe.estDansGroupes(user.getId()) %}
                                         <tr>
@@ -54,6 +61,7 @@
                                         </tr>
                                     {% endif %}
                                 {% endfor %}
+                        {% endif %}
                         {% endif %}
                     {% endfor %}
                 {% endif %}
