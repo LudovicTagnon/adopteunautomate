@@ -34,7 +34,11 @@ class NotificationService
             ->subject('Notification - Modification du profil')
             ->text($message);
 
-            $this->mailer->send($email);
+            try {
+                $this->mailer->send($email);
+            } catch (\Symfony\Component\Mailer\Exception\TransportExceptionInterface $e) {
+                // Handle the exception here
+            }
         }
 
         $this->entityManager->persist($notification);
@@ -53,7 +57,11 @@ class NotificationService
             ->subject('Notification - Trajet adopté')
             ->text($message);
 
-            $this->mailer->send($email);
+            try {
+                $this->mailer->send($email);
+            } catch (\Symfony\Component\Mailer\Exception\TransportExceptionInterface $e) {
+                // Handle the exception here
+            }
         }
         //puis on envoi un mail au chauffeur
         $chauffeur = $trajet->getPublie();
@@ -72,7 +80,11 @@ class NotificationService
             ->subject('Notification - Demande de trajet')
             ->text($message);
 
-            $this->mailer->send($email);
+            try {
+                $this->mailer->send($email);
+            } catch (\Symfony\Component\Mailer\Exception\TransportExceptionInterface $e) {
+                // Handle the exception here
+            }
         }
 
         $this->entityManager->persist($notification);
@@ -92,7 +104,11 @@ class NotificationService
             ->subject('Notification - Trajet abandonné')
             ->text($message);
 
-            $this->mailer->send($email);
+            try {
+                $this->mailer->send($email);
+            } catch (\Symfony\Component\Mailer\Exception\TransportExceptionInterface $e) {
+                // Handle the exception here
+            }
         }
 
         //puis on envoi un mail au chauffeur
@@ -109,7 +125,11 @@ class NotificationService
             ->subject('Notification - Trajet abandonné')
             ->text($message);
 
-            $this->mailer->send($email);
+            try {
+                $this->mailer->send($email);
+            } catch (\Symfony\Component\Mailer\Exception\TransportExceptionInterface $e) {
+                // Handle the exception here
+            }
         }
 
         $this->entityManager->persist($notification);
@@ -129,7 +149,11 @@ class NotificationService
             ->subject('Notification - Trajet accepté')
             ->text($message);
 
-            $this->mailer->send($email);
+            try {
+                $this->mailer->send($email);
+            } catch (\Symfony\Component\Mailer\Exception\TransportExceptionInterface $e) {
+                // Handle the exception here
+            }
         }
 
         $this->entityManager->persist($notification);
@@ -149,7 +173,11 @@ class NotificationService
             ->subject('Notification - Trajet refusé')
             ->text($message);
 
-            $this->mailer->send($email);
+            try {
+                $this->mailer->send($email);
+            } catch (\Symfony\Component\Mailer\Exception\TransportExceptionInterface $e) {
+                // Handle the exception here
+            }
         }
 
         $this->entityManager->persist($notification);
