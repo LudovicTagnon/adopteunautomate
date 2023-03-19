@@ -209,6 +209,9 @@ class NotificationService
 
     public function getNotifications(Utilisateurs $user)
     {
+        if ($user === null) {
+            return null;
+        }
         return $this->entityManager->getRepository(Notification::class)->findBy([
             'user' => $user,
         ]);

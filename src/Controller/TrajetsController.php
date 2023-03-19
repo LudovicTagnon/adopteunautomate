@@ -51,12 +51,11 @@ class TrajetsController extends AbstractController
 
         
         if ($form->isSubmitted() && $form->isValid()) {
-           
             //On récupère les données du formulaire
             $trajet = $form->getData();
 
             //On vérifie d'abord si les villes existent déjà dans la base de donnée
-
+            // var_dump($form->get('demarrea')->getData());
             $villeDepart = $manager->getRepository(Villes::class)->find(['id' => $form->getData()->getDemarreA()]);
             $villeArrivee = $manager->getRepository(Villes::class)->find(['id' => $form->getData()->getArriveA()]);
             $trajet->setArriveA($villeArrivee);
@@ -85,7 +84,6 @@ class TrajetsController extends AbstractController
             }
 
 
-           
             // champs remplis d'office:
             $trajet->setPublie($this->getUser());
             $trajet->setEtat('ouvert');
@@ -110,15 +108,15 @@ class TrajetsController extends AbstractController
     }
     
 
-    #[Route('/{id}', name: 'app_trajets_show', methods: ['GET'])]
-    public function show(Trajets $trajet, Request $request, EntityManagerInterface $manager): Response
+    #[Route('/{id}/visualiser', name: 'app_trajets_show', methods: ['GET'])]
+    public function show(Trajets $trajet, EntityManagerInterface $manager): Response
     {
         if (!$trajet) {
             throw $this->createNotFoundException('The Trajets object was not found.');
         }
         // modifications automatiques de l'état d'un trajet
         // dans l'affichage
-        $demain = new DateTime('tomorrow');
+        $demain = new DateTime('+24 hours');
         if ($trajet->getTDepart() <$demain ) {
             $trajet->setEtat('bloqué');
 
@@ -128,8 +126,9 @@ class TrajetsController extends AbstractController
             );    
         }
         $maintenant = new DateTime();
-        $hier = new DateTime('yesterday');
-        if ($trajet->getTArrivee() <$maintenant  || $trajet->getTDepart() <$hier ) {
+        $hier = new DateTime('-24 hours');
+        if (( ($trajet->getTArrivee() !='null') and ($trajet->getTArrivee() <$maintenant))  or $trajet->getTDepart() <$hier )
+         {
             $trajet->setEtat('terminé');
             $this->addFlash(
                 'succès',
@@ -155,7 +154,7 @@ class TrajetsController extends AbstractController
         $form->handleRequest($request);
         $trajet = $form->getData();
         
-        $demain = new DateTime('tomorrow');
+        $demain = new DateTime('+24 hours');
         if ($trajet->getTDepart() <$demain ) {
             $this->addFlash(
                 'warning',
@@ -169,8 +168,6 @@ class TrajetsController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $trajetsRepository->save($trajet, true);
-            
-            $manager->persist($trajet);
 
             $manager->flush();
             $users = [];
@@ -195,7 +192,7 @@ class TrajetsController extends AbstractController
 
     
     #[Route('/{id}', name: 'app_trajets_delete', methods: ['POST'])]
-    public function delete(Request $request, Trajets $trajet, TrajetsRepository $trajetsRepository, EntityManagerInterface $manager): Response
+    public function delete(Request $request, Trajets $trajet, TrajetsRepository $trajetsRepository): Response
     {
         $demain = new DateTime('tomorrow');
         if ($trajet->getTDepart() <$demain ) {
@@ -215,7 +212,6 @@ class TrajetsController extends AbstractController
         }
         $manager->persist($trajet);
 
-        $manager->flush();
         return $this->redirectToRoute('app_trajets_index', [], Response::HTTP_SEE_OTHER);
     }
 

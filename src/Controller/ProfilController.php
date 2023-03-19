@@ -82,6 +82,14 @@ class ProfilController extends AbstractController
             return $this->redirectToRoute('profil');
 
             
+        }else {
+            // affichage des erreurs
+            $errors = $form->getErrors(true, false);
+            foreach ($errors as $error) {
+                foreach ($error as $e) {
+                    echo $e->getMessage() . "<br>";
+                }
+            }
         }
         if($form_mdp->isSubmitted() && $form_mdp->isValid()){
             $user = $form_mdp->getData();
@@ -98,6 +106,14 @@ class ProfilController extends AbstractController
     
                 return $this->redirectToRoute('profil');
 
+            }
+        }else{
+            //TODO : afficher les messages d'erreurs du form mot de passe
+            $errors = $form->getErrors(true, false);
+            foreach ($errors as $error) {
+                foreach ($error as $e) {
+                    echo $e->getMessage() . "<br>";
+                }
             }
         }
 

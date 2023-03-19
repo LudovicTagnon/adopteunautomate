@@ -16,14 +16,24 @@
                 </tr>
             </thead>
             <tbody>
+                {% set now = date() %}
                 {% for trajet in trajets %}
-                {% if trajet.publie.id != user.id and trajet.getNbPassagerCourant() < trajet.getNbPassagerMax()%}
+                {% set skip_trajet = false %}
+                    {% for accepte in estAccepte %}
+                        {% if user.id == accepte.utilisateur.id and trajet.id == accepte.trajet.id %}
+                            {% set skip_trajet = true %}
+                        {% endif %}
+                    {% endfor %}
+                {% if not skip_trajet %}
+                {% if trajet.publie.id != user.id and trajet.getNbPassagerCourant() < trajet.getNbPassagerMax() and trajet.getTDepart() > now %}
                     <tr>
                         <td>{{ trajet.getPublie().getNom()}} {{ trajet.getPublie().getPrenom() }}</td>
                         <td>{{ trajet.demarrea.getnomVille() }} - {{ trajet.getJourDepartString() }} {{ trajet.getHeureDepartString() }}</td>
                         {% if trajet.getTArrivee() != null%}
                         <td>{{ trajet.arrivea.getnomVille() }} - {{ trajet.getJourArriveeString() }} {{ trajet.getHeureArriveeString() }}</td>
-                        {% endif%}
+                        {% else %}
+                        <td>{{ trajet.arrivea.getnomVille() }} </td>
+                        {% endif %}
                         <td>{{ trajet.prix }} €</td>
                         <td>{{ trajet.getNbPassagerCourant() }}/{{ trajet.getNbPassagerMax() }}</td>
                         <td>
@@ -34,13 +44,19 @@
                                     {% set trajet_deja_adopte = true %}
                                 {% endif %}
                             {% endfor %}
-                            {% if trajet_deja_adopte == false %}
-                            <a href="{{ path('app_trajet.adopter_trajet', {'trajetId': trajet.id, 'utilisateurId': user.id}) }}" class="btn btn-success">Adopter le trajet</a>                     
-                            {% else %}
-                            <a href="{{ path('app_trajet.abandonner_trajet', {'trajetId': trajet.id, 'utilisateurId': user.id}) }}" class="btn btn-danger">Abandonner le trajet</a>                            {% endif %}
-                            {% endif %}
+
+                             
+                             {% if (trajet.TDepart  > now)  %}
+
+                                {% if trajet_deja_adopte == false %}
+                                <a href="{{ path('app_trajet.adopter_trajet', {'trajetId': trajet.id, 'utilisateurId': user.id}) }}" class="btn btn-success">Adopter le trajet</a>                     
+                                {% else %}
+                                <a href="{{ path('app_trajet.abandonner_trajet', {'trajetId': trajet.id, 'utilisateurId': user.id}) }}" class="btn btn-danger">Abandonner le trajet</a>                            {% endif %}
+                                {% endif %}
+                            {% endif %}    
                         </td>
                     </tr>
+                {% endif %}
                 {% endif %}
                 {% endfor %}
             </tbody>
