@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\EstAccepte;
+use App\Entity\Utilisateurs;
+use App\Entity\Trajets;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

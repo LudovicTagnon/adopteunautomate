@@ -106,5 +106,8 @@ class Groupes
 
         return $this;
     }
-
+    public function getEstDans(): Collection
+    {
+        return $this->estDans;
+    }
 }

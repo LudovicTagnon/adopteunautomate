@@ -17,12 +17,14 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Form\FormError;
-
+use App\Service\NotificationService;
+use App\Entity\EstAccepte;
 
 #[Route('/trajets')]
 class TrajetsController extends AbstractController
 {
     
+
     #[Route('/', name: 'app_trajets_index', methods: ['GET'])]
     #[IsGranted('ROLE_USER')]
     public function index(TrajetsRepository $trajetsRepository): Response
@@ -162,12 +164,64 @@ class TrajetsController extends AbstractController
         ]);
     }
     
-    #[Route('/{id}/edit', name: 'app_trajets_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Trajets $trajet, TrajetsRepository $trajetsRepository,EntityManagerInterface $manager): Response
+
+    #[Route('/{id}/visualiser', name: 'app_trajets_show', methods: ['GET'])]
+    public function show(Trajets $trajet, EntityManagerInterface $manager): Response
     {
+        if (!$trajet) {
+            throw $this->createNotFoundException('The Trajets object was not found.');
+        }
+        // modifications automatiques de l'état d'un trajet
+        // dans l'affichage
+        $demain = new DateTime('+24 hours');
+        if ($trajet->getTDepart() <$demain ) {
+            $trajet->setEtat('bloqué');
+
+            $this->addFlash(
+                'succès',
+                'Votre trajet ne peut plus être modifié !'
+            );    
+        }
+        $maintenant = new DateTime();
+        $hier = new DateTime('-24 hours');
+        if (( ($trajet->getTArrivee() !='null') and ($trajet->getTArrivee() <$maintenant))  or $trajet->getTDepart() <$hier )
+         {
+            $trajet->setEtat('terminé');
+            $this->addFlash(
+                'succès',
+                'Votre trajet est terminé !'
+            );    
+        }
+        
+        $manager->persist($trajet);
+
+        $manager->flush();
+
+        return $this->render('trajets/show.html.twig', [
+            'trajet' => $trajet,
+        ]);
+    }
+
+    
+    #[Route('/{id}/edit', name: 'app_trajets_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Trajets $trajet, TrajetsRepository $trajetsRepository, EntityManagerInterface $manager, NotificationService $notificationService): Response
+    {
+        $trajetAncien = $trajet->__toString();
         $form = $this->createForm(TrajetsType::class, $trajet);
         $form->handleRequest($request);
-        $user = $this->getUser();
+        $trajet = $form->getData();
+        
+        $demain = new DateTime('+24 hours');
+        if ($trajet->getTDepart() <$demain ) {
+            $this->addFlash(
+                'warning',
+                'Vous ne pouvez plus modifier ce trajet.'
+            );
+            
+            return $this->redirectToRoute('app_trajets_index');
+        }
+
+
 
         if ($form->isSubmitted() && $form->isValid()) {
             $trajetsRepository->save($trajet, true);
@@ -197,6 +251,17 @@ class TrajetsController extends AbstractController
                 
             }
 
+            $manager->flush();
+            $users = [];
+            //ENVOI DE LA NOTIFICATION A TOUS LES UTILISATEURS INSCRITS AU TRAJET
+            $estAcceptes = $manager->getRepository(EstAccepte::class)->findBy(['trajet' => $trajet]);
+            foreach ($estAcceptes as $estAccepte) {
+                $users[] = $estAccepte->getUtilisateur();
+            }
+    
+            foreach ($users as $user) {
+                $notificationService->addNotificationModifTrajet("Le trajet : ".$trajetAncien." a été modifié, voici le nouveau trajet : ".$trajet->__toString(),$user);
+            }
             return $this->redirectToRoute('app_trajets_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -211,9 +276,23 @@ class TrajetsController extends AbstractController
     #[Route('/{id}', name: 'app_trajets_delete', methods: ['POST'])]
     public function delete(Request $request, Trajets $trajet, TrajetsRepository $trajetsRepository): Response
     {
+        $demain = new DateTime('tomorrow');
+        if ($trajet->getTDepart() <$demain ) {
+            $trajet->setEtat('bloqué');
+            $this->addFlash(
+                'warning',
+                'Vous ne pouvez plus supprimer ce trajet.'
+            );
+
+            return $this->redirectToRoute('app_trajets_index');
+        }
+        
         if ($this->isCsrfTokenValid('delete'.$trajet->getId(), $request->request->get('_token'))) {
+            $trajet->setEtat('annulé');
+            // si on l'enlève carrément:
             $trajetsRepository->remove($trajet, true);
         }
+        $manager->persist($trajet);
 
         return $this->redirectToRoute('app_trajets_index', [], Response::HTTP_SEE_OTHER);
     }
@@ -257,6 +336,5 @@ class TrajetsController extends AbstractController
             ]);
         }
     }
-    
     
 }

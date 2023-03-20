@@ -14,25 +14,20 @@
                     <a class="nav-link" href="{{ path('app_home') }}">Accueil
                     </a>
                 </li>
-                {% if app.user %}
                 <li class="nav-item">
                     <a class="nav-link" href="{{path('app_trajets_index')}}">Mes Trajets</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{path('app_trajets_public')}}">Trajets publics</a>
+                    <a class="nav-link" href="{{path('app_trajets_publics')}}">Trajets publics</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{path('app_trajets_private')}}">Trajets privés</a>
+                    <a class="nav-link" href="{{path('app_trajets_prive')}}">Trajets privés</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{path('app_groupes.group')}}">Groupes</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{path('app_notification')}}">Notifications</a>
-                </li>
-                {% endif %}
-                <li class="nav-item">
-                    <a class="nav-link" href="#">A propos</a>
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">

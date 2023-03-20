@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\EstAccepte;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -21,17 +22,19 @@ class TrajetsPrivateController extends AbstractController
     {
         $this->entityManager = $entityManager;
     }
-    #[Route('/trajets/private', name: 'app_trajets_private')]
+    #[Route('/private', name: 'app_trajets_prive')]
     #[IsGranted('ROLE_USER')]
     public function index(): Response
     {
         $user = $this->getUser(); //on récupère l'utilisateur connecté
         $trajetsRepository = $this->entityManager->getRepository(Trajets::class);
         $groupesRepository = $this->entityManager->getRepository(Groupes::class);
+        $estAccepteRepository = $this->entityManager->getRepository(EstAccepte::class);
         $lesgroupes = $groupesRepository->findAll();
         $trajets = $trajetsRepository->findBy(['public' => false]); //on récupère les trajets privés
         $groupesUser = $user->getGroupes();
-        if (count($lesgroupes) == 0) {
+        $estAccepte = $estAccepteRepository->findAll();
+        if (count($lesgroupes) == 0) { //si aucun groupe pas de trajets privés
             return $this->render('trajets_private/index.html.twig', [
                 'trajets' => $trajets,
                 'user' => $user,
@@ -56,7 +59,7 @@ class TrajetsPrivateController extends AbstractController
                 'estDans' => $estDans,
                 'groupes' => $groupes,
                 'estDedans' => $estDedans,
-                'groupesUser' => $groupesUser,
+                'estAccepte' => $estAccepte,
             ]);
         }
     }

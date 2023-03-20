@@ -75,11 +75,6 @@ class EstAccepteController extends AbstractController
         if (!$utilisateur) {
             throw $this->createNotFoundException('Utilisateur introuvable.');
         }
-        $estAccepte = $manager->getRepository(EstAccepte::class)->findOneBy(['trajet' => $trajet, 'utilisateur' => $utilisateur]);
-        if (!$estAccepte) {
-            $this->addFlash('warning', "L'utilisateur ".$utilisateur->getNom(). " a déjà été supprimé pour ce trajet.");
-            return $this->redirectToRoute('app_supprimer_notif', ['id' => $notification->getId()]);
-        }
         $notificationService->addNotificationRefuseTrajet("Vous avez été refusé au trajet : ".$trajet->__toString(), $utilisateur); //notification
         $this->addFlash('success', "L'utilisateur ".$utilisateur->getNom(). " a été refusé pour le trajet de : ". $trajet->getDemarreA()." vers ".$trajet->getArriveA());
         // Retirer l'utilisateur refusé de la liste des utilisateurs adoptant ce trajet

@@ -34,7 +34,11 @@ class NotificationService
             ->subject('Notification - Modification du profil')
             ->text($message);
 
-            $this->mailer->send($email);
+            try {
+                $this->mailer->send($email);
+            } catch (\Symfony\Component\Mailer\Exception\TransportExceptionInterface $e) {
+                // Handle the exception here
+            }
         }
 
         $this->entityManager->persist($notification);
@@ -52,8 +56,11 @@ class NotificationService
             ->to($user->getEmail())
             ->subject('Notification - Trajet adopté')
             ->text($message);
-
-            $this->mailer->send($email);
+            try {
+                $this->mailer->send($email);
+            } catch (\Symfony\Component\Mailer\Exception\TransportExceptionInterface $e) {
+                // Handle the exception here
+            }
         }
         //puis on envoi un mail au chauffeur
         $chauffeur = $trajet->getPublie();
@@ -72,7 +79,11 @@ class NotificationService
             ->subject('Notification - Demande de trajet')
             ->text($message);
 
-            $this->mailer->send($email);
+            try {
+                $this->mailer->send($email);
+            } catch (\Symfony\Component\Mailer\Exception\TransportExceptionInterface $e) {
+                // Handle the exception here
+            }
         }
 
         $this->entityManager->persist($notification);
@@ -92,7 +103,11 @@ class NotificationService
             ->subject('Notification - Trajet abandonné')
             ->text($message);
 
-            $this->mailer->send($email);
+            try {
+                $this->mailer->send($email);
+            } catch (\Symfony\Component\Mailer\Exception\TransportExceptionInterface $e) {
+                // Handle the exception here
+            }
         }
 
         //puis on envoi un mail au chauffeur
@@ -109,7 +124,11 @@ class NotificationService
             ->subject('Notification - Trajet abandonné')
             ->text($message);
 
-            $this->mailer->send($email);
+            try {
+                $this->mailer->send($email);
+            } catch (\Symfony\Component\Mailer\Exception\TransportExceptionInterface $e) {
+                // Handle the exception here
+            }
         }
 
         $this->entityManager->persist($notification);
@@ -129,7 +148,11 @@ class NotificationService
             ->subject('Notification - Trajet accepté')
             ->text($message);
 
-            $this->mailer->send($email);
+            try {
+                $this->mailer->send($email);
+            } catch (\Symfony\Component\Mailer\Exception\TransportExceptionInterface $e) {
+                // Handle the exception here
+            }
         }
 
         $this->entityManager->persist($notification);
@@ -149,7 +172,35 @@ class NotificationService
             ->subject('Notification - Trajet refusé')
             ->text($message);
 
-            $this->mailer->send($email);
+            try {
+                $this->mailer->send($email);
+            } catch (\Symfony\Component\Mailer\Exception\TransportExceptionInterface $e) {
+                // Handle the exception here
+            }
+        }
+
+        $this->entityManager->persist($notification);
+        $this->entityManager->flush();
+    }
+
+    public function addNotificationModifTrajet($message, $user)
+    {
+        $notification = new Notification();
+        $notification->setMessage($message);
+        $notification->setUser($user);
+        $notification->setCreatedAt(new \DateTime());
+        if ($user->getAutorisationMail()) {
+            $email = (new Email())
+            ->from('adopteautomate-noreply@example.com')
+            ->to($user->getEmail())
+            ->subject('Notification - Trajet modifié')
+            ->text($message);
+
+            try {
+                $this->mailer->send($email);
+            } catch (\Symfony\Component\Mailer\Exception\TransportExceptionInterface $e) {
+                // Handle the exception here
+            }
         }
 
         $this->entityManager->persist($notification);
@@ -158,6 +209,9 @@ class NotificationService
 
     public function getNotifications(Utilisateurs $user)
     {
+        if ($user === null) {
+            return null;
+        }
         return $this->entityManager->getRepository(Notification::class)->findBy([
             'user' => $user,
         ]);
@@ -167,6 +221,28 @@ class NotificationService
     {
         $notification = $this->entityManager->getRepository(Notification::class)->find($notificationId);
         $notification->setIsRead(true);
+
+        $this->entityManager->flush();
+    }
+
+    public function markAllAsRead(Utilisateurs $user)
+    {
+        $notifications = $this->entityManager->getRepository(Notification::class)->findBy(['user' => $user, 'isRead' => false]);
+
+        foreach ($notifications as $notification) {
+            $notification->setIsRead(true);
+        }
+
+        $this->entityManager->flush();
+    }
+
+    public function deleteAll(Utilisateurs $user)
+    {
+        $notifications = $this->entityManager->getRepository(Notification::class)->findBy(['user' => $user]);
+
+        foreach ($notifications as $notification) {
+            $this->entityManager->remove($notification);
+        }
 
         $this->entityManager->flush();
     }
