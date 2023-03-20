@@ -61,6 +61,11 @@ class GroupesType extends AbstractType
                 'placeholder' => 'Choisissez un nom dans la liste',
                 'autocomplete' => true,
                 'multiple' => true,
+                'query_builder' => function ($repository) use ($user) {
+                    return $repository->createQueryBuilder('u')
+                        ->where('u != :user')
+                        ->setParameter('user', $user);
+                }
             ])
             ->add('description', TextType::class, [
                 'attr' => [
