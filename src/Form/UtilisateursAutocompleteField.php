@@ -17,11 +17,8 @@ class UtilisateursAutocompleteField extends AbstractType
         $resolver->setDefaults([
             'class' => Utilisateurs::class,
             'placeholder' => 'Choose a Utilisateurs',
+            'searchable_fields' => ['nom']
             //'choice_label' => 'name',
-
-            'query_builder' => function(UtilisateursRepository $utilisateursRepository) {
-                return $utilisateursRepository->createQueryBuilder('utilisateurs');
-            },
             //'security' => 'ROLE_SOMETHING',
         ]);
     }
