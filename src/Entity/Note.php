@@ -4,37 +4,31 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="Note")
- */
+
+#[ORM\Entity(repositoryClass: NoteRepository::class)]
+
 class Note
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
     private $id;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    
+    #[ORM\Column]
     private $Trajet_id;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    
+    #[ORM\Column]
     private $recv_id;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    
+    #[ORM\Column]
     private $donne_id;
 
-    /**
-     * @ORM\Column(type="float")
-     */
+    
+    #[ORM\Column]
     private $note;
 
     // Getters and setters
