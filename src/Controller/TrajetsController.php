@@ -194,6 +194,8 @@ class TrajetsController extends AbstractController
         
         if ($form->isSubmitted() && $form->isValid()) {
             $trajetsRepository->save($trajet, true);
+            
+            $manager->persist($trajet);
 
             $manager->flush();
             $users = [];
