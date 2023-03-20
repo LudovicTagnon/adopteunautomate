@@ -210,6 +210,7 @@ class TrajetsController extends AbstractController
         $form = $this->createForm(TrajetsType::class, $trajet);
         $form->handleRequest($request);
         $trajet = $form->getData();
+        $user = $this->getUser();
         
         $demain = new DateTime('+24 hours');
         if ($trajet->getTDepart() <$demain ) {
