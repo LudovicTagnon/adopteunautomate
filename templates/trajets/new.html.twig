@@ -96,6 +96,13 @@
                 {{form_errors(form.public)}}
             </div>
         </div>
+        <div class="form-group">
+            {{ form_label(form.groupes)}}
+            {{ form_widget(form.groupes)}}
+            <div>
+                {{form_errors(form.groupes)}}
+            </div>
+        </div>
 
         <div class= 'form-group'>
             {{ form_label(form.renseignement)}}
@@ -121,4 +128,20 @@
         <p>Vous devez posséder une voiture pour accéder à cette page.</p>
     {% endif %}
     
+
+    <script>
+    const publicField = document.querySelector('#form_public');
+    const groupesContainer = document.querySelector('.form-group');
+
+    publicField.addEventListener('change', function() {
+        if (publicField.checked) {
+            groupesContainer.classList.add('groupes-hidden');
+            groupesContainer.classList.remove('groupes-visible');
+        } else {
+            groupesContainer.classList.add('groupes-visible');
+            groupesContainer.classList.remove('groupes-hidden');
+        }
+    });
+</script>
+
 {% endblock %}

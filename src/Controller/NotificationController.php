@@ -15,13 +15,14 @@ class NotificationController extends AbstractController
 {
     #[Route('/notification', name: 'app_notification')]
     #[IsGranted('ROLE_USER')]
-    public function index(NotificationService $notificationService): Response
+    public function index(NotificationService $notificationService,EntityManagerInterface $manager): Response
     {
         $notifications = $notificationService->getNotifications($this->getUser());
 
         return $this->render('notification/index.html.twig', [
             'controller_name' => 'NotificationController',
             'notifications' => $notifications,
+            'trajets' => $notifications,
         ]);
     }
 
@@ -60,5 +61,23 @@ class NotificationController extends AbstractController
     
         return $this->redirectToRoute('app_notification');
     }
+
+
+    #[Route('/notification/mark-all-as-read', name: 'app_mark_all_notifications_as_read')]
+public function markAllNotificationsAsRead(NotificationService $notificationService): Response
+{
+    $notificationService->markAllAsRead($this->getUser());
+    
+    return $this->redirectToRoute('app_notification');
+}
+
+#[Route('/notification/delete-all', name: 'app_delete_all_notifications')]
+public function deleteAllNotifications(NotificationService $notificationService): Response
+{
+    $notificationService->deleteAll($this->getUser());
+    
+    return $this->redirectToRoute('app_notification');
+}
+
     
 }

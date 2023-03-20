@@ -18,12 +18,26 @@
     {% if notifications|length == 0 %}
         <p>Aucune notification</p>
     {% else %}
+    <a  href="{{ path('app_mark_all_notifications_as_read') }}">
+    <button id="mark-all-read" class="btn btn-primary mb-2">Marquer tout comme lu</button>
+    </a>
+    <a  href="{{ path('app_delete_all_notifications') }}">
+    <button id="delete-all" class="btn btn-danger mb-2">Supprimer tout</button>
+    </a>
+    <br>
     <h2> Notifications non-lues : </h2>
         <ul>
             {% for notification in notifications %}
                 <div class="notifications">  
                 {% if not(notification.isRead()) %}          
-                    <li>{{ notification.getMessage() }}</li>
+                    <li>{{ notification.getCreatedAt|date('d/m/Y : H:i') }} : {{ notification.getMessage() }}</li>
+                    {% if notification.getTypeNotif() == 2 %}
+                        {% if notification.getTrajetQuiEstDemande() != null and notification.getUserQuiDemandeTrajet() != null %}
+                            <a href="{{ path('app.estAccepte', {'trajetId': notification.getTrajetQuiEstDemande().id, 'utilisateurId': notification.getUserQuiDemandeTrajet().id, 'notificationId': notification.getId()}) }}" class="btn btn-success">Accepter ce passager</a>
+                            <a href="{{ path('app.estRefuse', {'trajetId': notification.getTrajetQuiEstDemande().id, 'utilisateurId': notification.getUserQuiDemandeTrajet().id,'notificationId': notification.getId()}) }}" class="btn btn-danger">Refuser ce passager</a>
+                        {% endif %}
+                    {% endif %}
+
                     <form action="{{ path('app_mark_notification_as_read', {'id': notification.getId()}) }}" method="post" style="display:inline;">
                         <button type="submit" class="btn btn-primary">Marquer comme lu</button>
                     </form>
@@ -38,11 +52,17 @@
             {% for notification in notifications %}
             <div class="notifications {% if notification.isRead() %}read-notification{% endif %}"> 
                 {% if notification.isRead() %}          
-                    <li>{{ notification.getMessage() }}</li>
-                <a  href="{{ path('app_supprimer_notif', {'id': notification.getId()}) }}">
-                </a>
+                    <li>{{ notification.getCreatedAt|date('d/m/Y : H:i') }} : {{ notification.getMessage() }}</li>
             </div>
-            <button class="btn btn-danger" >Supprimer la notification</button> 
+            {% if notification.getTypeNotif() == 2 %}
+                {% if notification.getTrajetQuiEstDemande() != null and notification.getUserQuiDemandeTrajet() != null %}
+                    <a href="{{ path('app.estAccepte', {'trajetId': notification.getTrajetQuiEstDemande().id, 'utilisateurId': notification.getUserQuiDemandeTrajet().id, 'notificationId': notification.getId()}) }}" class="btn btn-success">Accepter ce passager</a>
+                    <a href="{{ path('app.estRefuse', {'trajetId': notification.getTrajetQuiEstDemande().id, 'utilisateurId': notification.getUserQuiDemandeTrajet().id,'notificationId': notification.getId()}) }}" class="btn btn-danger">Refuser ce passager</a>
+                    {% endif %}
+            {% endif %}
+                <a  href="{{ path('app_supprimer_notif', {'id': notification.getId()}) }}">
+                <button class="btn btn-warning" >Supprimer la notification</button>
+                </a>
                 {% endif %}
             {% endfor %}
         </ul>
