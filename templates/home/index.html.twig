@@ -2,18 +2,51 @@
 
 {% block title %}Page d'accueil{% endblock %}
 
-{% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 900px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+{% block head %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+{% endblock %}
 
+{% block body %}
     {% if app.user%} <!--Page visible par une personne connecté -->
         <div class = "container-fluid">
             <div class="row justify-content-center">
+                </hr>
                 <div class="col-md-3"> <!-- Volets de navigation -->
-                    Volets de navigation
+                    <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 280px;">
+                        <ul class="nav nav-pills flex-column mb-auto">
+                            <li class="nav-item">
+                                <a href="#" class="nav-link active">Accueil</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Trajets
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown1">
+                                    <a class="dropdown-item" href="#">Voir tous les trajets</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#">Voir mes inscriptions</a>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">Groupes</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Profil
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown2">
+                                    <a class="dropdown-item" href="#">Paramètres</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#">Déconnexion</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
+
                 <div class="col-md-9"> <!-- Affichage dashboard -->
                     <div class="row justify-content-center">
                         <!-- Formulaire de recherche -->
@@ -52,6 +85,7 @@
                                 </div>
                             </div>
                         </form>
+                        <hr>
                         <!-- Notifications -->
                         <div class="row justify-content-center">
                             <div class="col-sm-8">
