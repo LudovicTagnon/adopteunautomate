@@ -31,9 +31,14 @@ class Groupes
     #[ORM\ManyToOne(inversedBy: 'groupes')]
     private ?Trajets $trajets = null;
 
+    #[ORM\OneToMany(mappedBy: 'lesgroupes', targetEntity: Utilisateurs::class)]
+    private Collection $utilisateurs;
+
+
     public function __construct()
     {
-        $this->estDans = new ArrayCollection();;
+        $this->estDans = new ArrayCollection();
+        $this->utilisateurs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -109,5 +114,27 @@ class Groupes
     public function getEstDans(): Collection
     {
         return $this->estDans;
+    }
+
+    public function addUtilisateur(Utilisateurs $utilisateur): self
+    {
+        if (!$this->utilisateurs->contains($utilisateur)) {
+            $this->utilisateurs->add($utilisateur);
+            $utilisateur->setLesgroupes($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUtilisateur(Utilisateurs $utilisateur): self
+    {
+        if ($this->utilisateurs->removeElement($utilisateur)) {
+            // set the owning side to null (unless already changed)
+            if ($utilisateur->getLesgroupes() === $this) {
+                $utilisateur->setLesgroupes(null);
+            }
+        }
+
+        return $this;
     }
 }

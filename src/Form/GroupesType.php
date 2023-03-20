@@ -54,6 +54,7 @@ class GroupesType extends AbstractType
                 ]
 
             ])
+            ->add('utilisateurs', UtilisateursAutocompleteField::class)
             ->add('description', TextType::class, [
                 'attr' => [
                     'class' => 'form_control',
