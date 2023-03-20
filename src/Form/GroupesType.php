@@ -55,18 +55,7 @@ class GroupesType extends AbstractType
                 ]
 
             ])
-            ->add('utilisateurs', EntityType::class, [
-                'class' => Utilisateurs::class,
-                'choice_label' => 'nom',
-                'placeholder' => 'Choisissez un nom dans la liste',
-                'autocomplete' => true,
-                'multiple' => true,
-                'query_builder' => function ($repository) use ($user) {
-                    return $repository->createQueryBuilder('u')
-                        ->where('u != :user')
-                        ->setParameter('user', $user);
-                }
-            ])
+            ->add('utilisateurs', UtilisateursAutocompleteField::class)
             ->add('description', TextType::class, [
                 'attr' => [
                     'class' => 'form_control',
