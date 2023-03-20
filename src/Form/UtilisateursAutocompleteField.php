@@ -12,13 +12,19 @@ use Symfony\UX\Autocomplete\Form\ParentEntityAutocompleteType;
 #[AsEntityAutocompleteField]
 class UtilisateursAutocompleteField extends AbstractType
 {
+    private UtilisateursRepository $utilisateursRepository;
+    public function __construct(UtilisateursRepository $utilisateursRepository)
+    {
+        $this->utilisateursRepository = $utilisateursRepository;
+    }
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'class' => Utilisateurs::class,
             'placeholder' => 'Choose a Utilisateurs',
-            'searchable_fields' => ['nom']
-            //'choice_label' => 'name',
+            'choices' => $this->utilisateursRepository->findAll(),
+            'choice_label' => 'nom',
+            'mapped' => false,
             //'security' => 'ROLE_SOMETHING',
         ]);
     }

@@ -31,6 +31,9 @@
         <h1>Modification du groupe : </h1>
 
         {{ form_start(form) }}
+
+        {{ form_label(form.utilisateurs)}}
+        {{ form_widget(form.utilisateurs) }}
         <div class="form-group">
             {{ form_label(form.nom_groupe) }}
             {{ form_widget(form.nom_groupe) }}
@@ -47,7 +50,6 @@
             {% endif %}
         </div>
         <div class= 'form-group' style='display:flex;'>
-            {{ form_label(form.searchUsers)}}
             <div class= 'users_viewer'> <!-- Utilisateurs disponibles-->
                 {% for utilisateur in utilisateurs %}
                     {% if utilisateur not in utilisateursDejaDedans %}

@@ -55,7 +55,13 @@ class GroupesType extends AbstractType
                 ]
 
             ])
-            ->add('utilisateurs', UtilisateursAutocompleteField::class)
+            ->add('utilisateurs', EntityType::class, [
+                'class' => Utilisateurs::class,
+                'choice_label' => 'nom',
+                'placeholder' => 'Choisissez un nom dans la liste',
+                'autocomplete' => true,
+                'multiple' => true,
+            ])
             ->add('description', TextType::class, [
                 'attr' => [
                     'class' => 'form_control',
