@@ -69,6 +69,11 @@
                         <a href="{{ path('app_trajets_edit', {'id': trajet.id}) }}"class= "btn btn-info">Modifier</a>
                         <a href="{{ path('app_trajets_delete', {'id': trajet.id}) }}"class= "btn btn-info">Supprimer</a>
                     {% endif %}
+                    {% set hier = date('-24 hours') %}
+                    {% if ((trajet.getTArrivee() is not null and trajet.getTArrivee() < now) or trajet.getTDepart() < hier) %}
+                     <!-- si trajet terminé, le chauffeur peut l'indiquer -->
+                    <a href="{{ path('app_trajets_edit', {'id': trajet.id}) }}"class= "btn btn-info">Déclarer le trajet terminé</a>
+                    {% endif %}
                     <a href="{{ path('app_trajets_show', {'id': trajet.id}) }}"class= "btn btn-info">Voir les détails</a>
                     </td>
                 </tr>

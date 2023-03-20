@@ -125,7 +125,9 @@ class TrajetsController extends AbstractController
                 'Votre trajet ne peut plus être modifié !'
             );    
         }
+        
         $maintenant = new DateTime();
+        /*
         if ($trajet->getTDepart() <$maintenant ) {
             $trajet->setEtat('terminé');
 
@@ -134,7 +136,7 @@ class TrajetsController extends AbstractController
                 'Votre trajet est terminé !'
             );    
         }
-
+        */
         
         $hier = new DateTime('-24 hours');
         if (( ($trajet->getTArrivee() !='null') and ($trajet->getTArrivee() <$maintenant))  or $trajet->getTDepart() <$hier )
