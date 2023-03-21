@@ -27,7 +27,7 @@
                     <a class="nav-link" href="{{path('app_groupes.group')}}">Groupes</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{path('app_notification')}}"><i class="fas fa-bell fa-lg"></i><span class="badge badge-pill badge-danger">5</span></a>
+                    <a class="nav-link" href="{{path('app_notification')}}"><i class="fas fa-bell fa-lg"></i><span class="badge badge-pill badge-danger notification-count"></span></a>
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
@@ -50,3 +50,18 @@
         </div>
     </div>
 </nav>
+
+<script>
+    $(document).ready(function() {
+        // Envoyer une requête AJAX pour récupérer le nombre de notifications
+        $.ajax({
+            url: "{{ path('app_notification_count') }}",
+            type: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                // Mettre à jour le nombre de notifications dans le badge
+                $('.notification-count').text(response.count);
+            }
+        });
+    });
+</script>
