@@ -109,7 +109,7 @@ class TrajetsController extends AbstractController
     
 
     #[Route('/{id}/visualiser', name: 'app_trajets_show', methods: ['GET'])]
-    public function show(Trajets $trajet, EntityManagerInterface $manager): Response
+    public function show(Trajets $trajet, Request $request, EntityManagerInterface $manager): Response
     {
         if (!$trajet) {
             throw $this->createNotFoundException('The Trajets object was not found.');
@@ -196,8 +196,8 @@ class TrajetsController extends AbstractController
             $trajetsRepository->save($trajet, true);
             
             $manager->persist($trajet);
-
             $manager->flush();
+
             $users = [];
             //ENVOI DE LA NOTIFICATION A TOUS LES UTILISATEURS INSCRITS AU TRAJET
             $estAcceptes = $manager->getRepository(EstAccepte::class)->findBy(['trajet' => $trajet]);
@@ -245,6 +245,7 @@ class TrajetsController extends AbstractController
             $trajetsRepository->remove($trajet, true);
         }
         $manager->persist($trajet);
+        $manager->flush();
 
         return $this->redirectToRoute('app_trajets_index', [], Response::HTTP_SEE_OTHER);
     }
@@ -288,5 +289,25 @@ class TrajetsController extends AbstractController
             ]);
         }
     }
+
+    #[Route('/{id}/terminer', name: 'app_trajets_terminer', methods: ['POST'])]
+    public function terminer(Request $request, EntityManagerInterface $manager, Trajets $trajet): Response
+    {
+        if (!$trajet) {
+            throw $this->createNotFoundException('The Trajets object was not found.');
+        }
+        $this->addFlash(
+            'warning',
+            'Vos passagers et vous pouvez vous évaluer.'
+        );
+        $trajet->setEtat('terminé');
+
+        $manager->persist($trajet);
+        $manager->flush();
+
+        return $this->redirectToRoute('app_trajets_index');
+
+    }
+
     
 }
