@@ -4,9 +4,6 @@
 
 {% block head %}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 {% endblock %}
 
 {% block body %}
@@ -15,36 +12,31 @@
             <div class="row justify-content-center">
                 </hr>
                 <div class="col-md-3"> <!-- Volets de navigation -->
-                    <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 280px;">
-                        <ul class="nav nav-pills flex-column mb-auto">
-                            <li class="nav-item">
-                                <a href="#" class="nav-link active">Accueil</a>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Trajets
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown1">
-                                    <a class="dropdown-item" href="#">Voir tous les trajets</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#">Voir mes inscriptions</a>
-                                </div>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">Groupes</a>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Profil
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown2">
-                                    <a class="dropdown-item" href="#">Paramètres</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#">Déconnexion</a>
-                                </div>
-                            </li>
-                        </ul>
+                    <!-- Sidebar -->
+                    <div class="bg-light border-right" id="sidebar-wrapper">
+                        <div class="sidebar-heading">Volets de navigation</div>
+                        <div class="list-group list-group-flush">
+                            <a href="#" class="list-group-item list-group-item-action bg-light">Accueil</a>
+                            <div class="dropdown">
+                                <a href="#" class="list-group-item list-group-item-action bg-light dropdown-toggle" id="dropdownMenuButton" data-bs-toggle="dropdown">Trajets</a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-item dropdown-toggle" id="sub-menu" data-bs-toggle="dropdown">Mes propositions</a>
+                                        <ul class="dropdown-menu" aria-labelledby="sub-menu">
+                                            <li><a class="dropdown-item" href="#">Trajet privé 1</a></li>
+                                            <li><a class="dropdown-item" href="#">Trajet privé 2</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a class="dropdown-item" href="#">Mes adoptions</a></li>
+                                    <li><a class="dropdown-item" href="#">Voir tous les trajets</a></li>
+                                </ul>
+                            </div>
+                            <a href="#" class="list-group-item list-group-item-action bg-light">Groupes</a>
+                            <a href="#" class="list-group-item list-group-item-action bg-light">Profile</a>
+                        </div>
+                        <!-- /#sidebar-wrapper -->
                     </div>
+                    <!-- /#wrapper -->
                 </div>
 
                 <div class="col-md-9"> <!-- Affichage dashboard -->
@@ -189,4 +181,24 @@
             Inscrivez-vous dès maintenant pour rejoindre notre communauté de co-voitureurs et découvrir tous les avantages que le co-voiturage peut offrir !
         </div>
     {% endif %}
+
+<!-- Link to Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.1.0/js/bootstrap.min.js"></script>
+
+
+    <!-- Toggle Sidebar Script -->
+    <script>
+        $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+        });
+    </script>
+    <script>
+        $(document).ready(function(){
+            $('.dropdown-toggle').dropdown();
+        });
+    </script>
 {% endblock %}
