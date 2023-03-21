@@ -12,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 class EstDansController extends AbstractController
 {
@@ -37,7 +38,7 @@ class EstDansController extends AbstractController
 
     #[Route("/groupes/edition/supprimer/{groupeId}/{utilisateurId}", name:"app_groupes.supprimer_utilisateur")]
     public function supprimerUtilisateurDuGroupe(EntityManagerInterface $manager, int $groupeId, int $utilisateurId): Response
-    {
+    {   
         $estDansRepository = $manager->getRepository(EstDans::class);
         $estDans = $estDansRepository->findOneBy(['groupes' => $groupeId, 'utilisateurs' => $utilisateurId]);
 
@@ -51,6 +52,7 @@ class EstDansController extends AbstractController
 
         return new Response('L\'utilisateur a été retiré du groupe.');
     }
+
 }
 
 ?>

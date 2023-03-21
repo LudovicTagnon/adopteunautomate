@@ -14,7 +14,7 @@ class Groupes
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    public ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: Utilisateurs::class)]
     private Utilisateurs $createur;

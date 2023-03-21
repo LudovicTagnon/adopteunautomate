@@ -25,7 +25,9 @@ class UtilisateursAutocompleteField extends AbstractType
             $user = $this->security->getUser();
             $resolver->setDefaults([
             'class' => Utilisateurs::class,
-            'placeholder' => 'Recherchez un utilisateur',
+            'multiple' => true,
+            'required' => false,
+            'label' => 'Rechercher un Utilisateur : ',
             'choice_label' => function(Utilisateurs $user) {
                 return sprintf('%s %s (%s)', $user->getPrenom(), $user->getNom(), $user->getEmail());
             },
