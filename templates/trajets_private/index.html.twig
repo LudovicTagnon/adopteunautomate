@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-
+{% block title %}Trajets privés{% endblock %}
 {% block body %}
     <h1>Liste des trajets privés</h1>
         {% if trajets|length == 0 or not estDedans%}
