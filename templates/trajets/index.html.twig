@@ -58,13 +58,28 @@
                     <td>{{ trajet.public ? 'Yes' : 'No' }}</td>
                     <td>{{ trajet.renseignement }}</td>
                     <td>
+                    {# cacher les boutons des voyages ne pouvant être modifiés#}
                     {#
                         <a href="{{ path('app_trajets_show', {'id': trajet.id}) }}"class= "btn btn-info">Montrer les villes</a>
                     #}
+                    {#
+                    {% set now = date_create() %}#}
+                    {% set now = date() %}
+                    {% if (trajet.TDepart  > now|date_modify('+24 hours'))  %}
                         <a href="{{ path('app_trajets_edit', {'id': trajet.id}) }}"class= "btn btn-info">Modifier</a>
                         <a href="{{ path('app_trajets_delete', {'id': trajet.id}) }}"class= "btn btn-info">Supprimer</a>
+                    {% endif %}
 
-                        <a href="{{ path('app_trajets_show', {'id': trajet.id}) }}"class= "btn btn-info">Voir les détails</a>
+                    {% set hier = date('-24 hours') %}
+                    {% set avanthier = date('-48 hours') %}
+                    {% set demain = date('+24 hours') %}
+                    {% if ((trajet.getTArrivee() is not null and trajet.getTArrivee() < now and trajet.getTArrivee() > hier ) or ( trajet.getTDepart() < hier and (trajet.getTDepart() > avanthier )) ) %}
+                     <!-- si trajet terminé, le chauffeur peut l'indiquer , cela permettra à la notation de commencer -->
+                    
+                    <a href="{{ path('app_trajets_edit', {'id': trajet.id}) }}"class= "btn btn-info">Trajet terminé</a>
+                    {% endif %}
+
+                    <a href="{{ path('app_trajets_show', {'id': trajet.id}) }}"class= "btn btn-info">Voir les détails</a>
                     </td>
                 </tr>
             {% else %}
@@ -78,4 +93,5 @@
     <a href="{{ path('app_trajets_new') }}"class= "btn btn-info" >Ajouter un trajet </a>
 
     </div>
+
 {% endblock %}
