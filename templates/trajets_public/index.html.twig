@@ -24,7 +24,6 @@
                             {% set skip_trajet = true %}
                         {% endif %}
                     {% endfor %}
-                {% if not skip_trajet %}
                 {% if trajet.publie.id != user.id and trajet.getNbPassagerCourant() < trajet.getNbPassagerMax() and trajet.getTDepart() > now %}
                     <tr>
                         <td>{{ trajet.getPublie().getNom()}} {{ trajet.getPublie().getPrenom() }}</td>
@@ -48,7 +47,7 @@
                              
                              {% if (trajet.TDepart  > now)  %}
 
-                                {% if trajet_deja_adopte == false %}
+                                {% if trajet_deja_adopte == false and not skip_trajet %}
                                 <a href="{{ path('app_trajet.adopter_trajet', {'trajetId': trajet.id, 'utilisateurId': user.id}) }}" class="btn btn-success">Adopter le trajet</a>                     
                                 {% else %}
                                 <a href="{{ path('app_trajet.abandonner_trajet', {'trajetId': trajet.id, 'utilisateurId': user.id}) }}" class="btn btn-danger">Abandonner le trajet</a>                            {% endif %}
@@ -56,7 +55,6 @@
                             {% endif %}    
                         </td>
                     </tr>
-                {% endif %}
                 {% endif %}
                 {% endfor %}
             </tbody>
