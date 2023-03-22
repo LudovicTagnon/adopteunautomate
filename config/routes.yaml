@@ -11,3 +11,7 @@ notification:
     path: /notification/
     controller : App\Controller\NotificationController:index
 
+notes:
+    path: /notes
+    controller: App\Controller\NoteController::index
+

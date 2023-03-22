@@ -5,14 +5,15 @@ namespace App\Controller;
 use App\Entity\Note;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 class NoteController extends AbstractController
 {
-    #[Route('/note', name: 'note')]
+    #[Route('/notes', name: 'notes')]
     public function index(): Response
     {
-        return $this->render('note/index.html.twig', [
+        return $this->render('notes/index.html.twig', [
             'controller_name' => 'NoteController',
         ]);
     }
