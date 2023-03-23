@@ -25,7 +25,7 @@ class TrajetsController extends AbstractController
 {
     
 
-    #[Route('/', name: 'app_trajets_index', methods: ['GET'])]
+    #[Route('/mes_propositions', name: 'app_trajets_index', methods: ['GET'])]
     #[IsGranted('ROLE_USER')]
     public function index(TrajetsRepository $trajetsRepository): Response
     {
@@ -40,7 +40,7 @@ class TrajetsController extends AbstractController
     }
 
     
-    #[Route('/new', name: 'app_trajets_new', methods: ['GET', 'POST'])]
+    #[Route('/créer_un_trajet', name: 'app_trajets_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $manager ): Response
     {
         

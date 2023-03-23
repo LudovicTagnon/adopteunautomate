@@ -1,0 +1,31 @@
+<div class="list-group">
+    <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
+    Accueil
+    </a>
+    <a href="{{path('app_profil')}}" class="list-group-item list-group-item-action">
+        Profil
+    </a>
+    <a href="#" class="list-group-item list-group-item-action" data-bs-toggle="collapse" data-bs-target="#submenu">
+        Trajets
+    </a>
+    <div class="collapse" id="submenu">
+        <a href="#" class="list-group-item list-group-item-action" data-bs-toggle="collapse" data-bs-target="#subsubmenu">
+            Mes inscriptions
+        </a>
+        <div class="collapse" id="subsubmenu">
+            <a href="{{path('app_trajets_publics')}}" class="list-group-item list-group-item-action">Publics</a>
+            <a href="{{path('app_trajets_prives')}}" class="list-group-item list-group-item-action">Privés</a>
+        </div>
+        <a href="{{path('app_trajets_index')}}" class="list-group-item list-group-item-action">
+            Mes propositions
+        </a>
+        <a href="{{path('app_trajets_history')}}" class="list-group-item list-group-item-action">
+            Mon historique
+        </a>
+        <!--<a href="#" class="list-group-item list-group-item-action">Voir tous les trajets</a>-->
+    </div>
+    <a href="{{path('app_groupes.group')}}" class="list-group-item list-group-item-action" >
+        Groupes
+    </a>
+    <!--<a href="#" class="list-group-item list-group-item-action">Voir tous les groupes</a>-->
+</div>
