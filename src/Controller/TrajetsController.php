@@ -224,28 +224,36 @@ class TrajetsController extends AbstractController
     //#[Route('/', name: 'app_trajets_index', methods: ['GET'])]
     public function delete(Request $request, Trajets $trajet, TrajetsRepository $trajetsRepository, EntityManagerInterface $manager): Response
     {
-        $demain = new DateTime('tomorrow');
+        $demain = new DateTime('+24 hours');
         if ($trajet->getTDepart() <$demain ) {
             $trajet->setEtat('bloqué');
             $this->addFlash(
                 'warning',
                 'Vous ne pouvez plus supprimer ce trajet.'
             );
-
+            $manager->persist($trajet);
+            $manager->flush();
             return $this->redirectToRoute('app_trajets_index');
         }
 
         // si le trajet est terminé ou que son départ a eu lieu il y a plus de 24h
         // conditions à écrire, avec update de $trajet.etat
         // blocage de la suppression via effacement du bouton dans trajets/index
-        
+        /*
         if ($this->isCsrfTokenValid('delete'.$trajet->getId(), $request->request->get('_token'))) {
             $trajet->setEtat('annulé');
             // si on l'enlève carrément:
             $trajetsRepository->remove($trajet, true);
         }
-        $manager->persist($trajet);
+        */
+        $manager->remove($trajet);
         $manager->flush();
+
+        $this->addFlash(
+            'success',
+            'Ce groupe a été supprimé avec succès.'
+        );
+        
 
         return $this->redirectToRoute('app_trajets_index', [], Response::HTTP_SEE_OTHER);
     }
