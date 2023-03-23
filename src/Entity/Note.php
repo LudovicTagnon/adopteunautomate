@@ -15,11 +15,16 @@ class Note
     #[ORM\Column]
     private $id;
 
-    
-    #[ORM\Column]
+
+    #[ORM\Column(name: 'Trajet_id')]
     private $Trajet_id;
 
-    
+    /**
+     * @ORM\ManyToOne(targetEntity=Trajets::class)
+     * @ORM\JoinColumn(name="Trajet_id", referencedColumnName="id")
+     */
+    private $trajet;
+
     #[ORM\Column]
     private $recv_id;
 
@@ -81,6 +86,18 @@ class Note
     public function setNote(float $note): self
     {
         $this->note = $note;
+
+        return $this;
+    }
+
+    public function getTrajet(): ?Trajets
+    {
+        return $this->trajet;
+    }
+
+    public function setTrajet(?Trajets $trajet): self
+    {
+        $this->trajet = $trajet;
 
         return $this;
     }

@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Participants{% endblock %}a
+
+{% block body %}
+    <h1>Participants du trajet</h1>
+
+    {% if participants is not empty %}
+        <ul>
+            {% for participant in participants %}
+                <li>{{ participant.nom }} {{ participant.prenom }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}

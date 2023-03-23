@@ -15,3 +15,7 @@ notes:
     path: /notes
     controller: App\Controller\NoteController::index
 
+note_participants:
+    path: /note_participants
+    controller: App\Controller\NoteController::loadParticipants
+    methods: [GET]
