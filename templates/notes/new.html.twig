@@ -1,45 +1,46 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Afficher les participants du trajet</h1>
+<h1>Afficher les participants du trajet</h1>
 
-    {{ form_start(form) }}
-    {{ form_widget(form.Trajet_id) }}
+{{ form_start(form, {'attr': {'id': 'form_trajet'}}) }}
+{{ form_widget(form.Trajet_id) }}
 
-    {% if trajets %}
-        <ul>
-            {% for trajet in trajets %}
-                <li>{{ trajet.id }} - {{ trajet.demarrea }} -> {{ trajet.arrivea }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+{% if trajets %}
+    <ul>
+        {% for trajet in trajets %}
+            <li>{{ trajet.id }} - {{ trajet.demarrea }} -> {{ trajet.arrivea }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
 
-    <button type="submit" name="loadParticipants" class="btn btn-primary">Afficher les participants</button>
-    {{ form_end(form) }}
-    <div id="participants-container"></div>
+<button type="submit" class="btn btn-primary">Afficher les participants</button>
+{{ form_end(form) }}
+<div id="participants-container"></div>
 
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('#form_trajet').submit(function(event) {
-                var trajetId = $('#trajet-select').val();
-                if (trajetId !== "" && trajetId !== "default") {
-                    $.ajax({
-                        type: 'GET',
-                        url: "/note_participants",
-                        data: {
-                            'id': trajetId
-                        },
-                        success: function(data) {
-                            $('#participants-container').html(data);
-                        },
-                        error: function(xhr, status, error) {
-                            alert('Une erreur est survenue : ' + status);
-                        }
-                    });
-                } else {
-                    alert("Veuillez sélectionner un trajet.");
-                }
-            });
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#form_trajet').submit(function(event) {
+            event.preventDefault();
+            var trajetId = $('#note_trajet_Trajet_id').val();
+            if (trajetId !== "" && trajetId !== "default") {
+                $.ajax({
+                    type: 'GET',
+                    url: "/note_participants",
+                    data: {
+                        'id': trajetId
+                    },
+                    success: function(data) {
+                        $('#participants-container').html(data);
+                    },
+                    error: function(xhr, status, error) {
+                        alert('Une erreur est survenue : ' + status);
+                    }
+                });
+            } else {
+                alert("Veuillez sélectionner un trajet.");
+            }
         });
-    </script>
+    });
+</script>
 {% endblock %}

@@ -51,23 +51,36 @@ class NoteController extends AbstractController
     #[Route('/note_participants', name: 'note_participants', methods: ['GET'])]
     public function loadParticipants(Request $request): Response
     {
-        if (!$request->query->has('id')) {
-            return new Response('Missing parameter "id"', 400);
+        $trajets = $this->trajetsRepository->findAll();
+        $form = $this->createForm(NoteTrajetType::class, null, [
+            'trajets' => $trajets,
+        ]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $trajetId = $form->get('Trajet_id')->getData();
+            if (!$trajetId) {
+                // No Trajet selected
+                $this->addFlash('error', 'Please select a Trajet');
+                return $this->redirectToRoute('notes');
+            }
+
+            $trajet = $this->entityManager
+                ->getRepository(Trajets::class)
+                ->find($trajetId);
+
+            $participants = $trajet->getParticipants();
+            return $this->render('notes/participants.html.twig', [
+                'participants' => $participants,
+                'form' => $form->createView(),
+            ]);
         }
-
-        $trajetId = $request->query->get('id');
-
-        $trajet = $this->entityManager->getRepository(Trajets::class)->find($trajetId);
-        if (!$trajet) {
-            return new Response('Trajet not found', 404);
-        }
-
-        $participants = $trajet->getParticipants();
-
         return $this->render('notes/participants.html.twig', [
-            'participants' => $participants,
+            'form' => $form->createView(),
+            'participants' => [],
         ]);
     }
+
 
 }
 

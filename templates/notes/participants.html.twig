@@ -1,15 +1,19 @@
-{% extends 'base.html.twig' %}
 
-{% block title %}Participants{% endblock %}a
+    {% extends 'base_without_nav.html.twig' %}
 
-{% block body %}
-    <h1>Participants du trajet</h1>
+    {% block title %}Participants{% endblock %}
 
-    {% if participants is not empty %}
-        <ul>
-            {% for participant in participants %}
-                <li>{{ participant.nom }} {{ participant.prenom }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-{% endblock %}
+    {% block body %}
+        <div class="container">
+            <h1>Participants du trajet</h1>
+            {% if participants is empty %}
+                <p>Aucun participant pour ce trajet</p>
+            {% else %}
+                <ul>
+                    {% for participant in participants %}
+                        <li>{{ participant.nom }} {{ participant.prenom }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    {% endblock %}

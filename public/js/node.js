@@ -1,7 +1,7 @@
 $(document).ready(function() {
     $('#form_trajet').submit(function(event) {
         event.preventDefault();
-        var trajetId = $('#trajet-select').val();
+        var trajetId = $('#note_trajet_Trajet_id').val();
         $.ajax({
             type: "GET",
             url: "/note_participants",
