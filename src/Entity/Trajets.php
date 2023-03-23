@@ -6,6 +6,8 @@ namespace App\Entity;
 #use Assert\Choice;
 
 use App\Entity\Villes;
+use App\Entity\Adopte;
+use App\Entity\EstAccepte;
 use Doctrine\DBAL\Types\Types;
 use Monolog\DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
@@ -122,11 +124,21 @@ class Trajets
     #[ORM\JoinColumn(nullable: false)]
     private ?Villes $arrivea = null;
 
+    #[ORM\OneToMany(mappedBy: 'demandeAdoption', targetEntity: Adopte::class, cascade:["persist", "remove"])]
+    private Collection $adopte;
+    
+    #[ORM\OneToMany(mappedBy: 'estAccepte', targetEntity: EstAccepte::class, cascade:["persist", "remove"])]
+    private Collection $estAccepte;
+    
+   
+
     #[ORM\OneToMany(mappedBy: 'trajets', targetEntity: Groupes::class)]
     private Collection $groupes;
     public function __construct()
     {
-        $this->groupes = new ArrayCollection();
+        $this->groupes     = new ArrayCollection();
+        $this->adopte      = new ArrayCollection();
+        $this->estAccepte  = new ArrayCollection();
     }
 
     public function getId(): ?int
