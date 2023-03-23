@@ -47,7 +47,7 @@ class TrajetsPrivateController extends AbstractController
             }
             $estDans = array();
             $estDedans = false;
-            foreach ($groupes as $groupe) { //TODO:ERREUR SI PAS DE GROUPES A CORRIGER+FAIRE PAGE CONSULTER LES TRAJETS OU ON EST ACCEPTE
+            foreach ($groupes as $groupe) { //TODO:ERREUR SI PAS DE GROUPES A CORRIGER+FAIRE PAGE CONSULTER LES TRAJETS OU ON EST ACCEPTES
                 if ($groupe->estDansGroupes($user->getId())) {
                     $estDedans = true;
                 }
