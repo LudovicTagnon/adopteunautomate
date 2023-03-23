@@ -220,7 +220,7 @@ class TrajetsController extends AbstractController
     
 
     
-    #[Route('/{id}', name: 'app_trajets_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'app_trajets_delete', methods:  ['GET', 'POST'])]
     //#[Route('/', name: 'app_trajets_index', methods: ['GET'])]
     public function delete(Request $request, Trajets $trajet, TrajetsRepository $trajetsRepository, EntityManagerInterface $manager): Response
     {
@@ -250,7 +250,7 @@ class TrajetsController extends AbstractController
         return $this->redirectToRoute('app_trajets_index', [], Response::HTTP_SEE_OTHER);
     }
 
-   #[Route('/rechercher-trajet', name: 'app_trajets_search', methods: ['GET'])]
+   #[Route('/rechercher-trajet', name: 'app_trajets_search', methods: ['GET', 'POST'])]
     public function search(Request $request, EntityManagerInterface $manager): Response
     {
         $current_user = $this->getUser();
