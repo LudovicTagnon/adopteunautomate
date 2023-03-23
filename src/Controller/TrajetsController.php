@@ -262,7 +262,16 @@ class TrajetsController extends AbstractController
             $villeArrivee = $request->query->get('ville_arrivee');
             $jourDepart = $request->query->get('date_depart');
 
-            $trajets = $manager->getRepository(Trajets::class)->findByCritere($current_user, $villeDepart, $villeArrivee,  $jourDepart);
+            if ($villeDepart != null || $villeArrivee !=null){
+                $trajets = $manager->getRepository(Trajets::class)->findByCritere($current_user, $villeDepart, $villeArrivee,  $jourDepart);
+            }else{
+                $dateActuelle = new \DateTime();//Récupération de la date actuelle
+                $trajets = $manager->getRepository(Trajets::class)->createQueryBuilder('t')
+                    ->where('t.T_depart >= :dateActuelle')
+                    ->setParameter('dateActuelle', $dateActuelle)
+                    ->getQuery()
+                    ->getResult();
+            }
 
             $dateA = DateTime::createFromFormat('Y-m-d', $jourDepart);
 
