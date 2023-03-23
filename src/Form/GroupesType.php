@@ -4,6 +4,7 @@ namespace App\Form;
 
 use Assert\Length;
 use App\Entity\Groupes;
+use App\Entity\EstDans;
 use App\Entity\Utilisateurs;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
@@ -54,6 +55,7 @@ class GroupesType extends AbstractType
                 ]
 
             ])
+            ->add('utilisateurs', UtilisateursAutocompleteField::class)
             ->add('description', TextType::class, [
                 'attr' => [
                     'class' => 'form_control',

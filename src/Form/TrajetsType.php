@@ -132,7 +132,6 @@ class TrajetsType extends AbstractType
             ])
             
             ->add('groupes', EntityType::class, [
-                // la ligne qui suit met le bazar
                 'class' => Groupes::class,
                 'choices' => $this->groupesRepository->findBy(['createur' => $userConnected]),
                 'choice_label' => 'nom_groupe',

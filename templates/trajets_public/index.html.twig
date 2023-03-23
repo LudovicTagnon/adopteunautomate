@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-
+{% block title %}Trajets publics{% endblock %}
 {% block body %}
     <h1>Liste des trajets public</h1>
     {% if trajets|length == 0 %}
@@ -18,6 +18,12 @@
             <tbody>
                 {% set now = date() %}
                 {% for trajet in trajets %}
+                {% set skip_trajet = false %}
+                    {% for accepte in estAccepte %}
+                        {% if user.id == accepte.utilisateur.id and trajet.id == accepte.trajet.id %}
+                            {% set skip_trajet = true %}
+                        {% endif %}
+                    {% endfor %}
                 {% if trajet.publie.id != user.id and trajet.getNbPassagerCourant() < trajet.getNbPassagerMax() and trajet.getTDepart() > now %}
                     <tr>
                         <td>{{ trajet.getPublie().getNom()}} {{ trajet.getPublie().getPrenom() }}</td>
@@ -41,7 +47,7 @@
                              
                              {% if (trajet.TDepart  > now)  %}
 
-                                {% if trajet_deja_adopte == false %}
+                                {% if trajet_deja_adopte == false and not skip_trajet %}
                                 <a href="{{ path('app_trajet.adopter_trajet', {'trajetId': trajet.id, 'utilisateurId': user.id}) }}" class="btn btn-success">Adopter le trajet</a>                     
                                 {% else %}
                                 <a href="{{ path('app_trajet.abandonner_trajet', {'trajetId': trajet.id, 'utilisateurId': user.id}) }}" class="btn btn-danger">Abandonner le trajet</a>                            {% endif %}

@@ -52,14 +52,18 @@ class AdopteController extends AbstractController
         dump($adopte);
 
         if (!$adopte) {
-            throw $this->createNotFoundException('L\'utilisateur n\'est pas en attente d\'insciption.');
+            $estAccepteRepository = $manager->getRepository(EstAccepte::class);
+            $estAccepte = $estAccepteRepository->findOneBy(['trajet' => $trajetId, 'utilisateur' => $utilisateurId]);
+            if ($estAccepte) {
+                $manager->remove($estAccepte);
+                $manager->flush();
+            }
         }
         
         try {
             $manager->remove($adopte);
             $manager->flush();
         } catch (\Exception $e) {
-            throw new \Exception('Une erreur est survenue lors de la suppression de l\'adoption : '.$e->getMessage());
         }
         $adopteRepository = $manager->getRepository(Adopte::class);
         $adopte = $adopteRepository->findOneBy(['utilisateur' => $utilisateur, 'trajet' => $trajet]);

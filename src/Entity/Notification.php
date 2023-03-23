@@ -34,8 +34,7 @@ class Notification
     private ?Utilisateurs $userQuiDemandeTrajet = null;
 
     #[ORM\ManyToOne]
-    private ?Trajets $TrajetQuiEstDemande = null; // TYPE NOTIF : 1 : Notification message ; 2 : Notification message + action chauffeur 
-
+    private ?Trajets $TrajetQuiEstDemande = null;
 
     // GETTERS AND SETTERS 
     public function getId(): ?int
@@ -125,6 +124,23 @@ class Notification
 
         return $this;
     }
+
+    public function countUnreadNotifications(Utilisateurs $user): int
+{
+    $notifications = $user->getNotifications();
+
+    $unreadNotifications = 0;
+
+    foreach ($notifications as $notification) {
+        if (!$notification->getIsRead()) {
+            $unreadNotifications++;
+        }
+    }
+    dump($unreadNotifications);
+
+    return $unreadNotifications;
+}
+
 
 
 }
