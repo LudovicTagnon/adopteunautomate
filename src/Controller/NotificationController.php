@@ -85,14 +85,5 @@ public function deleteAllNotifications(NotificationService $notificationService)
     return $this->redirectToRoute('app_notification');
 }
 
-#[Route('/notification/count', name: 'app_notification_count')]
-public function countUnreadNotifications(): JsonResponse
-{
-    $user = $this->getUser();
-    $count = $this->entityManager->getRepository(Notification::class)->countUnreadNotifications($user);
-    dump($count);
-    return new JsonResponse(['count' => $count]);
-}
-
     
 }

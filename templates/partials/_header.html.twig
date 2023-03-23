@@ -27,7 +27,7 @@
                     <a class="nav-link" href="{{path('app_groupes.group')}}">Groupes</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{path('app_notification')}}"><i class="fas fa-bell fa-lg"></i><span class="badge badge-pill badge-danger notification-count"></span></a>
+                    <a class="nav-link" href="{{path('app_notification')}}"><i class="fas fa-bell fa-lg"></i><span class="badge badge-pill badge-danger notification-count" id="notification-count">{% if notificationCount>0 %}{{ notificationCount }}{% endif%}</span></a>
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
