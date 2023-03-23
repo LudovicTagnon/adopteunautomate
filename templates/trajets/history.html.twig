@@ -43,16 +43,18 @@
                                 </thead>
                                 <tbody>
                                     {% for trajet in trajetsPassager%}
-                                        <tr>
-                                            <th scope="row">{{trajet.id}}</th>
-                                            <td>{{trajet.getJourDepartString()}}</td>
-                                            <td>{{trajet.demarrea}}</td>
-                                            <td>{{trajet.arrivea}}</td>
-                                            <td>{{trajet.prix}}<small class="text-muted">€</small></td>
-                                            <td></td>
-                                            <td>/10</td>
-                                            <td>{{trajet.etat}}</td>
-                                        </tr>
+                                        {% if trajet.etat == 'terminé' %}
+                                            <tr>
+                                                <th scope="row">{{trajet.id}}</th>
+                                                <td>{{trajet.getJourDepartString()}}</td>
+                                                <td>{{trajet.demarrea}}</td>
+                                                <td>{{trajet.arrivea}}</td>
+                                                <td>{{trajet.prix}}<small class="text-muted">€</small></td>
+                                                <td></td>
+                                                <td>/10</td>
+                                                <td>{{trajet.etat}}</td>
+                                            </tr>
+                                        {% endif %}
                                     {% else %} <!-- Si il n'y a pas de trajets dans la boucle--> 
                                         </tr><td colspan="7">Vous n'avez effecuté aucun trajet en tant que passager</td></tr>
                                     {% endfor %}
