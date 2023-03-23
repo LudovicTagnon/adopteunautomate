@@ -19,7 +19,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Form\FormError;
 use App\Service\NotificationService;
-use App\Entity\EstAccepte;
 
 #[Route('/trajets')]
 class TrajetsController extends AbstractController

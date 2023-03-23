@@ -12,31 +12,19 @@
             <div class="row justify-content-center">
                 </hr>
                 <div class="col-md-3"> <!-- Volets de navigation -->
-                    <!-- Sidebar -->
-                    <div class="bg-light border-right" id="sidebar-wrapper">
-                        <div class="sidebar-heading">Volets de navigation</div>
-                        <div class="list-group list-group-flush">
-                            <a href="#" class="list-group-item list-group-item-action bg-light">Accueil</a>
-                            <div class="dropdown">
-                                <a href="#" class="list-group-item list-group-item-action bg-light dropdown-toggle" id="dropdownMenuButton" data-bs-toggle="dropdown">Trajets</a>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <li class="dropdown">
-                                        <a href="#" class="dropdown-item dropdown-toggle" id="sub-menu" data-bs-toggle="dropdown">Mes propositions</a>
-                                        <ul class="dropdown-menu" aria-labelledby="sub-menu">
-                                            <li><a class="dropdown-item" href="#">Trajet privé 1</a></li>
-                                            <li><a class="dropdown-item" href="#">Trajet privé 2</a></li>
-                                        </ul>
-                                    </li>
-                                    <li><a class="dropdown-item" href="#">Mes adoptions</a></li>
-                                    <li><a class="dropdown-item" href="#">Voir tous les trajets</a></li>
-                                </ul>
-                            </div>
-                            <a href="#" class="list-group-item list-group-item-action bg-light">Groupes</a>
-                            <a href="#" class="list-group-item list-group-item-action bg-light">Profile</a>
-                        </div>
-                        <!-- /#sidebar-wrapper -->
-                    </div>
-                    <!-- /#wrapper -->
+                    <ul>
+                        <li class="current first">
+                            <a href="#route_to/homepage">Home</a>
+                        </li>
+                        <li class="current_ancestor">
+                            <a href="#route_to/page_show/?id=42">About Me</a>
+                            <ul class="menu_level_1">
+                                <li class="current first last">
+                                    <a href="#route_to/edit_profile">Edit profile</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
                 </div>
 
                 <div class="col-md-9"> <!-- Affichage dashboard -->
@@ -150,12 +138,12 @@
                                         </div>
                                         <div class="tab-pane fade text-center" id="trajets-inscrits" role="tabpanel" aria-labelledby="trajets-inscrits-tab">
                                             <!-- Afficher les trajets où l'utilisateur est inscrits  -->                          
-                                            {% for adoption in adopte|slice(0, 3)%} <!-- Limitation à 3 notifications -->
-                                                {% if adoption.getUtilisateur() == user %}          
+                                            {% for inscription in inscriptions|slice(0, 3)%} <!-- Limitation à 3 notifications -->
+                                                {% if inscription.getUtilisateur() == user %}          
                                                     <a href="#" class="list-group-item list-group-item-action">{{ adoption.getTrajet().demarrea }} --> {{ adoption.getTrajet().arrivea }}</a>
                                                 {% endif %}
                                             {% else %} <!-- Si il n'y a pas de notifications dans la boucle--> 
-                                                <div class="row justify-content-center"> Aucun trajet en attente. </div>
+                                                <div class="row justify-content-center"> Vous n'êtes inscrit à aucun trajet. </div>
                                             {% endfor %}   
                                         </div>
                                     </div>
@@ -196,7 +184,7 @@
         $("#wrapper").toggleClass("toggled");
         });
     </script>
-    <script>
+    <script> //Active le dropdown
         $(document).ready(function(){
             $('.dropdown-toggle').dropdown();
         });

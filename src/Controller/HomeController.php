@@ -12,6 +12,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Villes;
 use App\Entity\Trajets;
 use App\Entity\Adopte;
+use App\Entity\EstAccepte;
 
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
@@ -24,6 +25,7 @@ class HomeController extends AbstractController
         $villes = $manager->getRepository(Villes::class)->findAll();
         $trajets = $manager->getRepository(Trajets::class)->findAll();
         $adoptions = $manager->getRepository(Adopte::class)->findAll();
+        $inscriptions = $manager->getRepository(EstAccepte::class)->findAll();
         
         $notifications = [];//null par défaut
         if ($this->getUser() != null) {
@@ -37,6 +39,7 @@ class HomeController extends AbstractController
             'notifications' => $notifications,
             'trajets' => $trajets,
             'adopte' => $adoptions,
+            'inscriptions' => $inscriptions,
         ]);
 
     }
