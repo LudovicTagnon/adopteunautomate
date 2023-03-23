@@ -70,7 +70,6 @@ class Villes
 
         return $this;
     }
-
 /*
     public function getDepartDe(): ?Trajets
     {

@@ -4,9 +4,9 @@
 
 {% block body %}
 
-    {% if user.vehicule %}
+    {% if user is defined and user is not null and user.vehicule %}
         <!-- contenu de la page -->
-    
+   
 
     <style>
         .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
@@ -16,17 +16,6 @@
    <div class="example-wrapper">
 
         <h1>Ajouter un trajet </h1>
-
-       {% if app.flashes('error') is not empty %}
-           <div class="alert alert-danger">
-               <p>Vous avez déjà créé un trajet pour cette date. Veuillez choisir une autre date</p>
-           </div>
-       {% endif %}
-       {% if app.flashes('errordate') is not empty %}
-           <div class="alert alert-danger">
-               <p>Vous avez un trajet prévu avant la date de départ de celui ci.</p>
-           </div>
-       {% endif %}
 
          {{ form_start(form) }}
 
@@ -107,6 +96,13 @@
                 {{form_errors(form.public)}}
             </div>
         </div>
+        <div class="form-group">
+            {{ form_label(form.groupes)}}
+            {{ form_widget(form.groupes)}}
+            <div>
+                {{form_errors(form.groupes)}}
+            </div>
+        </div>
 
         <div class= 'form-group'>
             {{ form_label(form.renseignement)}}
@@ -132,4 +128,20 @@
         <p>Vous devez posséder une voiture pour accéder à cette page.</p>
     {% endif %}
     
+
+    <script>
+    const publicField = document.querySelector('#form_public');
+    const groupesContainer = document.querySelector('.form-group');
+
+    publicField.addEventListener('change', function() {
+        if (publicField.checked) {
+            groupesContainer.classList.add('groupes-hidden');
+            groupesContainer.classList.remove('groupes-visible');
+        } else {
+            groupesContainer.classList.add('groupes-visible');
+            groupesContainer.classList.remove('groupes-hidden');
+        }
+    });
+</script>
+
 {% endblock %}

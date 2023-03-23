@@ -62,7 +62,7 @@ class RegistrationFormType extends AbstractType
                 'constraints' => [
                     new Assert\Regex([
                         'pattern' => '/^[A-Za-z\s\-]+$/',
-                        'message' => 'Le prenom ne doit contenir que des caractères alphabétiques, des espaces et des tirets.',
+                        'message' => 'Le nom ne doit contenir que des caractères alphabétiques, des espaces et des tirets.',
                     ]),
                 ],
                 'label_attr' => ['class' => 'required-field'],

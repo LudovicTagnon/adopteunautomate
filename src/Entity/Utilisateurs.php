@@ -10,6 +10,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Entity\Groupes;
 
 #[ORM\Entity(repositoryClass: UtilisateursRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
@@ -69,8 +70,8 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: "boolean")]
     private ?bool $compte_actif = true;
 
-    #[ORM\OneToMany(mappedBy: 'utilisateurs', targetEntity: Groupes::class, orphanRemoval: true)]
-    private $groupes;
+    #[ORM\OneToMany(mappedBy: 'createur', targetEntity: Groupes::class, orphanRemoval: true)]
+    public $groupes;
 
     #[ORM\OneToMany(mappedBy: 'publie', targetEntity: Trajets::class)]
     private Collection $trajets;
@@ -78,13 +79,21 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Notification::class)]
     private Collection $notifications;
 
-    #[ORM\Column(type: "string", length: 100 , nullable: true)]
-    private ?string $resetToken = null;
+    #[ORM\OneToMany(targetEntity:"App\Entity\Adopte", mappedBy:"utilisateur")]
+    private $adoptions;
+
+    #[ORM\OneToMany(mappedBy: 'utilisateur', targetEntity: EstAccepte::class, orphanRemoval: true)]
+    private Collection $trajet;
+
+    #[ORM\ManyToOne(inversedBy: 'utilisateurs')]
+    private ?Groupes $groupesUsers = null;
 
     public function __construct()
     {
         $this->notifications = new ArrayCollection();
         $this->trajets = new ArrayCollection();
+        $this->adoptions = new ArrayCollection();
+        $this->trajet = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -280,26 +289,6 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return string|null
-     */
-    public function getResetToken(): ?string
-    {
-        return $this->resetToken;
-    }
-
-    /**
-     * @param string|null $resetToken
-     */
-    public function setResetToken(?string $resetToken): self
-    {
-        $this->resetToken = $resetToken;
-
-        return $this ;
-    }
-
-
-
-    /**
      * @return Collection<int, Notification>
      */
     public function getNotifications(): Collection
@@ -358,5 +347,60 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function getAdoptions(): Collection
+    {
+        return $this->adoptions;
+    }
+
+    public function addAdoption(Adopte $adoption): self
+    {
+        if (!$this->adoptions->contains($adoption)) {
+            $this->adoptions[] = $adoption;
+            $adoption->setUtilisateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAdoption(Adopte $adoption): self
+    {
+        if ($this->adoptions->contains($adoption)) {
+            $this->adoptions->removeElement($adoption);
+            // set the owning side to null (unless already changed)
+            if ($adoption->getUtilisateur() === $this) {
+                $adoption->setUtilisateur(null);
+            }
+        }
+
+        return $this;
+    }
+
+        public function getGroupes(): Collection
+    {
+        return $this->groupes;
+    }
+
+        /**
+         * @return Collection<int, EstAccepte>
+         */
+        public function getTrajet(): Collection
+        {
+            return $this->trajet;
+        }
+
+        public function getGroupesUsers(): ?Groupes
+        {
+            return $this->groupesUsers;
+        }
+
+        public function setGroupesUsers(?Groupes $groupesUsers): self
+        {
+            $this->groupesUsers = $groupesUsers;
+
+            return $this;
+        }
+
+
 
 }
