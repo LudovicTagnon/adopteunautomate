@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Utilisateurs;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -42,6 +43,22 @@ class UtilisateursRepository extends ServiceEntityRepository implements Password
         }
     }
 
+    public function findParticipantsByTrajet(int $trajetId): array
+    {
+        $qb = $this->createQueryBuilder('u')
+            ->join('u.estAccepte', 'ea')
+            ->join('ea.trajet', 't')
+            ->where('t.id = :trajetId')
+            ->setParameter('trajetId', $trajetId);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function createQueryBuilder($alias, $indexBy = null): QueryBuilder
+    {
+        return parent::createQueryBuilder($alias, $indexBy);
+    }
+
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
      */
@@ -55,7 +72,7 @@ class UtilisateursRepository extends ServiceEntityRepository implements Password
 
         $this->save($user, true);
     }
-
+}
 //    /**
 //     * @return Utilisateurs[] Returns an array of Utilisateurs objects
 //     */
@@ -74,10 +91,4 @@ class UtilisateursRepository extends ServiceEntityRepository implements Password
 //    public function findOneBySomeField($value): ?Utilisateurs
 //    {
 //        return $this->createQueryBuilder('u')
-//            ->andWhere('u.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
-}
+//            ->andWhere('

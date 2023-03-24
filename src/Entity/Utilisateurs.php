@@ -402,5 +402,4 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
 
-
 }

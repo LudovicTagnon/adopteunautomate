@@ -149,9 +149,12 @@ class TrajetsController extends AbstractController
         }
         
         $manager->persist($trajet);
-
         $manager->flush();
 
+        // Récupération des participants
+        $participants = $manager->getRepository(Utilisateurs::class)->findByTrajet($trajet);
+
+        var_dump($participants);
         return $this->render('trajets/show.html.twig', [
             'trajet' => $trajet,
         ]);

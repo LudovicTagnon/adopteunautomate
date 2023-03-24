@@ -59,5 +59,8 @@
 
     <a href="{{ path('app_trajets_edit', {'id': trajet.id}) }}">edit</a>
 
+    {{ include('notes/participants.html.twig', {'trajet': trajet}) }}
+
     {{ include('trajets/_delete_form.html.twig') }}
+
 {% endblock %}

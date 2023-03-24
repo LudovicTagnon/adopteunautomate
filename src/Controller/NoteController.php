@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Note;
 use App\Entity\Trajets;
+use App\Entity\Utilisateurs;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -69,7 +70,10 @@ class NoteController extends AbstractController
                 ->getRepository(Trajets::class)
                 ->find($trajetId);
 
-            $participants = $trajet->getParticipants();
+            $participants = $this->entityManager
+                ->getRepository(Utilisateurs::class)
+                ->findParticipantsByTrajet($trajetId);
+
             return $this->render('notes/participants.html.twig', [
                 'participants' => $participants,
                 'form' => $form->createView(),
