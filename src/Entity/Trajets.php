@@ -123,13 +123,16 @@ class Trajets
     #[ORM\ManyToOne(inversedBy: 'arrivant', cascade:["persist"])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Villes $arrivea = null;
-
-    #[ORM\OneToMany(mappedBy: 'demandeAdoption', targetEntity: Adopte::class, cascade:["persist", "remove"])]
+/*  relations non fonctionnelles 23 03
+    #[ORM\OneToMany( mappedBy: 'adopte', targetEntity: Adopte::class, cascade:["persist", "remove"])]
     private Collection $adopte;
     
     #[ORM\OneToMany(mappedBy: 'estAccepte', targetEntity: EstAccepte::class, cascade:["persist", "remove"])]
     private Collection $estAccepte;
-    
+    */
+    #[ORM\OneToMany(targetEntity: Adopte::class, mappedBy: 'adopte')]
+    private $adopte;
+
    
 
     #[ORM\OneToMany(mappedBy: 'trajets', targetEntity: Groupes::class)]
@@ -138,7 +141,7 @@ class Trajets
     {
         $this->groupes     = new ArrayCollection();
         $this->adopte      = new ArrayCollection();
-        $this->estAccepte  = new ArrayCollection();
+       // $this->estAccepte  = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -361,6 +364,13 @@ class Trajets
     public function getPublic(): ?bool
     {
         return $this->public;
+    }
+
+    
+   
+    public function getAdopte(): Collection
+    {
+        return $this->adopte;
     }
 
     public function incrementNbPassagerCourant(): self

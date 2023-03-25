@@ -246,8 +246,20 @@ class TrajetsController extends AbstractController
             $trajetsRepository->remove($trajet, true);
         }
         */
+        // COndition non fonctionnelle 23 03
+        if ($trajet->getAdopte()!=null)
+        {
+            foreach ($trajet->getAdopte() as $adopte) 
+            {//on parcourt les membres de l'entité Adopte que l'on supprime
+                $manager->remove($adopte);//on supprime le tuple
+                //$manager->flush();
+            }
+        
+        }
+        
         $manager->remove($trajet);
         $manager->flush();
+
 
         $this->addFlash(
             'success',
