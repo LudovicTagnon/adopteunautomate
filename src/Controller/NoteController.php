@@ -26,17 +26,18 @@ class NoteController extends AbstractController
     #[Route('/notes', name: 'notes')]
     public function index(Request $request): Response
     {
-        $participants = [];
         $trajets = $this->trajetsRepository->findAll();
         $form = $this->createForm(NoteTrajetType::class, null, [
             'trajets' => $trajets,
         ]);
         $form->handleRequest($request);
 
+        $participants = [];
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var Trajets $trajet */
-            $trajet = $form->get('Trajet_id')->getData();
-            $participants = $trajet->getParticipants();
+            $trajetId = $form->get('Trajet_id')->getData()->getId();
+            $participants = $this->entityManager
+                ->getRepository(Utilisateurs::class)
+                ->findParticipantsByTrajet($trajetId);
         }
 
         return $this->render('notes/new.html.twig', [
@@ -46,6 +47,7 @@ class NoteController extends AbstractController
             'trajets' => $trajets,
         ]);
     }
+
 
 
 
