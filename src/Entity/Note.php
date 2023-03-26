@@ -3,7 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use App\Entity\Utilisateurs;
 
 #[ORM\Entity(repositoryClass: NoteRepository::class)]
 
@@ -15,9 +15,11 @@ class Note
     #[ORM\Column]
     private $id;
 
-
-    #[ORM\Column(name: 'Trajet_id')]
-    private $Trajet_id;
+    /**
+     * @ORM\ManyToOne(targetEntity=Utilisateurs::class)
+     * @ORM\JoinColumn(name="Utilisateur_id", referencedColumnName="id")
+     */
+    private $utilisateur;
 
     /**
      * @ORM\ManyToOne(targetEntity=Trajets::class)
@@ -32,26 +34,21 @@ class Note
     #[ORM\Column]
     private $donne_id;
 
-    
-    #[ORM\Column]
+
+    /**
+     * @ORM\Column(type="integer")
+     */
     private $note;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $commentaire;
 
     // Getters and setters
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getTrajet_id(): ?int
-    {
-        return $this->Trajet_id;
-    }
-
-    public function setTrajet_id(int $Trajet_id): self
-    {
-        $this->Trajet_id = $Trajet_id;
-
-        return $this;
     }
 
     public function getRecv_id(): ?int
@@ -78,14 +75,27 @@ class Note
         return $this;
     }
 
-    public function getNote(): ?float
+    public function getNote(): ?int
     {
         return $this->note;
     }
 
-    public function setNote(float $note): self
+
+    public function setNote(int $note): self
     {
         $this->note = $note;
+
+        return $this;
+    }
+
+    public function getCommentaire(): ?string
+    {
+        return $this->commentaire;
+    }
+
+    public function setCommentaire(string $commentaire): self
+    {
+        $this->commentaire = $commentaire;
 
         return $this;
     }
@@ -98,6 +108,18 @@ class Note
     public function setTrajet(?Trajets $trajet): self
     {
         $this->trajet = $trajet;
+
+        return $this;
+    }
+
+    public function getUtilisateur(): ?Utilisateurs
+    {
+        return $this->utilisateur;
+    }
+
+    public function setUtilisateur(?Utilisateurs $utilisateur): self
+    {
+        $this->utilisateur = $utilisateur;
 
         return $this;
     }

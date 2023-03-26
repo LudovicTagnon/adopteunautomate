@@ -6,21 +6,24 @@ use App\Entity\Note;
 use App\Entity\Trajets;
 use App\Entity\Utilisateurs;
 use Doctrine\ORM\EntityManagerInterface;
+use Monolog\Handler\Curl\Util;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Form\NoteTrajetType;
 use App\Repository\TrajetsRepository;
 use Symfony\Component\HttpFoundation\Request;
-
+use App\Service\FormService;
 class NoteController extends AbstractController
 {
+    private $formService;
     private $entityManager;
     private $trajetsRepository;
-    public function __construct(EntityManagerInterface $entityManager, TrajetsRepository $trajetsRepository)
+    public function __construct(EntityManagerInterface $entityManager, TrajetsRepository $trajetsRepository, FormService $formService)
     {
         $this->entityManager = $entityManager;
         $this->trajetsRepository = $trajetsRepository;
+        $this->formService = $formService;
     }
 
     #[Route('/notes', name: 'notes')]
@@ -33,11 +36,15 @@ class NoteController extends AbstractController
         $form->handleRequest($request);
 
         $participants = [];
+        $selectedTrajet = null;
         if ($form->isSubmitted() && $form->isValid()) {
             $trajetId = $form->get('Trajet_id')->getData()->getId();
             $participants = $this->entityManager
                 ->getRepository(Utilisateurs::class)
                 ->findParticipantsByTrajet($trajetId);
+            $selectedTrajet = $this->entityManager
+                ->getRepository(Trajets::class)
+                ->find($trajetId);
         }
 
         return $this->render('notes/new.html.twig', [
@@ -45,6 +52,8 @@ class NoteController extends AbstractController
             'form' => $form->createView(),
             'participants' => $participants,
             'trajets' => $trajets,
+            'formService' => $this->formService,
+            'selectedTrajet' => $selectedTrajet,
         ]);
     }
 
@@ -86,6 +95,8 @@ class NoteController extends AbstractController
             'participants' => [],
         ]);
     }
+
+
 
 
 }

@@ -23,6 +23,12 @@ class NoteTrajetType extends AbstractType
                 'label' => 'Sélectionnez un trajet :',
                 'placeholder' => 'Choisissez un trajet',
                 'property_path' => 'trajet',
+            ])
+            ->add('note', null, [
+                'label' => 'Note',
+            ])
+            ->add('commentaire', null, [
+                'label' => 'Commentaire',
             ]);
 
     }
@@ -31,7 +37,7 @@ class NoteTrajetType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Note::class,
-            'trajets' => null,
+            'trajets' => [],
         ]);
         $resolver->setAllowedTypes('trajets', 'array');
     }

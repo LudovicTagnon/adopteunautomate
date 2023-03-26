@@ -6,23 +6,35 @@
     {{ form_start(form) }}
     {{ form_widget(form.Trajet_id) }}
 
-    {% if trajets %}
-        <ul>
-            {% for trajet in trajets %}
-                <li>{{ trajet.id }} - {{ trajet.demarrea }} -> {{ trajet.arrivea }}</li>
-            {% endfor %}
-        </ul>
+        <button type="submit" class="btn btn-primary">Afficher les participants</button>
+
+    {% if selectedTrajet is not null %}
+        {% if participants is not empty %}
+            <h3>Participants :</h3>
+            <ul>
+                {% for participant in participants %}
+                    <li>{{ participant.nom }} {{ participant.prenom }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
     {% endif %}
 
-    <button type="submit" class="btn btn-primary">Afficher les participants</button>
     {{ form_end(form) }}
-
-    {% if participants is not empty %}
-        <h3>Participants :</h3>
-        <ul>
-            {% for participant in participants %}
-                <li>{{ participant.nom }} {{ participant.prenom }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+    <button type="submit" class="btn btn-primary">Attribuer une note</button>
 {% endblock %}
+
+{#
+{% if selectedTrajet is not null %}
+    {% set noteForm = formService.createNoteForm(participant, selectedTrajet) %}
+    {{ form_start(noteForm, {'attr': {'class': 'note-form'}}) }}
+    {% if form.Trajet_id.vars.data %}
+        <div class="note-section">
+            {% set noteRow = form_row(noteForm.note) %}
+            {% set commentaireRow = form_row(noteForm.commentaire) %}
+            {{ noteRow }}
+            {{ commentaireRow }}
+        </div>
+    {% endif %}
+    {{ form_end(noteForm) }}
+{% endif %}
+#}
