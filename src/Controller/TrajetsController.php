@@ -240,15 +240,15 @@ class TrajetsController extends AbstractController
                 if($trajet->getTArrivee() == 'null'){
                     $trajet->setTArrivee($trajet->getTDepart()+'24 hours');
                 }
-                //verification sur les contraintes de dates
+                /*//verification sur les contraintes de dates (inutile pour la modification) 
                 if(($trajet->getTArrivee() < $voyage->getTDepart()) && ($voyage->getTDepart() < $voyage->getTArrivee())){
                     $refus = true;
                     $this->addFlash(
                         'errordate',
                         'Vous avez déjà un trajet prévu à cette date'
                     );
-                    return $this->redirectToRoute('app_trajets_new');
-                }
+                    return $this->redirectToRoute('app_trajets_index');
+                }*/
                 
             }
 
