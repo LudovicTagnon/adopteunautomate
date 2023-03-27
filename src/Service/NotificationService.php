@@ -20,6 +20,11 @@ class NotificationService
         $this->entityManager = $entityManager;
         $this->mailer = $mailer;
     }
+    public function getUnreadNotificationCount($user)
+{
+    $count = $this->entityManager->getRepository(Notification::class)->countUnreadNotifications($user);
+    return $count;
+}
 
     public function addNotificationModifProfil($message, $user)
     {

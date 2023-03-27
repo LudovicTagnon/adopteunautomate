@@ -166,7 +166,7 @@ class TrajetsController extends AbstractController
     
 
     #[Route('/{id}/visualiser', name: 'app_trajets_show', methods: ['GET'])]
-    public function show(Trajets $trajet, EntityManagerInterface $manager): Response
+    public function show(Trajets $trajet, Request $request, EntityManagerInterface $manager): Response
     {
         if (!$trajet) {
             throw $this->createNotFoundException('The Trajets object was not found.');
@@ -182,7 +182,19 @@ class TrajetsController extends AbstractController
                 'Votre trajet ne peut plus être modifié !'
             );    
         }
+        
         $maintenant = new DateTime();
+        /*
+        if ($trajet->getTDepart() <$maintenant ) {
+            $trajet->setEtat('terminé');
+
+            $this->addFlash(
+                'succès',
+                'Votre trajet est terminé !'
+            );    
+        }
+        */
+        
         $hier = new DateTime('-24 hours');
         if (( ($trajet->getTArrivee() !='null') and ($trajet->getTArrivee() <$maintenant))  or $trajet->getTDepart() <$hier )
          {
@@ -212,18 +224,32 @@ class TrajetsController extends AbstractController
         $trajet = $form->getData();
         $user = $this->getUser();
         
+        // ne pas pouvoir modifier un trajet qui part dans moins de 24h
         $demain = new DateTime('+24 hours');
         if ($trajet->getTDepart() <$demain ) {
+            $trajet->setEtat('bloqué');
             $this->addFlash(
                 'warning',
                 'Vous ne pouvez plus modifier ce trajet.'
             );
-            
+            $manager->persist($trajet);
+
+            $manager->flush();
             return $this->redirectToRoute('app_trajets_index');
         }
 
+        
+        $form = $this->createForm(TrajetsType::class, $trajet);
 
-
+/*
+        if ($trajet->getTDepart() < $demain ) {
+            $form->remove('Modifier'); // supprimer le bouton "submit" pour désactiver le formulaire
+        }
+*/
+        $form->handleRequest($request);
+        $trajet = $form->getData();
+        
+        
         if ($form->isSubmitted() && $form->isValid()) {
             $trajetsRepository->save($trajet, true);
             //verification si le trajet est possible
@@ -253,6 +279,7 @@ class TrajetsController extends AbstractController
             }
 
             $manager->flush();
+
             $users = [];
             //ENVOI DE LA NOTIFICATION A TOUS LES UTILISATEURS INSCRITS AU TRAJET
             $estAcceptes = $manager->getRepository(EstAccepte::class)->findBy(['trajet' => $trajet]);
@@ -266,6 +293,7 @@ class TrajetsController extends AbstractController
             return $this->redirectToRoute('app_trajets_index', [], Response::HTTP_SEE_OTHER);
         }
 
+         
         return $this->render('trajets/edit.html.twig', [
             'trajet' => $trajet,
             'form' => $form,
@@ -275,7 +303,8 @@ class TrajetsController extends AbstractController
 
     
     #[Route('/{id}', name: 'app_trajets_delete', methods: ['POST'])]
-    public function delete(Request $request, Trajets $trajet, TrajetsRepository $trajetsRepository): Response
+    //#[Route('/', name: 'app_trajets_index', methods: ['GET'])]
+    public function delete(Request $request, Trajets $trajet, TrajetsRepository $trajetsRepository, EntityManagerInterface $manager): Response
     {
         $demain = new DateTime('tomorrow');
         if ($trajet->getTDepart() <$demain ) {
@@ -287,6 +316,10 @@ class TrajetsController extends AbstractController
 
             return $this->redirectToRoute('app_trajets_index');
         }
+
+        // si le trajet est terminé ou que son départ a eu lieu il y a plus de 24h
+        // conditions à écrire, avec update de $trajet.etat
+        // blocage de la suppression via effacement du bouton dans trajets/index
         
         if ($this->isCsrfTokenValid('delete'.$trajet->getId(), $request->request->get('_token'))) {
             $trajet->setEtat('annulé');
@@ -294,6 +327,7 @@ class TrajetsController extends AbstractController
             $trajetsRepository->remove($trajet, true);
         }
         $manager->persist($trajet);
+        $manager->flush();
 
         return $this->redirectToRoute('app_trajets_index', [], Response::HTTP_SEE_OTHER);
     }
@@ -337,5 +371,25 @@ class TrajetsController extends AbstractController
             ]);
         }
     }
+
+    #[Route('/{id}/terminer', name: 'app_trajets_terminer', methods: ['POST'])]
+    public function terminer(Request $request, EntityManagerInterface $manager, Trajets $trajet): Response
+    {
+        if (!$trajet) {
+            throw $this->createNotFoundException('The Trajets object was not found.');
+        }
+        $this->addFlash(
+            'warning',
+            'Vos passagers et vous pouvez vous évaluer.'
+        );
+        $trajet->setEtat('terminé');
+
+        $manager->persist($trajet);
+        $manager->flush();
+
+        return $this->redirectToRoute('app_trajets_index');
+
+    }
+
     
 }

@@ -125,6 +125,23 @@ class Notification
         return $this;
     }
 
+    public function countUnreadNotifications(Utilisateurs $user): int
+{
+    $notifications = $user->getNotifications();
+
+    $unreadNotifications = 0;
+
+    foreach ($notifications as $notification) {
+        if (!$notification->getIsRead()) {
+            $unreadNotifications++;
+        }
+    }
+    dump($unreadNotifications);
+
+    return $unreadNotifications;
+}
+
+
 
 }
 ?>

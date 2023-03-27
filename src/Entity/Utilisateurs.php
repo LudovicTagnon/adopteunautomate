@@ -85,6 +85,9 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'utilisateur', targetEntity: EstAccepte::class, orphanRemoval: true)]
     private Collection $trajet;
 
+    #[ORM\ManyToOne(inversedBy: 'utilisateurs')]
+    private ?Groupes $groupesUsers = null;
+
     public function __construct()
     {
         $this->notifications = new ArrayCollection();
@@ -404,6 +407,18 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
         public function getTrajet(): Collection
         {
             return $this->trajet;
+        }
+
+        public function getGroupesUsers(): ?Groupes
+        {
+            return $this->groupesUsers;
+        }
+
+        public function setGroupesUsers(?Groupes $groupesUsers): self
+        {
+            $this->groupesUsers = $groupesUsers;
+
+            return $this;
         }
 
 
