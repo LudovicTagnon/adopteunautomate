@@ -41,6 +41,21 @@ class GroupesController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $groupe = $form->getData();
             $groupe->setCreateur($this->getUser());
+            $utilisateurs = $form->get('utilisateurs')->getData();
+            foreach ($utilisateurs as $utilisateur) {
+                if (!$groupe || !$utilisateur) {
+                    throw $this->createNotFoundException('Groupe ou utilisateur introuvable.');
+                }
+                $estDansRepository = $manager->getRepository(EstDans::class);
+                $estDans = $estDansRepository->findOneBy(['groupes' => $groupe, 'utilisateurs' => $utilisateur]);
+                
+                if (!$estDans) {
+                    $estDans = new EstDans(); // create a new instance of EstDans for each utilisateur
+                    $estDans->setGroupes($groupe);
+                    $estDans->setUtilisateur($utilisateur);
+                    $manager->persist($estDans);
+                }
+            }
             $manager->persist($groupe);
             $manager->flush();
 
