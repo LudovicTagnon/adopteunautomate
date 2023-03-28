@@ -29,7 +29,8 @@ class VillesType extends AbstractType
                 'choices' => $cities,
                 'choice_label' => 'nom_ville',
                 'choice_value' => 'id',
-                'placeholder' => 'Sélectionner une ville'
+                'placeholder' => 'Sélectionner une ville',
+                'autocomplete' => true,
                 ])
             //->add('CP')          
         ;

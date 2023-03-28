@@ -12,6 +12,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Villes;
 use App\Entity\Trajets;
 use App\Entity\Adopte;
+use App\Form\VillesType;
 
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
@@ -24,7 +25,7 @@ class HomeController extends AbstractController
         $villes = $manager->getRepository(Villes::class)->findAll();
         $trajets = $manager->getRepository(Trajets::class)->findAll();
         $adoptions = $manager->getRepository(Adopte::class)->findAll();
-        
+        $form = $this->createForm(VillesType::class);
         $notifications = [];//null par défaut
         if ($this->getUser() != null) {
             $notifications = $notificationService->getNotifications($this->getUser());
@@ -37,6 +38,7 @@ class HomeController extends AbstractController
             'notifications' => $notifications,
             'trajets' => $trajets,
             'adopte' => $adoptions,
+            'form' => $form->createView(),
         ]);
 
     }

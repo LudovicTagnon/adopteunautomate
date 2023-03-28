@@ -17,6 +17,11 @@
                 <div class="col-md-9"> <!-- Affichage dashboard -->
                     <div class="row justify-content-center">
                         <!-- Formulaire de recherche -->
+
+
+                        {{ form_start(form) }}
+
+                        {{ form_end(form) }}
                         <form method="get" action="{{path('app_trajets_search')}}">
                             <datalist id="villes">
                                 {% for ville in villes %}

@@ -35,7 +35,7 @@ class GroupesController extends AbstractController
     {
         $groupe = new Groupes();
         
-        $form = $this->createForm(GroupesType::class, $groupe,);
+        $form = $this->createForm(GroupesType::class, $groupe);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
