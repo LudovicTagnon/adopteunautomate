@@ -34,10 +34,12 @@ class TrajetsPrivateController extends AbstractController
         $trajets = $trajetsRepository->findBy(['public' => false]); //on récupère les trajets privés
         $groupesUser = $user->getGroupes();
         $estAccepte = $estAccepteRepository->findAll();
+        $estDedans = false;
         if (count($lesgroupes) == 0) { //si aucun groupe pas de trajets privés
             return $this->render('trajets_private/index.html.twig', [
                 'trajets' => $trajets,
                 'user' => $user,
+                'estDedans' => $estDedans,
                 'groupes' => null,
             ]);
         }
