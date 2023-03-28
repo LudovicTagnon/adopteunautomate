@@ -247,6 +247,7 @@ class TrajetsController extends AbstractController
         }
         */
         // COndition non fonctionnelle 23 03
+
         if ($trajet->getAdopte()!=null)
         {
             foreach ($trajet->getAdopte() as $adopte) 
@@ -256,6 +257,7 @@ class TrajetsController extends AbstractController
             }
         
         }
+        
         
         $manager->remove($trajet);
         $manager->flush();

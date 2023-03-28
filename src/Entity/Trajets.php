@@ -130,7 +130,7 @@ class Trajets
     #[ORM\OneToMany(mappedBy: 'estAccepte', targetEntity: EstAccepte::class, cascade:["persist", "remove"])]
     private Collection $estAccepte;
     */
-    #[ORM\OneToMany(targetEntity: Adopte::class, mappedBy: 'adopte')]
+    #[ORM\OneToMany(targetEntity: Adopte::class, mappedBy: 'trajet',  orphanRemoval: true)]
     private $adopte;
 
    
