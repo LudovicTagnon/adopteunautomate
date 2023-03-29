@@ -136,7 +136,6 @@ class Notification
             $unreadNotifications++;
         }
     }
-    dump($unreadNotifications);
 
     return $unreadNotifications;
 }

@@ -303,16 +303,16 @@ class TrajetsController extends AbstractController
     }
 
    #[Route('/rechercher-trajet', name: 'app_trajets_search', methods: ['GET', 'POST'])]
-    public function search(Request $request, EntityManagerInterface $manager): Response
+    public function search(Request $request, EntityManagerInterface $manager,mixed $recherche): Response
     {
         $current_user = $this->getUser();
 
         if ($current_user) {
             $villes = $manager->getRepository(Villes::class)->findAll();
 
-            $villeDepart = $request->query->get('ville_depart');
-            $villeArrivee = $request->query->get('ville_arrivee');
-            $jourDepart = $request->query->get('date_depart');
+            $villeDepart = $recherche->getDemarreA();
+            $villeArrivee = $recherche->getArriveA();
+            $jourDepart = $recherche->getTDepart();
 
             $trajets = $manager->getRepository(Trajets::class)->findByCritere($current_user, $villeDepart, $villeArrivee,  $jourDepart);
 
