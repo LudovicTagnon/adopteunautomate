@@ -133,6 +133,8 @@ class Trajets
     #[ORM\OneToMany(targetEntity: Adopte::class, mappedBy: 'trajet',  orphanRemoval: true)]
     private $adopte;
 
+    #[ORM\OneToMany(targetEntity: EstAccepte::class, mappedBy: 'trajet',  orphanRemoval: true)]
+    private $estAccepte;
    
 
     #[ORM\OneToMany(mappedBy: 'trajets', targetEntity: Groupes::class)]
@@ -141,7 +143,7 @@ class Trajets
     {
         $this->groupes     = new ArrayCollection();
         $this->adopte      = new ArrayCollection();
-       // $this->estAccepte  = new ArrayCollection();
+        $this->estAccepte  = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -371,6 +373,11 @@ class Trajets
     public function getAdopte(): Collection
     {
         return $this->adopte;
+    }
+
+    public function getEstAccepte(): Collection
+    {
+        return $this->estAccepte;
     }
 
     public function incrementNbPassagerCourant(): self
