@@ -31,10 +31,35 @@ class HomeController extends AbstractController
         if ($this->getUser() != null) {
             $notifications = $notificationService->getNotifications($this->getUser());
         }
-        if ($form->isSubmitted()&&$form->isSubmitted()) {
+        if ($form->isSubmitted()) {
             $villeDepart = $form->get('demarrea')->getData();
+            $villeArrivee = $form->get('arrivea')->getData();
+            $dateDepart = $form->get('T_depart')->getData();
+
             
             $current_user = $this->getUser();
+            $trajets = $manager->getRepository(Trajets::class)->findByCritere($current_user, $villeDepart, $villeArrivee,  $dateDepart);
+
+            $dateA = $dateDepart;
+
+            $dateDepart = null;
+
+            if ($dateA instanceof DateTime) {
+                $dateDepart = $dateA->format('d-m-Y');
+            } else {
+                // handle the case where the date string is invalid
+            }
+
+            return $this->render('trajets/search.html.twig', [
+                'trajets' => $trajets,
+                'nb_trajets' => count($trajets),
+                'villes' => $villes,
+                'depart' => $villeDepart,
+                'arrivee' => $villeArrivee,
+                'date' => $dateDepart,
+                'utilisateur_actuel' => $current_user,
+                'form' => $form->createView(),
+            ]);
 
             $villes = $manager->getRepository(Villes::class)->findAll();
             echo $villeDepart; //TODO: fonctionne à reprendre

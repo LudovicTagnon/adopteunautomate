@@ -19,12 +19,11 @@ class VillesArriveeAutocompleteField extends AbstractType
             $resolver->setDefaults([
             'class' => Villes::class,
             'multiple' => false,
-            'required' => false,
+            'required' => true,
             'label' => "Ville d'arrivée:",
             'choice_label' => function(Villes $ville) {
                 return sprintf('%s', $ville->getnomVille());
             },
-            'mapped' => false,
             //'query_builder' => function (UtilisateursRepository $repository) use ($user)
             //'security' => 'ROLE_SOMETHING',
         ]);

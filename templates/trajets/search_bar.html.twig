@@ -1,7 +1,12 @@
 {% block body %}
 
 {{ form_start(form) }}
-
+<div class="form-group row align-items-center">
+    <div class="col-sm-4">{{ form_row(form.demarrea, {'attr': {'class': 'form-control'}}) }}</div>
+    <div class="col-sm-4">{{ form_row(form.arrivea, {'attr': {'class': 'form-control'}}) }}</div>
+    <div class="col-sm-2">{{ form_row(form.T_depart, {'attr': {'class': 'form-control'}}) }}</div>
+    <div class="col-sm-2">{{ form_row(form.submit, {'attr': {'class': 'btn btn-primary btn-block'}}) }}</div>
+</div>
 {{ form_end(form) }}
 
 {% endblock %}

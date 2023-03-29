@@ -28,7 +28,6 @@ class SearchTrajetType extends AbstractType
             ->add('T_depart', DateType::class, [
                 'label' => 'Date de départ:',
                 'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd',
                 'attr' => [
                     'class' => 'form-control'
                 ]

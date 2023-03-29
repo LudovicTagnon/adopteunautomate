@@ -15,12 +15,7 @@
     <div class = "container">
         <br/>
         <!-- Formulaire de recherche -->
-        <div class="container justify-content-center">
-            {{ form_start(form) }}
-
-            {{ form_end(form) }}
-        </div>
-
+            {% include "trajets/search_bar.html.twig" %}
         <!-- Page de résultats -->
         <div class="container"> 
             <br>
@@ -63,7 +58,7 @@
                     <div class="row">
                         <small class="text-muted">
                         {{nb_trajets}}
-                        {% if arrivee <= 1 %}
+                        {% if arrivee|length <= 1 %}
                             trajet
                         {% else %}
                             trajets
@@ -124,7 +119,9 @@
                                                             </br>
                                                             <div class="row"> <!-- Info concernant le conducteur -->
                                                                 <div class="col col-lg-2">
+                                                                     {% if trajet.publie.getFichierPhoto() is not null %}
                                                                     <img src="/uploads/{{trajet.publie.getFichierPhoto()}}" class="rounded-circle" alt="img_profil" width="50" height="50">
+                                                                     {% endif%}
                                                                 </div>
                                                                 <div class="col">
                                                                     {{trajet.publie.nom}} {{trajet.publie.prenom}}<br/>
