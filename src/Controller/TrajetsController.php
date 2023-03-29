@@ -257,15 +257,14 @@ class TrajetsController extends AbstractController
             }
         
         }
-        
-        
+             
         $manager->remove($trajet);
         $manager->flush();
 
 
         $this->addFlash(
             'success',
-            'Ce groupe a été supprimé avec succès.'
+            'Ce trajet a été supprimé avec succès.'
         );
         
 
