@@ -15,12 +15,11 @@
                     Volets de navigation
                 </div>
                 <div class="col-md-9"> <!-- Affichage dashboard -->
-                    <div class="row justify-content-center">
+                    <div class="container justify-content-center">
                         <!-- Formulaire de recherche -->
+                            {% include "trajets/search_bar.html.twig" %}
+                    </div>
 
-                        {{ form_start(form) }}
-
-                        {{ form_end(form) }}
                         <!-- Notifications -->
                         <div class="row justify-content-center">
                             <div class="col-sm-8">

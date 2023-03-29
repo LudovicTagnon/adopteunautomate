@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Trajets;
+use App\Entity\Villes;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -22,25 +23,10 @@ class SearchTrajetType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('demarrea', EntityType::class, [
-                'class' => Trajets::class,
-                'label' => 'Ville de départ:',
-                'autocomplete' => true,
-                'attr' => [
-                    'autocomplete' => 'off', // Disable browser autocomplete
-                    'class' => 'form-control', // Add bootstrap class for styling
-                ]
-            ])
-            ->add('arrivea', EntityType::class, [
-                'class' => Trajets::class,
-                'label' => 'Ville d\'arrivée:',
-                'autocomplete' => true,
-                'attr' => [
-                    'autocomplete' => 'off', // Disable browser autocomplete
-                    'class' => 'form-control', // Add bootstrap class for styling
-                ]
-            ])
+            ->add('demarrea', VillesDepartAutocompleteField::class)
+            ->add('arrivea', VillesArriveeAutocompleteField::class)
             ->add('T_depart', DateType::class, [
+                'label' => 'Date de départ:',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'attr' => [

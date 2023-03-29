@@ -13,13 +13,13 @@ use App\Entity\Villes;
 use App\Entity\Trajets;
 use App\Entity\Adopte;
 use App\Form\SearchTrajetType;
-use App\Controller\TrajetsController;
+
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(Request $request, EntityManagerInterface $manager, NotificationService $notificationService,MailerInterface $mailer,TrajetsController $TrajetsController): Response
+    public function index(Request $request, EntityManagerInterface $manager, NotificationService $notificationService,MailerInterface $mailer): Response
     {
         $user = $this->getUser();
         $villes = $manager->getRepository(Villes::class)->findAll();
@@ -27,13 +27,18 @@ class HomeController extends AbstractController
         $adoptions = $manager->getRepository(Adopte::class)->findAll();
         $form = $this->createForm(SearchTrajetType::class);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $response = $TrajetsController->search($request, $manager);
-            return $response;
-        }
         $notifications = [];//null par défaut
         if ($this->getUser() != null) {
             $notifications = $notificationService->getNotifications($this->getUser());
+        }
+        if ($form->isSubmitted()&&$form->isSubmitted()) {
+            $villeDepart = $form->get('demarrea')->getData();
+            
+            $current_user = $this->getUser();
+
+            $villes = $manager->getRepository(Villes::class)->findAll();
+            echo $villeDepart; //TODO: fonctionne à reprendre
+            //echo $jourDepart;
         }
 
         return $this->render('home/index.html.twig', [
