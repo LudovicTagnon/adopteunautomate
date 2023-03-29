@@ -223,7 +223,7 @@ class TrajetsController extends AbstractController
     
     #[Route('/{id}', name: 'app_trajets_delete', methods:  ['GET', 'POST'])]
     //#[Route('/', name: 'app_trajets_index', methods: ['GET'])]
-    public function delete(Request $request, Trajets $trajet, TrajetsRepository $trajetsRepository, EntityManagerInterface $manager): Response
+    public function delete(Request $request, Trajets $trajet, TrajetsRepository $trajetsRepository, EntityManagerInterface $manager,NotificationService $notificationService): Response
     {
         $demain = new DateTime('+24 hours');
         if ($trajet->getTDepart() <$demain ) {
@@ -232,7 +232,6 @@ class TrajetsController extends AbstractController
                 'warning',
                 'Vous ne pouvez plus supprimer ce trajet.'
             );
-            $manager->persist($trajet);
             $manager->flush();
             return $this->redirectToRoute('app_trajets_index');
         }
@@ -255,18 +254,31 @@ class TrajetsController extends AbstractController
             foreach ($trajet->getAdopte() as $adopte) 
             {//on parcourt les membres de l'entité Adopte que l'on supprime
                 $manager->remove($adopte);//on supprime le tuple
+                $manager->flush();
                 //$manager->flush();
             }
         
         }
         //on supprime toutes les notifications liées à ce trajet 
         $notifications = $manager->getRepository(Notification::class)->findBy(['TrajetQuiEstDemande' => $trajet]);
-
+        $listeAcceptee = $manager->getRepository(EstAccepte::class)->findBy(['trajet' => $trajet]);
         foreach ($notifications as $notification) {
             $manager->remove($notification);
         }
-
+        $users = null;
+        foreach ($listeAcceptee as $estAccepte) {
+            $users[] = $estAccepte->getUtilisateur();
+        }
+        if($users != null){
+        foreach ($users as $user) {
+            $notificationService->addNotificationDeleteTrajet("Le trajet : ".$trajet->__toString(). " a été supprimé",$user);
+        }
+        foreach ($listeAcceptee as $estAccepte) {
+            $manager->remove($estAccepte);
+        }
+        
         $manager->flush();
+    }
         $manager->remove($trajet);
         $manager->flush();
         
