@@ -32,12 +32,6 @@ class SearchTrajetType extends AbstractType
                     'class' => 'form-control'
                 ]
             ])
-            ->add('submit', SubmitType::class, [
-                'label' => 'Rechercher',
-                'attr' => [
-                    'class' => 'btn btn-primary'
-                ]
-            ]);
         ;
     }
 
