@@ -19,6 +19,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Form\FormError;
 use App\Service\NotificationService;
 use App\Entity\EstAccepte;
+use App\Entity\Notification;
 
 #[Route('/trajets')]
 class TrajetsController extends AbstractController
@@ -235,6 +236,7 @@ class TrajetsController extends AbstractController
             $manager->flush();
             return $this->redirectToRoute('app_trajets_index');
         }
+        
 
         // si le trajet est terminé ou que son départ a eu lieu il y a plus de 24h
         // conditions à écrire, avec update de $trajet.etat
@@ -257,11 +259,17 @@ class TrajetsController extends AbstractController
             }
         
         }
-        
-        
+        //on supprime toutes les notifications liées à ce trajet 
+        $notifications = $manager->getRepository(Notification::class)->findBy(['TrajetQuiEstDemande' => $trajet]);
+
+        foreach ($notifications as $notification) {
+            $manager->remove($notification);
+        }
+
+        $manager->flush();
         $manager->remove($trajet);
         $manager->flush();
-
+        
 
         $this->addFlash(
             'success',
