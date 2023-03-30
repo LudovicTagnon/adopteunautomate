@@ -292,7 +292,7 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function setResetToken(?string $resetToken): self
     {
-        $this->resetToken = $resetToken;
+        $this->resetToken = hash('sha256',$resetToken);
 
         return $this ;
     }
