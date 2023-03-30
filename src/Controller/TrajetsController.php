@@ -8,6 +8,7 @@ use Symfony\Component\VarDumper\VarDumper;
 use App\Entity\Trajets;
 use App\Entity\Villes;
 use App\Form\TrajetsType;
+use App\Form\SearchTrajetType;
 use App\Entity\Utilisateurs;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use App\Repository\TrajetsRepository;
@@ -25,7 +26,7 @@ class TrajetsController extends AbstractController
 {
     
 
-    #[Route('/', name: 'app_trajets_index', methods: ['GET'])]
+    #[Route('/mes_propositions', name: 'app_trajets_index', methods: ['GET'])]
     #[IsGranted('ROLE_USER')]
     public function index(TrajetsRepository $trajetsRepository): Response
     {
@@ -40,7 +41,7 @@ class TrajetsController extends AbstractController
     }
 
     
-    #[Route('/new', name: 'app_trajets_new', methods: ['GET', 'POST'])]
+    #[Route('/créer_un_trajet', name: 'app_trajets_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $manager ): Response
     {
         
@@ -258,11 +259,26 @@ class TrajetsController extends AbstractController
         if ($current_user) {
             $villes = $manager->getRepository(Villes::class)->findAll();
 
-            $villeDepart = $recherche->getDemarreA();
-            $villeArrivee = $recherche->getArriveA();
-            $jourDepart = $recherche->getTDepart();
+            $villeDepart = null;
+            $villeArrivee = null;
+            $jourDepart = null;
 
-            $trajets = $manager->getRepository(Trajets::class)->findByCritere($current_user, $villeDepart, $villeArrivee,  $jourDepart);
+            if($recherche != null){
+                $villeDepart = $recherche->getDemarreA();
+                $villeArrivee = $recherche->getArriveA();
+                $jourDepart = $recherche->getTDepart();
+            }
+
+            if ($villeDepart != null || $villeArrivee !=null){
+                $trajets = $manager->getRepository(Trajets::class)->findByCritere($current_user, $villeDepart, $villeArrivee,  $jourDepart);
+            }else{
+                $dateActuelle = new \DateTime();//Récupération de la date actuelle
+                $trajets = $manager->getRepository(Trajets::class)->createQueryBuilder('t')
+                    ->where('t.T_depart >= :dateActuelle')
+                    ->setParameter('dateActuelle', $dateActuelle)
+                    ->getQuery()
+                    ->getResult();
+            }
 
             $dateA = DateTime::createFromFormat('Y-m-d', $jourDepart);
 
@@ -274,6 +290,9 @@ class TrajetsController extends AbstractController
                 // handle the case where the date string is invalid
             }
 
+            $form = $this->createForm(SearchTrajetType::class);
+            $form->handleRequest($request);
+
             return $this->render('trajets/search.html.twig', [
                 'trajets' => $trajets,
                 'nb_trajets' => count($trajets),
@@ -282,6 +301,7 @@ class TrajetsController extends AbstractController
                 'arrivee' => $villeArrivee,
                 'date' => $dateDepart,
                 'utilisateur_actuel' => $current_user,
+                'form' => $form->createView(),
             ]);
         } else {
             return $this->redirectToRoute('app_home');

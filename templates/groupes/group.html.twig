@@ -3,62 +3,62 @@
 {% block title %}Affichage de tous les groupes{% endblock %}
 {#// PROB7MES de LIENS ET PB de CLE ETRANGERE #}
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-
-    <div class = "container mt-4">
-
-    </div>
-
-    <h1>Les groupes:</h1>
-
-    <div class="container">
-        {# flash message si succes#}
-        {% for message in app.flashes('succes')  %}
-            <div class= "alert alert-success mt-4">
-                {{message}}
+<!-- contenu de la page -->
+    <div class = "container-fluid">
+        <div class="row justify-content-center">
+            </hr>
+            <div class="col-md-3"> <!-- Volets de navigation -->
+                {% include 'partials/_sidebar.html.twig' %}
             </div>
-        {% endfor  %}
+
+            <div class="col-md-9">
+                <h1>Les groupes:</h1>
+
+                <div class="container">
+                    {# flash message si succes#}
+                    {% for message in app.flashes('succes')  %}
+                        <div class= "alert alert-success mt-4">
+                            {{message}}
+                        </div>
+                    {% endfor  %}
+                </div>
+
+                <div class="container">
+                    <table class= "table table-hover" style="vertical-align:middle; text-align:center;" width="100%">
+                        <thead style="width=80px;"> <!-- Tête du tableau -->
+                            <tr>
+                                <th scope="col"> Intitulé </th>
+                                <th scope="col"> Description </th>
+                                <th scope="col"> Personnes </th>
+                                <th scope="col"> Edition </th>
+                            </tr>
+                        </thead>
+                        <tbody> <!-- TCorps du tableau -->
+                            <!-- Affichage des groupes de l'utilisateur -->
+                            {% for groupe in groupes %}
+                            <tr class="table-primary">
+                                <td>{{groupe.getNomGroupe()}}</td>
+                                <td>{{groupe.getDescription()}}</td>
+                                <td>{{groupe.getNbUtilisateurs}}</td>
+                                <td>
+                                    <a href = "{{ path('app_groupes.edit', {id:groupe.id})}}" class= "btn btn-info" >Modifier</a>
+                                    <a href = "{{ path('app_groupes.delete', {id:groupe.id})}}" class= "btn btn-warning" >Supprimer</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+
+
+                            <!-- Bouton permettant de créer un nouveau groupe --> 
+                            <td colspan="4">
+                                Créer un groupe
+                                <a href ="{{ path('app_groupes.new')}}" class= "btn btn-secondary " >+</a>
+                            </td>
+
+                        <tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <div class="container">
-        <table class= "table table-hover" style="vertical-align:middle; text-align:center;" width="100%">
-            <thead style="width=80px;"> <!-- Tête du tableau -->
-                <tr>
-                    <th scope="col"> Intitulé </th>
-                    <th scope="col"> Description </th>
-                    <th scope="col"> Personnes </th>
-                    <th scope="col"> Edition </th>
-                </tr>
-            </thead>
-            <tbody> <!-- TCorps du tableau -->
-                <!-- Affichage des groupes de l'utilisateur -->
-                {% for groupe in groupes %}
-                <tr class="table-primary">
-                    <td>{{groupe.getNomGroupe()}}</td>
-                    <td>{{groupe.getDescription()}}</td>
-                    <td>{{groupe.getNbUtilisateurs}}</td>
-                    <td>
-                        <a href = "{{ path('app_groupes.edit', {id:groupe.id})}}" class= "btn btn-info" >Modifier</a>
-                        <a href = "{{ path('app_groupes.delete', {id:groupe.id})}}" class= "btn btn-warning" >Supprimer</a>
-                    </td>
-                </tr>
-                {% endfor %}
-
-
-                <!-- Bouton permettant de créer un nouveau groupe --> 
-                <td colspan="4">
-                    Créer un groupe
-                    <a href ="{{ path('app_groupes.new')}}" class= "btn btn-secondary " >+</a>
-                </td>
-
-            <tbody>
-        </table>
-    </div>
-
-
-    {% endblock %}
+{% endblock %}

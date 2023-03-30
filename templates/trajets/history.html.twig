@@ -9,8 +9,9 @@
     <!-- contenu de la page -->
     <div class = "container-fluid">
         <div class="row justify-content-center">
+            </hr>
             <div class="col-md-3"> <!-- Volets de navigation -->
-                    Volets de navigation
+                {% include 'partials/_sidebar.html.twig' %}
             </div>
             <div class="col-md-9"> <!-- Affichage historique -->
                 <div class="card text-dark bg-light">
@@ -38,7 +39,7 @@
                                         <th scope="col">Ville d'arrivée</th>
                                         <th scope="col">Prix</th>
                                         <th scope="col">Note donnée</th>
-                                        <th scope="col">Status</th>
+                                        <th scope="col">Statut</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -71,9 +72,9 @@
                                         <th scope="col">Ville de départ</th>
                                         <th scope="col">Ville d'arrivée</th>
                                         <th scope="col">Prix</th>
-                                        <th scope="col">Groupe</th>
+                                        <!--<th scope="col">Groupe</th>-->
                                         <th scope="col">Note reçue</th>
-                                        <th scope="col">Status</th>
+                                        <th scope="col">Statut</th>
                                     </tr>
                                 </thead>
                                 <tbody>
