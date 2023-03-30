@@ -12,6 +12,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Villes;
 use App\Entity\Trajets;
 use App\Entity\Adopte;
+use App\Entity\EstAccepte;
 use App\Form\SearchTrajetType;
 
 use Symfony\Component\Mailer\MailerInterface;
@@ -26,6 +27,7 @@ class HomeController extends AbstractController
         $trajets = $manager->getRepository(Trajets::class)->findAll();
         $adoptions = $manager->getRepository(Adopte::class)->findAll();
         $form = $this->createForm(SearchTrajetType::class);
+        $inscriptions = $manager->getRepository(EstAccepte::class)->findAll();
         $form->handleRequest($request);
         $notifications = [];//null par défaut
         if ($this->getUser() != null) {
@@ -35,6 +37,8 @@ class HomeController extends AbstractController
             $villeDepart = $form->get('demarrea')->getData();
             $villeArrivee = $form->get('arrivea')->getData();
             $dateDepart = $form->get('T_depart')->getData();
+            $estAccepteRepository = $manager->getRepository(EstAccepte::class);
+            $estAccepte = $estAccepteRepository->findAll();
 
             
             $current_user = $this->getUser();
@@ -51,6 +55,7 @@ class HomeController extends AbstractController
             }
 
             return $this->render('trajets/search.html.twig', [
+                'user' => $user,
                 'trajets' => $trajets,
                 'nb_trajets' => count($trajets),
                 'villes' => $villes,
@@ -59,6 +64,7 @@ class HomeController extends AbstractController
                 'date' => $dateDepart,
                 'utilisateur_actuel' => $current_user,
                 'form' => $form->createView(),
+                'estAccepte' => $estAccepte,
             ]);
 
             $villes = $manager->getRepository(Villes::class)->findAll();
@@ -74,6 +80,7 @@ class HomeController extends AbstractController
             'trajets' => $trajets,
             'adopte' => $adoptions,
             'form' => $form->createView(),
+            'inscriptions' => $inscriptions,
         ]);
 
     }

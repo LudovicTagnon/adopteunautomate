@@ -29,7 +29,7 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
 
 class ProfilController extends AbstractController
 {
-    #[Route('/profil', name: 'profil')]
+    #[Route('/profil', name: 'app_profil')]
     public function index(): Response
     {
         //recup les infos 

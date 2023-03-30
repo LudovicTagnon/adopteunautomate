@@ -19,7 +19,7 @@ class VillesDepartAutocompleteField extends AbstractType
             $resolver->setDefaults([
             'class' => Villes::class,
             'multiple' => false,
-            'required' => true,
+            'required' => false,
             'label' => 'Ville de départ:',
             'choice_label' => function(Villes $ville) {
                 return sprintf('%s', $ville->getnomVille());

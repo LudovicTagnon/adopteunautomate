@@ -22,7 +22,7 @@ class TrajetsPrivateController extends AbstractController
     {
         $this->entityManager = $entityManager;
     }
-    #[Route('/private', name: 'app_trajets_prive')]
+    #[Route('/trajets/mes_trajets/prives', name: 'app_trajets_prives')]
     #[IsGranted('ROLE_USER')]
     public function index(): Response
     {

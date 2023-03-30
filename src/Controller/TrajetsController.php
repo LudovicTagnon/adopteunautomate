@@ -7,6 +7,7 @@ use Symfony\Component\VarDumper\VarDumper;
 use App\Entity\Trajets;
 use App\Entity\Villes;
 use App\Form\TrajetsType;
+use App\Form\SearchTrajetType;
 use App\Entity\Utilisateurs;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use App\Repository\TrajetsRepository;
@@ -26,7 +27,7 @@ class TrajetsController extends AbstractController
 {
     
 
-    #[Route('/', name: 'app_trajets_index', methods: ['GET'])]
+    #[Route('/mes_propositions', name: 'app_trajets_index', methods: ['GET'])]
     #[IsGranted('ROLE_USER')]
     public function index(TrajetsRepository $trajetsRepository): Response
     {
@@ -41,7 +42,7 @@ class TrajetsController extends AbstractController
     }
 
     
-    #[Route('/new', name: 'app_trajets_new', methods: ['GET', 'POST'])]
+    #[Route('/créer_un_trajet', name: 'app_trajets_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $manager ): Response
     {
         
@@ -310,11 +311,28 @@ class TrajetsController extends AbstractController
         if ($current_user) {
             $villes = $manager->getRepository(Villes::class)->findAll();
 
-            $villeDepart = $recherche->getDemarreA();
-            $villeArrivee = $recherche->getArriveA();
-            $jourDepart = $recherche->getTDepart();
+            $villeDepart = null;
+            $villeArrivee = null;
+            $jourDepart = null;
 
-            $trajets = $manager->getRepository(Trajets::class)->findByCritere($current_user, $villeDepart, $villeArrivee,  $jourDepart);
+            if($recherche != null){
+                $villeDepart = $recherche->getDemarreA();
+                $villeArrivee = $recherche->getArriveA();
+                $jourDepart = $recherche->getTDepart();
+            }
+
+            if ($villeDepart != null || $villeArrivee !=null){
+                $trajets = $manager->getRepository(Trajets::class)->findByCritere($current_user, $villeDepart, $villeArrivee,  $jourDepart);
+            }else{
+                $dateActuelle = new \DateTime();//Récupération de la date actuelle
+                $trajets = $manager->getRepository(Trajets::class)->createQueryBuilder('t')
+                    ->where('t.T_depart >= :dateActuelle')
+                    ->setParameter('dateActuelle', $dateActuelle)
+                    ->getQuery()
+                    ->getResult();
+            }
+            $estAccepteRepository = $manager->getRepository(EstAccepte::class);
+            $estAccepte = $estAccepteRepository->findAll();
 
             $dateA = DateTime::createFromFormat('Y-m-d', $jourDepart);
 
@@ -326,7 +344,11 @@ class TrajetsController extends AbstractController
                 // handle the case where the date string is invalid
             }
 
+            $form = $this->createForm(SearchTrajetType::class);
+            $form->handleRequest($request);
+
             return $this->render('trajets/search.html.twig', [
+                'user' => $current_user,
                 'trajets' => $trajets,
                 'nb_trajets' => count($trajets),
                 'villes' => $villes,
@@ -334,11 +356,29 @@ class TrajetsController extends AbstractController
                 'arrivee' => $villeArrivee,
                 'date' => $dateDepart,
                 'utilisateur_actuel' => $current_user,
+                'form' => $form->createView(),
+                'estAccepte' => $estAccepte,
             ]);
         } else {
-            return $this->render('home/index.html.twig', [
-                'controller_name' => 'HomeController',
+            return $this->redirectToRoute('app_home');
+        }
+    }
+
+    #[Route('/historique', name: 'app_trajets_history', methods: ['GET'])]
+    public function historique(Request $request, EntityManagerInterface $manager): Response{
+        
+        $current_user = $this->getUser();
+
+        if ($current_user) {//Utilisateur connecté
+            $trajetsChauffeur = $manager->getRepository(Trajets::class)->findBy(['publie'=> $this->getUser()]);
+            $trajetsPassager = $manager->getRepository(EstAccepte::class)->findBy(['utilisateur'=> $this->getUser()]);
+
+            return $this->render('trajets/history.html.twig', [
+                'trajetsChauffeur' => $trajetsChauffeur,
+                'trajetsPassager' => $trajetsPassager,
             ]);
+        }else{//Utilisateur non connecté -> redirigé
+            return $this->redirectToRoute('app_home');
         }
     }
 
