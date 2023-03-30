@@ -85,8 +85,8 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'utilisateur', targetEntity: EstAccepte::class, orphanRemoval: true)]
     private Collection $trajet;
 
-    #[ORM\ManyToOne(inversedBy: 'utilisateurs')]
-    private ?Groupes $groupesUsers = null;
+    /*#[ORM\ManyToOne(inversedBy: 'utilisateurs')]
+    private ?Groupes $groupesUsers = null;*/
 
     public function __construct()
     {

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\EstAccepte;
 use DateTime;
 use Symfony\Component\VarDumper\VarDumper;
 use App\Entity\Trajets;
@@ -18,7 +19,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Form\FormError;
 use App\Service\NotificationService;
-use App\Entity\EstAccepte;
 
 #[Route('/trajets')]
 class TrajetsController extends AbstractController
@@ -284,9 +284,25 @@ class TrajetsController extends AbstractController
                 'utilisateur_actuel' => $current_user,
             ]);
         } else {
-            return $this->render('home/index.html.twig', [
-                'controller_name' => 'HomeController',
+            return $this->redirectToRoute('app_home');
+        }
+    }
+
+    #[Route('/historique', name: 'app_trajets_history', methods: ['GET'])]
+    public function historique(Request $request, EntityManagerInterface $manager): Response{
+        
+        $current_user = $this->getUser();
+
+        if ($current_user) {//Utilisateur connecté
+            $trajetsChauffeur = $manager->getRepository(Trajets::class)->findBy(['publie'=> $this->getUser()]);
+            $trajetsPassager = $manager->getRepository(EstAccepte::class)->findBy(['utilisateur'=> $this->getUser()]);
+
+            return $this->render('trajets/history.html.twig', [
+                'trajetsChauffeur' => $trajetsChauffeur,
+                'trajetsPassager' => $trajetsPassager,
             ]);
+        }else{//Utilisateur non connecté -> redirigé
+            return $this->redirectToRoute('app_home');
         }
     }
 

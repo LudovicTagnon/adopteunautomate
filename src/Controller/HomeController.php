@@ -12,6 +12,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Villes;
 use App\Entity\Trajets;
 use App\Entity\Adopte;
+use App\Entity\EstAccepte;
 use App\Form\SearchTrajetType;
 
 use Symfony\Component\Mailer\MailerInterface;
@@ -26,6 +27,7 @@ class HomeController extends AbstractController
         $trajets = $manager->getRepository(Trajets::class)->findAll();
         $adoptions = $manager->getRepository(Adopte::class)->findAll();
         $form = $this->createForm(SearchTrajetType::class);
+        $inscriptions = $manager->getRepository(EstAccepte::class)->findAll();
         $form->handleRequest($request);
         $notifications = [];//null par défaut
         if ($this->getUser() != null) {
@@ -74,6 +76,7 @@ class HomeController extends AbstractController
             'trajets' => $trajets,
             'adopte' => $adoptions,
             'form' => $form->createView(),
+            'inscriptions' => $inscriptions,
         ]);
 
     }
