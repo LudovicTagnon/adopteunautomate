@@ -8,6 +8,7 @@ use Symfony\Component\VarDumper\VarDumper;
 use App\Entity\Trajets;
 use App\Entity\Villes;
 use App\Form\TrajetsType;
+use App\Form\SearchTrajetType;
 use App\Entity\Utilisateurs;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use App\Repository\TrajetsRepository;
@@ -258,9 +259,15 @@ class TrajetsController extends AbstractController
         if ($current_user) {
             $villes = $manager->getRepository(Villes::class)->findAll();
 
-            $villeDepart = $recherche->getDemarreA();
-            $villeArrivee = $recherche->getArriveA();
-            $jourDepart = $recherche->getTDepart();
+            $villeDepart = null;
+            $villeArrivee = null;
+            $jourDepart = null;
+
+            if($recherche != null){
+                $villeDepart = $recherche->getDemarreA();
+                $villeArrivee = $recherche->getArriveA();
+                $jourDepart = $recherche->getTDepart();
+            }
 
             if ($villeDepart != null || $villeArrivee !=null){
                 $trajets = $manager->getRepository(Trajets::class)->findByCritere($current_user, $villeDepart, $villeArrivee,  $jourDepart);
@@ -283,6 +290,9 @@ class TrajetsController extends AbstractController
                 // handle the case where the date string is invalid
             }
 
+            $form = $this->createForm(SearchTrajetType::class);
+            $form->handleRequest($request);
+
             return $this->render('trajets/search.html.twig', [
                 'trajets' => $trajets,
                 'nb_trajets' => count($trajets),
@@ -291,6 +301,7 @@ class TrajetsController extends AbstractController
                 'arrivee' => $villeArrivee,
                 'date' => $dateDepart,
                 'utilisateur_actuel' => $current_user,
+                'form' => $form->createView(),
             ]);
         } else {
             return $this->redirectToRoute('app_home');
