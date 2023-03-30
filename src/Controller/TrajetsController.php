@@ -9,6 +9,8 @@ use App\Entity\Trajets;
 use App\Entity\Villes;
 use App\Form\TrajetsType;
 use App\Form\SearchTrajetType;
+use App\Controller\AdopteController;
+use App\Entity\Adopte;
 use App\Entity\Utilisateurs;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use App\Repository\TrajetsRepository;
@@ -26,7 +28,7 @@ class TrajetsController extends AbstractController
 {
     
 
-    #[Route('/mes_propositions', name: 'app_trajets_index', methods: ['GET'])]
+    #[Route('/mes-propositions', name: 'app_trajets_index', methods: ['GET'])]
     #[IsGranted('ROLE_USER')]
     public function index(TrajetsRepository $trajetsRepository): Response
     {
@@ -41,7 +43,7 @@ class TrajetsController extends AbstractController
     }
 
     
-    #[Route('/créer_un_trajet', name: 'app_trajets_new', methods: ['GET', 'POST'])]
+    #[Route('/créer-un-trajet', name: 'app_trajets_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $manager ): Response
     {
         
@@ -159,7 +161,7 @@ class TrajetsController extends AbstractController
     }
 
     
-    #[Route('/{id}/edit', name: 'app_trajets_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/modifier', name: 'app_trajets_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Trajets $trajet, TrajetsRepository $trajetsRepository, EntityManagerInterface $manager, NotificationService $notificationService): Response
     {
         $trajetAncien = $trajet->__toString();
@@ -345,5 +347,18 @@ class TrajetsController extends AbstractController
 
     }
 
-    
+    #[Route('/mes-adoptions', name: 'app_trajets_my_adoptions', methods: ['GET'])]
+    #[IsGranted('ROLE_USER')]
+    public function afficher_mes_adoptions(EntityManagerInterface $manager): Response
+    {
+        
+        $trajetsEnAttente = $manager->getRepository(Adopte::class)->findBy(['utilisateur'=> $this->getUser()]);
+        $trajetsInscrits = $manager->getRepository(EstAccepte::class)->findBy(['utilisateur'=> $this->getUser()]);
+
+        return $this->render('trajets/mesAdoptions.html.twig', [
+            'trajetsEnAttente' => $trajetsEnAttente,
+            'trajetsInscrits' => $trajetsInscrits,
+        ]);
+      
+    }
 }

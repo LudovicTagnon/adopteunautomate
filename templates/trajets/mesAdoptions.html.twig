@@ -1,0 +1,123 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes adoptions{% endblock %}
+
+{% block body %}
+
+<div class = "container-fluid">
+    <div class="row justify-content-center">
+        </hr>
+        <div class="col-md-3"> <!-- Volets de navigation -->
+            {% include 'partials/_sidebar.html.twig' %}
+        </div>
+
+        <div class="col-md-9"> <!-- Tableau des trajets -->
+            <div class="card text-dark bg-light">
+                <div class="card-header bg-primary text-left text-white">
+                    <h4 class="card-title">Historique des trajets </h4>
+                </div>
+                <div class="card-body">
+                    <ul class="nav nav-tabs justify-content-center" id="tabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="trajets-passager-tab" data-toggle="tab" href="#trajets-passager" role="tab" aria-controls="trajets-passager" aria-selected="true">En tant que passager</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="trajets-chauffeur-tab" data-toggle="tab" href="#trajets-chauffeur" role="tab" aria-controls="trajets-chauffeur" aria-selected="false">En tant que chauffeur</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="tabsContent">
+                    <div class="tab-pane fade show active text-center" id="trajets-passager" role="tabpanel" aria-labelledby="trajets-passager-tab">
+                        <!-- Trajets en tant que passagers --> 
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Etat</th>
+                                    <th>Date de départ</th>
+                                    <th>Date d'arrivee</th>
+                                    <th>Ville de départ</th>
+                                    <th>Ville d'arrivee</th>
+                                    <th>Prix</th>
+                                    <th>Nb de passager</th>
+                                    <th>Places restantes</th>
+                                    <th>Public</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for trajet in trajetsEnAttente %}
+                                <tr>
+                                    <td>{{ trajet.getTrajet().id }}</td>
+                                    <td>{{ trajet.getTrajet().etat }}</td>
+                                    <td>{{ trajet.getTrajet().TDepart ? trajet.getTrajet().TDepart|date('Y-m-d H:i') : '' }}</td>
+                                    <td>{{ trajet.getTrajet().TArrivee ? trajet.getTrajet().TArrivee|date('Y-m-d H:i') : '' }}</td>
+                                    
+                                    <td>{{ trajet.getTrajet().demarrea.nomville }}</td>
+                                    <td>{{ trajet.getTrajet().arrivea.nomville }}</td>
+                                    
+                                    <td>{{ trajet.getTrajet().prix }}</td>
+                                    <td>{{ trajet.getTrajet().nbPassagerMax }}</td>
+                                    <td>{{ trajet.getTrajet().nbPassagerMax - trajet.getTrajet().nbPassagerCourant }}</td>
+                                    <td>{{ trajet.getTrajet().public ? 'Oui' : 'Non' }}</td>
+                                    <td></td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="10">Aucun trajet enregistré </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tab-pane fade text-center" id="trajets-chauffeur" role="tabpanel" aria-labelledby="trajets-chauffeur-tab">
+                        <!-- Trajets en tant que chauffeur --> 
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Etat</th>
+                                    <th>Date de départ</th>
+                                    <th>Date d'arrivee</th>
+                                    <th>Ville de départ</th>
+                                    <th>Ville d'arrivee</th>
+                                    <th>Prix</th>
+                                    <th>Nb de passager</th>
+                                    <th>Places restantes</th>
+                                    <th>Public</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for trajet in trajetsInscrits %}
+                                <tr>
+                                    <td>{{ trajet.getTrajet().id }}</td>
+                                    <td>{{ trajet.getTrajet().etat }}</td>
+                                    <td>{{ trajet.getTrajet().TDepart ? trajet.TDepart|date('Y-m-d H:i') : '' }}</td>
+                                    <td>{{ trajet.getTrajet().TArrivee ? trajet.TArrivee|date('Y-m-d H:i') : '' }}</td>
+                                    
+                                    <td>{{ trajet.getTrajet().demarrea.nomville }}</td>
+                                    <td>{{ trajet.getTrajet().arrivea.nomville }}</td>
+                                    
+                                    <td>{{ trajet.getTrajet().prix }}</td>
+                                    <td>{{ trajet.getTrajet().nbPassagerMax }}</td>
+                                    <td>{{ trajet.getTrajet().nbPassagerMax - trajet.nbPassagerCourant }}</td>
+                                    <td>{{ trajet.getTrajet().public ? 'Oui' : 'Non' }}</td>
+                                    <td>
+                                        dd
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="10">Aucun trajet enregistré </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        <div>
+    </div>
+</div>
+
+{% endblock %}
