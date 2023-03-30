@@ -16,6 +16,7 @@ use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\Exception\DisabledException;
 use App\Service\SendMailService;
+use App\Entity\Link;
 
 class SecurityController extends AbstractController
 {
@@ -55,6 +56,18 @@ class SecurityController extends AbstractController
             if($user){
                 // generer un token
                 $token = $tokenGenerator->generateToken();
+
+                //Definition validite du lien (1 heure)
+                $expirationDate = new \DateTime();
+                $expirationDate->add(new \DateInterval('PT1H'));
+
+                //Enregistre le token et sa durée de validité dans la BDD 
+                $link = new Link();
+                $link->setToken($token);
+                $link->setExpirationDate($expirationDate);
+                $entityManager->persist($link);
+                $entityManager->flush();
+
                 $user->setResetToken($token);
                 $entityManager->persist($user);
                 $entityManager->flush();

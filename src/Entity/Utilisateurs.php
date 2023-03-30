@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UtilisateursRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -80,6 +81,10 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: "string", length: 100 , nullable: true)]
     private ?string $resetToken = null;
+
+    //date expiration token
+    #[ORM\Column(nullable: true)]
+    private ?\DateTime $dateToken = null;
 
     public function __construct()
     {
@@ -296,6 +301,28 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this ;
     }
+
+    /**
+     * @return string|null
+     */
+    public function getDateToken(): ?DateTime
+    {
+        return $this->dateToken;
+    }
+
+     /**
+     * @param string|null $dateToken
+     */
+    public function setSateToken(?\DateTime $dateToken): self
+    {
+        $this->dateToken = $dateToken;
+
+        return $this ;
+    }
+
+
+
+
 
 
 
