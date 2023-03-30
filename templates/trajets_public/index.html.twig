@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 {% block title %}Trajets publics{% endblock %}
 {% block body %}
+<<<<<<< Updated upstream
     <!-- contenu de la page -->
     <div class = "container-fluid">
         <div class="row justify-content-center">
@@ -51,6 +52,51 @@
                                                 {% set trajet_deja_adopte = true %}
                                             {% endif %}
                                         {% endfor %}
+=======
+    <h1>Liste des trajets public</h1>
+    {% if trajets|length == 0 %}
+        <p>Aucun trajet public, revenez plus tard !</p>
+    {% else %}
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Créateur</th>
+                    <th>Départ</th>
+                    <th>Arrivée</th>
+                    <th>Prix</th>
+                    <th>Nombre de passagers</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% set now = date() %}
+                {% for trajet in trajets %}
+                {% set skip_trajet = false %}
+                    {% for accepte in estAccepte %}
+                        {% if user.id == accepte.utilisateur.id and trajet.id == accepte.trajet.id %}
+                            {% set skip_trajet = true %}
+                        {% endif %}
+                    {% endfor %}
+                {% if trajet.publie.id != user.id and trajet.getNbPassagerCourant() < trajet.getNbPassagerMax() and trajet.getTDepart() > now %}
+                    <tr>
+                        <td>{{ trajet.getPublie().getNom()}} {{ trajet.getPublie().getPrenom() }}</td>
+                        <td>{{ trajet.demarrea.getnomVille() }} - {{ trajet.getJourDepartString() }} {{ trajet.getHeureDepartString() }}</td>
+                        {% if trajet.getTArrivee() != null%}
+                        <td>{{ trajet.arrivea.getnomVille() }} - {{ trajet.getJourArriveeString() }} {{ trajet.getHeureArriveeString() }}</td>
+                        {% else %}
+                        <td>{{ trajet.arrivea.getnomVille() }} </td>
+                        {% endif %}
+                        <td>{{ trajet.prix }} €</td>
+                        {% set nbPlacesRestantes =  trajet.getNbPassagerMax() - trajet.getNbPassagerCourant()  %}
+                        <td> {{nbPlacesRestantes}} places restantes </td>
+                        <td>
+                            {% if not is_granted('ROLE_ADMIN') %}
+                            {% set trajet_deja_adopte = false %}
+                            {% for adoption in user.getAdoptions() %}
+                                {% if adoption.trajet.id == trajet.id %}
+                                    {% set trajet_deja_adopte = true %}
+                                {% endif %}
+                            {% endfor %}
+>>>>>>> Stashed changes
 
                                         
                                         {% if (trajet.TDepart  > now)  %}

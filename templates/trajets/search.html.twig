@@ -68,6 +68,12 @@
                         <br/>
                         <ul id="liste_trajets">
                             {% for trajet in trajets %}
+                            {% set skip_trajet = false %}
+                            {% for accepte in estAccepte %}
+                                {% if user.id == accepte.utilisateur.id and trajet.id == accepte.trajet.id %}
+                                    {% set skip_trajet = true %}
+                                {% endif %}
+                            {% endfor %}
                                 {% if trajet.publie != utilisateur_actuel%}
                                     {% if trajet.getNbPassagerMax() >  trajet.getNbPassagerCourant()%}
                                         <li style="list-style-type:none">
@@ -109,7 +115,8 @@
                                                                 <div class="col">
                                                                     <!-- Prix et nombre de passager -->
                                                                     <h1 class="card-title pricing-card-title"><span class="prix">{{trajet.prix}}<small class="text-muted">€</small></span></h1>
-                                                                    {{trajet.getNbPassagerCourant()}} / {{trajet.getNbPassagerMax()}} places
+                                                                    {% set nbPlacesRestantes =  trajet.getNbPassagerMax() - trajet.getNbPassagerCourant()  %}
+                                                                    <td> {{nbPlacesRestantes}} places restantes </td>
                                                                 </div>
                                                             </div>
                                                             </br>
@@ -126,13 +133,13 @@
                                                             </div>
                                                             </br>
                                                         </div>
-                                                        {% set trajet_deja_adopte = false %}
+                                                        {% set trajet_deja_adopte = false%}
                                                         {% for adoption in utilisateur_actuel.getAdoptions() %}
                                                             {% if adoption.trajet.id == trajet.id %}
                                                                 {% set trajet_deja_adopte = true %}
                                                             {% endif %}
                                                         {% endfor %}
-                                                        {% if trajet_deja_adopte == false %}
+                                                        {% if trajet_deja_adopte == false and not skip_trajet  %}
                                                             <button type="button" class="btn btn-lg btn-block btn-primary" onclick="adopterTrajet({{ utilisateur_actuel.id }}, {{ trajet.id }})">Adopter ce trajet</button>
                                                         {% else %}
                                                             <button type="button" class="btn btn-lg btn-block btn-primary" onclick="abandonnerTrajet({{ utilisateur_actuel.id }}, {{ trajet.id }})">Abandonner ce trajet</button>

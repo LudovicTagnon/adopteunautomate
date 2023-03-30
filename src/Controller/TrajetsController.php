@@ -263,6 +263,7 @@ class TrajetsController extends AbstractController
             $villeArrivee = null;
             $jourDepart = null;
 
+<<<<<<< Updated upstream
             if($recherche != null){
                 $villeDepart = $recherche->getDemarreA();
                 $villeArrivee = $recherche->getArriveA();
@@ -279,6 +280,11 @@ class TrajetsController extends AbstractController
                     ->getQuery()
                     ->getResult();
             }
+=======
+            $trajets = $manager->getRepository(Trajets::class)->findByCritere($current_user, $villeDepart, $villeArrivee,  $jourDepart);
+            $estAccepteRepository = $manager->getRepository(EstAccepte::class);
+            $estAccepte = $estAccepteRepository->findAll();
+>>>>>>> Stashed changes
 
             $dateA = DateTime::createFromFormat('Y-m-d', $jourDepart);
 
@@ -294,6 +300,7 @@ class TrajetsController extends AbstractController
             $form->handleRequest($request);
 
             return $this->render('trajets/search.html.twig', [
+                'user' => $current_user,
                 'trajets' => $trajets,
                 'nb_trajets' => count($trajets),
                 'villes' => $villes,
@@ -301,7 +308,11 @@ class TrajetsController extends AbstractController
                 'arrivee' => $villeArrivee,
                 'date' => $dateDepart,
                 'utilisateur_actuel' => $current_user,
+<<<<<<< Updated upstream
                 'form' => $form->createView(),
+=======
+                'estAccepte' => $estAccepte,
+>>>>>>> Stashed changes
             ]);
         } else {
             return $this->redirectToRoute('app_home');

@@ -37,6 +37,8 @@ class HomeController extends AbstractController
             $villeDepart = $form->get('demarrea')->getData();
             $villeArrivee = $form->get('arrivea')->getData();
             $dateDepart = $form->get('T_depart')->getData();
+            $estAccepteRepository = $manager->getRepository(EstAccepte::class);
+            $estAccepte = $estAccepteRepository->findAll();
 
             
             $current_user = $this->getUser();
@@ -53,6 +55,7 @@ class HomeController extends AbstractController
             }
 
             return $this->render('trajets/search.html.twig', [
+                'user' => $user,
                 'trajets' => $trajets,
                 'nb_trajets' => count($trajets),
                 'villes' => $villes,
@@ -61,6 +64,7 @@ class HomeController extends AbstractController
                 'date' => $dateDepart,
                 'utilisateur_actuel' => $current_user,
                 'form' => $form->createView(),
+                'estAccepte' => $estAccepte,
             ]);
 
             $villes = $manager->getRepository(Villes::class)->findAll();
