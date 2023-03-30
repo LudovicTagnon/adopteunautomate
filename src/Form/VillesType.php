@@ -25,11 +25,12 @@ class VillesType extends AbstractType
 
         $builder
             ->add('nom_ville', ChoiceType::class,  [
-                'label' => '  ',
+                'label' => ' ',
                 'choices' => $cities,
                 'choice_label' => 'nom_ville',
                 'choice_value' => 'id',
-                'placeholder' => 'Sélectionner une ville'
+                'placeholder' => 'Sélectionner une ville',
+                'autocomplete' => true,
                 ])
             //->add('CP')          
         ;
