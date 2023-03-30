@@ -26,8 +26,8 @@ class HomeController extends AbstractController
         $villes = $manager->getRepository(Villes::class)->findAll();
         $trajets = $manager->getRepository(Trajets::class)->findAll();
         $adoptions = $manager->getRepository(Adopte::class)->findAll();
-        $inscriptions = $manager->getRepository(EstAccepte::class)->findAll();
         $form = $this->createForm(SearchTrajetType::class);
+        $inscriptions = $manager->getRepository(EstAccepte::class)->findAll();
         $form->handleRequest($request);
         $notifications = [];//null par défaut
         if ($this->getUser() != null) {
@@ -75,8 +75,8 @@ class HomeController extends AbstractController
             'notifications' => $notifications,
             'trajets' => $trajets,
             'adopte' => $adoptions,
-            'inscriptions' => $inscriptions,
             'form' => $form->createView(),
+            'inscriptions' => $inscriptions,
         ]);
 
     }
