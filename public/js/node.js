@@ -57,9 +57,46 @@ function displayRatingStars() {
 
         // Show the ratingContainer
         ratingContainer.style.display = 'block';
+        // Show the "Confirmer la note" button
+        document.getElementById('confirmRating').style.display = 'block';
     } else {
         console.error('ratingContainer or ratingStars element not found');
     }
+}
+
+function submitRating() {
+    const trajetId = $(':input.trajet-id').val();
+    const participantId = $('#selectParticipantsList').val();
+    const note = $('#ratingContainer input[name="rating"]:checked').val();
+    const commentaire = $('#ratingContainer textarea').val();
+
+    fetch('/save_rating', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            trajet_id: trajetId,
+            participant_id: participantId,
+            note: note,
+            commentaire: commentaire
+        })
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Rating saved successfully');
+                // Reset the form and hide the rating container
+                $('#ratingContainer input[name="rating"]').prop('checked', false);
+                $('#ratingContainer textarea').val('');
+                $('#ratingContainer').hide();
+            } else {
+                alert('Error saving rating');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
 }
 
 $(document).ready(function() {
@@ -80,6 +117,12 @@ $(document).ready(function() {
 
     $('#confirmParticipant').click(function() {
         displayRatingStars();
+    });
+
+    // Add a click event listener to the "Confirmer la note" button
+    $('#confirmRating').click(function(event) {
+        event.preventDefault();
+        submitRating();
     });
 });
 
