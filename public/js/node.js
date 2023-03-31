@@ -23,14 +23,44 @@ function displayParticipants(participants) {
             participantsList.appendChild(optionItem);
         });
 
-        // Make the participantsList visible
+        // Make the participantsList and confirmParticipant button visible
         participantsList.style.display = 'block';
+        document.getElementById('confirmParticipant').style.display = 'block';
     } else {
         console.error('selectParticipantsList element not found');
     }
 }
 
+function displayRatingStars() {
+    const ratingContainer = document.getElementById('ratingContainer');
+    const ratingStars = document.getElementById('ratingStars');
 
+    if (ratingContainer && ratingStars) {
+        ratingStars.innerHTML = '';
+
+        for (let i = 1; i <= 5; i++) {
+            const star = document.createElement('input');
+            star.type = 'radio';
+            star.name = 'rating';
+            star.value = i;
+            star.id = `star${i}`;
+            star.classList.add('rating-star');
+
+            const starLabel = document.createElement('label');
+            starLabel.htmlFor = `star${i}`;
+            starLabel.innerHTML = '&#9733;'; // Unicode for a star
+            starLabel.classList.add('rating-label');
+
+            ratingStars.appendChild(star);
+            ratingStars.appendChild(starLabel);
+        }
+
+        // Show the ratingContainer
+        ratingContainer.style.display = 'block';
+    } else {
+        console.error('ratingContainer or ratingStars element not found');
+    }
+}
 
 $(document).ready(function() {
     $('#form_trajet').submit(function(event) {
@@ -47,4 +77,9 @@ $(document).ready(function() {
         }
         console.log("JavaScript file loaded");
     });
+
+    $('#confirmParticipant').click(function() {
+        displayRatingStars();
+    });
 });
+

@@ -11,6 +11,11 @@
     <h3>Participants :</h3>
     <ul></ul>
     <label for="selectParticipantsList"></label><select name="participants[]" multiple id="selectParticipantsList" style="display:none;"></select>
+    <button id="confirmParticipant" type="button" class="btn btn-primary" style="display:none;">Confirmer la sélection du participant</button>
+    <div id="ratingContainer" style="display:none;">
+        <h4>Note:</h4>
+        <div id="ratingStars"></div>
+    </div>
 
     {% if selectedTrajet is not null %}
         {% if participants is not empty %}
