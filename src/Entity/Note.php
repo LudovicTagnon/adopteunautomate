@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Utilisateurs;
+use App\Repository\NoteRepository;
 
 #[ORM\Entity(repositoryClass: NoteRepository::class)]
 
@@ -26,13 +27,6 @@ class Note
      * @ORM\JoinColumn(name="Trajet_id", referencedColumnName="id")
      */
     private $trajet;
-
-    #[ORM\Column]
-    private $recv_id;
-
-    
-    #[ORM\Column]
-    private $donne_id;
 
 
     /**
