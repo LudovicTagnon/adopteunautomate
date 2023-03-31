@@ -5,9 +5,11 @@ namespace App\Controller;
 use App\Entity\Note;
 use App\Entity\Trajets;
 use App\Entity\Utilisateurs;
+use App\Repository\UtilisateursRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Form\NoteTrajetType;
@@ -113,6 +115,31 @@ class NoteController extends AbstractController
         }
 
         return $this->json($data);
+    }
+
+    #[Route('/save_rating', name: 'save_rating', methods: ['POST'])]
+    public function saveRating(Request $request, TrajetsRepository $trajetsRepository, UtilisateursRepository $utilisateursRepository): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        $trajet = $trajetsRepository->find($data['trajet_id']);
+        $participant = $utilisateursRepository->find($data['participant_id']);
+
+        if ($trajet && $participant) {
+            $note = new Note();
+            $note->setTrajet($trajet);
+            $note->setUtilisateur($participant);
+            $note->setNote($data['note']);
+            $note->setCommentaire($data['commentaire']);
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($note);
+            $entityManager->flush();
+
+            return new JsonResponse(['success' => true]);
+        } else {
+            return new JsonResponse(['success' => false], 400);
+        }
     }
 
 }

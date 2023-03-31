@@ -24,8 +24,10 @@
             <div id="participants-container"></div>
             {{ form_row(noteForm.note) }}
             {{ form_row(noteForm.commentaire) }}
-            <button type="submit" class="btn btn-primary">Attribuer une note</button>
             {{ form_end(noteForm) }}
         {% endif %}
     {% endif %}
+
+    <button id="confirmRating" type="button" class="btn btn-primary" style="display:none;">Confirmer la note</button>
+
 {% endblock %}
