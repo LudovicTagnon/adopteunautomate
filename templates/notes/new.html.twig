@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Afficher les participants du trajet</h1>
+
+    {{ form_start(participantForm, {'attr': {'id': 'form_trajet'}}) }}
+    {{ form_widget(participantForm.Trajet_id, {'attr': {'class': 'trajet-id'}}) }}
+    <button type="submit" class="btn btn-primary">Afficher les participants</button>
+    {{ form_end(participantForm) }}
+
+    <h3>Participants :</h3>
+    <ul id="participantsList"></ul>
+
+    {% if selectedTrajet is not null %}
+        {% if participants is not empty %}
+            {{ form_start(noteForm) }}
+            {{ form_widget(noteForm.Trajet_id, {'attr': {'style': 'display:none'}}) }}
+            {{ form_row(noteForm.participant) }}
+            {{ form_row(noteForm.note) }}
+            {{ form_row(noteForm.commentaire) }}
+            <button type="submit" class="btn btn-primary">Attribuer une note</button>
+            {{ form_end(noteForm) }}
+            <div id="participants-container"></div>
+        {% endif %}
+    {% endif %}
+{% endblock %}
