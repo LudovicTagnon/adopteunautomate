@@ -9,18 +9,18 @@
     {{ form_end(participantForm) }}
 
     <h3>Participants :</h3>
-    <ul id="participantsList"></ul>
+    <ul></ul>
+    <label for="selectParticipantsList"></label><select name="participants[]" multiple id="selectParticipantsList" style="display:none;"></select>
 
     {% if selectedTrajet is not null %}
         {% if participants is not empty %}
             {{ form_start(noteForm) }}
             {{ form_widget(noteForm.Trajet_id, {'attr': {'style': 'display:none'}}) }}
-            {{ form_row(noteForm.participant) }}
+            <div id="participants-container"></div>
             {{ form_row(noteForm.note) }}
             {{ form_row(noteForm.commentaire) }}
             <button type="submit" class="btn btn-primary">Attribuer une note</button>
             {{ form_end(noteForm) }}
-            <div id="participants-container"></div>
         {% endif %}
     {% endif %}
 {% endblock %}

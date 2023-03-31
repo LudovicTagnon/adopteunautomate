@@ -5,15 +5,32 @@ function fetchParticipants(trajetId) {
 }
 
 function displayParticipants(participants) {
-    const participantsList = document.getElementById('participantsList');
-    participantsList.innerHTML = '';
+    const participantsList = document.getElementById('selectParticipantsList');
 
-    participants.forEach(participant => {
-        const listItem = document.createElement('li');
-        listItem.textContent = `${participant.prenom} ${participant.nom}`;
-        participantsList.appendChild(listItem);
-    });
+    if (participantsList) {
+        // Remove existing options
+        while (participantsList.firstChild) {
+            participantsList.removeChild(participantsList.firstChild);
+        }
+
+        participants.forEach(participant => {
+            const optionItem = document.createElement('option');
+            optionItem.value = participant.id;
+            optionItem.textContent = `${participant.prenom} ${participant.nom}`;
+            if (participant.selected) {
+                optionItem.selected = true;
+            }
+            participantsList.appendChild(optionItem);
+        });
+
+        // Make the participantsList visible
+        participantsList.style.display = 'block';
+    } else {
+        console.error('selectParticipantsList element not found');
+    }
 }
+
+
 
 $(document).ready(function() {
     $('#form_trajet').submit(function(event) {
@@ -31,4 +48,3 @@ $(document).ready(function() {
         console.log("JavaScript file loaded");
     });
 });
-

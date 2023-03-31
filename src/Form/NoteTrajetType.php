@@ -7,6 +7,7 @@ use App\Entity\Utilisateurs;
 use App\Entity\Trajets;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -35,6 +36,7 @@ class NoteTrajetType extends AbstractType
                 'placeholder' => 'Choisissez un participant',
                 'property_path' => 'utilisateur',
             ])
+
             ->add('note', null, [
                 'label' => 'Note',
             ])
@@ -53,5 +55,14 @@ class NoteTrajetType extends AbstractType
         ]);
         $resolver->setAllowedTypes('trajets', 'array');
         $resolver->setAllowedTypes('participants', 'array');
+    }
+
+    private function getParticipantChoices($participants)
+    {
+        $choices = [];
+        foreach ($participants as $participant) {
+            $choices[$participant->getId()] = sprintf('%s %s', $participant->getNom(), $participant->getPrenom());
+        }
+        return $choices;
     }
 }

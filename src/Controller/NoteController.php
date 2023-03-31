@@ -90,7 +90,6 @@ class NoteController extends AbstractController
             'controller_name' => 'NoteController',
             'participantForm' => $participantForm->createView(),
             'noteForm' => $noteForm->createView(),
-            'participants' => $participants,
             'trajets' => $trajets,
             'formService' => $this->formService,
             'selectedTrajet' => $selectedTrajet,

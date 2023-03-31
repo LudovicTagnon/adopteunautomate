@@ -166,6 +166,11 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
+    public function getNomComplet(): string
+    {
+        return $this->nom . ' ' . $this->prenom;
+    }
+
     public function getNom(): ?string
     {
         return $this->nom;
