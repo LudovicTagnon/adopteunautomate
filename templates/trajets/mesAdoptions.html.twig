@@ -72,9 +72,9 @@
                                                 {% endfor %}
                                                 {% if (trajet.trajet.TDepart  > now)  %}
                                                     {% if trajet_deja_adopte == false and not skip_trajet %}
-                                                        <a href="{{ path('app_trajet.adopter_trajet', {'trajetId': trajet.id, 'utilisateurId': user.id}) }}" class="btn btn-success">Adopter le trajet</a>                     
+                                                        <a href="{{ path('app_trajet.adopter_trajet', {'trajetId': trajet.getTrajet().id, 'utilisateurId': user.id}) }}" class="btn btn-success">Adopter le trajet</a>                     
                                                     {% else %}
-                                                        <a href="{{ path('app_trajet.abandonner_trajet', {'trajetId': trajet.id, 'utilisateurId': user.id}) }}" class="btn btn-danger">Abandonner le trajet</a>
+                                                        <a href="{{ path('app_trajet.abandonner_trajet', {'trajetId': trajet.getTrajet().id, 'utilisateurId': user.id}) }}" class="btn btn-danger">Abandonner le trajet</a>
                                                     {% endif %}
                                                 {% endif %}
                                             {% endif %}
@@ -108,6 +108,10 @@
                                 </thead>
                                 <tbody>
                                 {% for trajet in trajetsInscrits %}
+                                    {% set skip_trajet = false %}
+                                    {% if user.id == trajet.utilisateur.id %}
+                                        {% set skip_trajet = true %}
+                                    {% endif %}
                                     <tr onclick="window.location.href='{{ path('app_trajets_show', {'id': trajet.getTrajet().id}) }}';">
                                         <td>{{ trajet.getTrajet().id }}</td>
                                         <td>{{ trajet.getTrajet().etat }}</td>
@@ -132,9 +136,9 @@
                                                 {% endfor %}
                                                 {% if (trajet.trajet.TDepart  > now)  %}
                                                     {% if trajet_deja_adopte == false and not skip_trajet %}
-                                                        <a href="{{ path('app_trajet.adopter_trajet', {'trajetId': trajet.id, 'utilisateurId': user.id}) }}" class="btn btn-success">Adopter le trajet</a>                     
+                                                        <a href="{{ path('app_trajet.adopter_trajet', {'trajetId': trajet.getTrajet().id, 'utilisateurId': user.id}) }}" class="btn btn-success">Adopter le trajet</a>                     
                                                     {% else %}
-                                                        <a href="{{ path('app_trajet.abandonner_trajet', {'trajetId': trajet.id, 'utilisateurId': user.id}) }}" class="btn btn-danger">Abandonner le trajet</a>
+                                                        <a href="{{ path('app_trajet.abandonner_trajet', {'trajetId': trajet.getTrajet().id, 'utilisateurId': user.id}) }}" class="btn btn-danger">Abandonner le trajet</a>
                                                     {% endif %}
                                                 {% endif %}
                                             {% endif %}
