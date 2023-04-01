@@ -44,16 +44,16 @@
                                 </thead>
                                 <tbody>
                                     {% for trajet in trajetsPassager%}
-                                        {% if trajet.etat == 'terminé' %}
+                                        {% if trajet.getTrajet().etat == 'terminé' %}
                                             <tr>
                                                 <th scope="row">{{trajet.id}}</th>
-                                                <td>{{trajet.getJourDepartString()}}</td>
-                                                <td>{{trajet.demarrea}}</td>
-                                                <td>{{trajet.arrivea}}</td>
-                                                <td>{{trajet.prix}}<small class="text-muted">€</small></td>
+                                                <td>{{trajet.getTrajet().getJourDepartString()}}</td>
+                                                <td>{{trajet.getTrajet().demarrea}}</td>
+                                                <td>{{trajet.getTrajet().arrivea}}</td>
+                                                <td>{{trajet.getTrajet().prix}}<small class="text-muted">€</small></td>
                                                 <td></td>
                                                 <td>/10</td>
-                                                <td>{{trajet.etat}}</td>
+                                                <td>{{trajet.getTrajet().etat}}</td>
                                             </tr>
                                         {% endif %}
                                     {% else %} <!-- Si il n'y a pas de trajets dans la boucle--> 

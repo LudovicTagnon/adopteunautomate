@@ -354,7 +354,6 @@ class Trajets
     public function incrementNbPassagerCourant(): self
 {
     $this->nb_passager_courant++;
-    $this->nb_passager_max--;
     return $this;
 }
 
@@ -362,7 +361,6 @@ public function decrementNbPassagerCourant(): self
 {
     if($this->nb_passager_courant!=0){
         $this->nb_passager_courant--;
-        $this->nb_passager_max++;
     }
     return $this;
 }
