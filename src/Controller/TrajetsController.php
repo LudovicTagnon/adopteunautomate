@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\EstAccepte;
 use DateTime;
 use Symfony\Component\VarDumper\VarDumper;
 use App\Entity\Trajets;
@@ -20,6 +19,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Form\FormError;
 use App\Service\NotificationService;
+use App\Entity\EstAccepte;
+use App\Entity\Notification;
 
 #[Route('/trajets')]
 class TrajetsController extends AbstractController
@@ -221,37 +222,88 @@ class TrajetsController extends AbstractController
     
 
     
-    #[Route('/{id}', name: 'app_trajets_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'app_trajets_delete', methods:  ['GET', 'POST'])]
     //#[Route('/', name: 'app_trajets_index', methods: ['GET'])]
-    public function delete(Request $request, Trajets $trajet, TrajetsRepository $trajetsRepository, EntityManagerInterface $manager): Response
+    public function delete(Request $request, Trajets $trajet, TrajetsRepository $trajetsRepository, EntityManagerInterface $manager,NotificationService $notificationService): Response
     {
-        $demain = new DateTime('tomorrow');
+        $demain = new DateTime('+24 hours');
         if ($trajet->getTDepart() <$demain ) {
             $trajet->setEtat('bloqué');
             $this->addFlash(
                 'warning',
                 'Vous ne pouvez plus supprimer ce trajet.'
             );
-
+            $manager->flush();
             return $this->redirectToRoute('app_trajets_index');
         }
+        
 
         // si le trajet est terminé ou que son départ a eu lieu il y a plus de 24h
         // conditions à écrire, avec update de $trajet.etat
         // blocage de la suppression via effacement du bouton dans trajets/index
-        
+        /*
         if ($this->isCsrfTokenValid('delete'.$trajet->getId(), $request->request->get('_token'))) {
             $trajet->setEtat('annulé');
             // si on l'enlève carrément:
             $trajetsRepository->remove($trajet, true);
         }
-        $manager->persist($trajet);
+        */
+        // COndition non fonctionnelle 23 03
+
+        if ($trajet->getAdopte()!=null)
+        {
+           // supprimer les passagers en attente - table Adopte
+            foreach ($trajet->getAdopte() as $adopte) 
+            {//on parcourt les membres de l'entité Adopte que l'on supprime
+                $manager->remove($adopte);//on supprime le tuple   
+
+                $manager->flush();
+            }
+
+            // supprimer les passagers acceptés - table EstAccepte
+            /* double emploi avec du code mis plus bas 
+            foreach ($trajet->getEstAccepte() as $estAccepte) 
+            {//on parcourt les membres de l'entité estAccepte que l'on supprime
+                $manager->remove($estAccepte);//on supprime le tuple   
+
+                //$manager->flush();
+            }
+            */
+        }
+        //on supprime toutes les notifications liées à ce trajet 
+        $notifications = $manager->getRepository(Notification::class)->findBy(['TrajetQuiEstDemande' => $trajet]);
+        $listeAcceptee = $manager->getRepository(EstAccepte::class)->findBy(['trajet' => $trajet]);
+        foreach ($notifications as $notification) {
+            $manager->remove($notification);
+        }
+        $users = null;
+        foreach ($listeAcceptee as $estAccepte) {
+            $users[] = $estAccepte->getUtilisateur();
+        }
+        if($users != null){
+        foreach ($users as $user) {
+            $notificationService->addNotificationDeleteTrajet("Le trajet : ".$trajet->__toString(). " a été supprimé",$user);
+        }
+        foreach ($listeAcceptee as $estAccepte) {
+            $manager->remove($estAccepte);
+        }
+        
         $manager->flush();
+    }
+        $manager->remove($trajet);
+        $manager->flush();
+        
+
+        $this->addFlash(
+            'success',
+            'Ce trajet a été supprimé avec succès.'
+        );
+        
 
         return $this->redirectToRoute('app_trajets_index', [], Response::HTTP_SEE_OTHER);
     }
 
-   #[Route('/rechercher-trajet', name: 'app_trajets_search', methods: ['GET'])]
+   #[Route('/rechercher-trajet', name: 'app_trajets_search', methods: ['GET', 'POST'])]
     public function search(Request $request, EntityManagerInterface $manager,mixed $recherche): Response
     {
         $current_user = $this->getUser();
