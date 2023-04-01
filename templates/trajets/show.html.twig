@@ -59,17 +59,35 @@
                         </tr>
                     </tbody>
                 </table>
-
-                <div class="form-row justify-content-center">
-                    <div class="form-group col-md-4">
-                        <a href="{{ path('app_trajets_edit', {'id': trajet.id}) }}" class="btn btn-primary">Modifier ce trajet</a>
+                {% if trajet.publie == user%}
+                    <div class="form-row justify-content-center">
+                        <div class="form-group col-md-4">
+                            <a href="{{ path('app_trajets_edit', {'id': trajet.id}) }}" class="btn btn-primary">Modifier ce trajet</a>
+                        </div>
+                        <div class="form-group col-md-4">
+                            {{ include('trajets/_delete_form.html.twig') }}
+                        </div>
                     </div>
-                    <div class="form-group col-md-4">
-                        {{ include('trajets/_delete_form.html.twig') }}
-                    </div>
-                </div>
-
-                <a href="{{ path('app_trajets_index') }}" class="btn btn-secondary">Retour à la liste de vos trajets</a>
+                {% else %}
+                    {% set now = date() %}
+                    {% if not is_granted('ROLE_ADMIN') %}
+                        {% set trajet_deja_adopte = false %}
+                        {% for adoption in user.getAdoptions() %}
+                            {% if adoption.getTrajet().id == trajet.id %}
+                                {% set trajet_deja_adopte = true %}
+                            {% endif %}
+                        {% endfor %}
+                        {% if (trajet.TDepart  > now)  %}
+                            {% if trajet_deja_adopte == false and not skip_trajet %}
+                                <a href="{{ path('app_trajet.adopter_trajet', {'trajetId': trajet.id, 'utilisateurId': user.id}) }}" class="btn btn-success">Adopter le trajet</a>                     
+                            {% else %}
+                                <a href="{{ path('app_trajet.abandonner_trajet', {'trajetId': trajet.id, 'utilisateurId': user.id}) }}" class="btn btn-danger">Abandonner le trajet</a>
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+                <!-- Bouton permettant de revenir en arrière -->
+                <a href="#" onclick="javascript:history.back();" class="btn btn-secondary">Retour à la liste de vos trajets</a>
             </div>
         </div>
     </div>

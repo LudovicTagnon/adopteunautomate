@@ -114,6 +114,8 @@ class TrajetsController extends AbstractController
     #[Route('/{id}/visualiser', name: 'app_trajets_show', methods: ['GET'])]
     public function show(Trajets $trajet, Request $request, EntityManagerInterface $manager): Response
     {
+        $user = $this->getUser();
+
         if (!$trajet) {
             throw $this->createNotFoundException('The Trajets object was not found.');
         }
@@ -130,16 +132,6 @@ class TrajetsController extends AbstractController
         }
         
         $maintenant = new DateTime();
-        /*
-        if ($trajet->getTDepart() <$maintenant ) {
-            $trajet->setEtat('terminé');
-
-            $this->addFlash(
-                'succès',
-                'Votre trajet est terminé !'
-            );    
-        }
-        */
         
         $hier = new DateTime('-24 hours');
         if (( ($trajet->getTArrivee() !='null') and ($trajet->getTArrivee() <$maintenant))  or $trajet->getTDepart() <$hier )
@@ -157,6 +149,7 @@ class TrajetsController extends AbstractController
 
         return $this->render('trajets/show.html.twig', [
             'trajet' => $trajet,
+            'user' => $user,
         ]);
     }
 
@@ -186,11 +179,6 @@ class TrajetsController extends AbstractController
         
         $form = $this->createForm(TrajetsType::class, $trajet);
 
-/*
-        if ($trajet->getTDepart() < $demain ) {
-            $form->remove('Modifier'); // supprimer le bouton "submit" pour désactiver le formulaire
-        }
-*/
         $form->handleRequest($request);
         $trajet = $form->getData();
         
@@ -351,6 +339,7 @@ class TrajetsController extends AbstractController
     #[IsGranted('ROLE_USER')]
     public function afficher_mes_adoptions(EntityManagerInterface $manager): Response
     {
+        $user = $this->getUser();
         
         $trajetsEnAttente = $manager->getRepository(Adopte::class)->findBy(['utilisateur'=> $this->getUser()]);
         $trajetsInscrits = $manager->getRepository(EstAccepte::class)->findBy(['utilisateur'=> $this->getUser()]);
@@ -358,6 +347,7 @@ class TrajetsController extends AbstractController
         return $this->render('trajets/mesAdoptions.html.twig', [
             'trajetsEnAttente' => $trajetsEnAttente,
             'trajetsInscrits' => $trajetsInscrits,
+            'user' => $user,
         ]);
       
     }
