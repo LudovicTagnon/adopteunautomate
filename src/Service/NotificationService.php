@@ -211,6 +211,29 @@ class NotificationService
         $this->entityManager->persist($notification);
         $this->entityManager->flush();
     }
+    public function addNotificationDeleteTrajet($message, $user)
+    {
+        $notification = new Notification();
+        $notification->setMessage($message);
+        $notification->setUser($user);
+        $notification->setCreatedAt(new \DateTime());
+        if ($user->getAutorisationMail()) {
+            $email = (new Email())
+            ->from('adopteautomate-noreply@example.com')
+            ->to($user->getEmail())
+            ->subject('Notification - Trajet modifié')
+            ->text($message);
+
+            try {
+                $this->mailer->send($email);
+            } catch (\Symfony\Component\Mailer\Exception\TransportExceptionInterface $e) {
+                // Handle the exception here
+            }
+        }
+
+        $this->entityManager->persist($notification);
+        $this->entityManager->flush();
+    }
 
     public function getNotifications(Utilisateurs $user)
     {
