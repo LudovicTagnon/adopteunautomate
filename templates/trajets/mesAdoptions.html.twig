@@ -94,18 +94,18 @@
                                 <tr>
                                     <td>{{ trajet.getTrajet().id }}</td>
                                     <td>{{ trajet.getTrajet().etat }}</td>
-                                    <td>{{ trajet.getTrajet().TDepart ? trajet.TDepart|date('Y-m-d H:i') : '' }}</td>
-                                    <td>{{ trajet.getTrajet().TArrivee ? trajet.TArrivee|date('Y-m-d H:i') : '' }}</td>
+                                    <td>{{ trajet.getTrajet().TDepart ? trajet.getTrajet().TDepart|date('Y-m-d H:i') : '' }}</td>
+                                    <td>{{ trajet.getTrajet().TArrivee ? trajet.getTrajet().TArrivee|date('Y-m-d H:i') : '' }}</td>
                                     
                                     <td>{{ trajet.getTrajet().demarrea.nomville }}</td>
                                     <td>{{ trajet.getTrajet().arrivea.nomville }}</td>
                                     
                                     <td>{{ trajet.getTrajet().prix }}</td>
                                     <td>{{ trajet.getTrajet().nbPassagerMax }}</td>
-                                    <td>{{ trajet.getTrajet().nbPassagerMax - trajet.nbPassagerCourant }}</td>
+                                    <td>{{ trajet.getTrajet().nbPassagerMax - trajet.getTrajet().nbPassagerCourant }}</td>
                                     <td>{{ trajet.getTrajet().public ? 'Oui' : 'Non' }}</td>
                                     <td>
-                                        <a href="{{ path('app_trajets_show', {'id': trajet.id}) }}"class= "btn btn-info" title="Voir les détails de ce trajet"><i class="fa-solid fa-magnifying-glass"></i></a>
+                                        <a href="{{ path('app_trajets_show', {'id': trajet.getTrajet().id}) }}"class= "btn btn-info" title="Voir les détails de ce trajet"><i class="fa-solid fa-magnifying-glass"></i></a>
                                     </td>
                                 </tr>
                             {% else %}
