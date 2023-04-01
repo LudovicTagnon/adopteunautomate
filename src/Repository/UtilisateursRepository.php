@@ -46,12 +46,14 @@ class UtilisateursRepository extends ServiceEntityRepository implements Password
     public function findParticipantsByTrajet($trajetId)
     {
         return $this->createQueryBuilder('u')
+            ->select('u')
             ->innerJoin('App\Entity\EstAccepte', 'ea', 'WITH', 'ea.utilisateur = u.id')
             ->where('ea.trajet = :trajetId')
             ->setParameter('trajetId', $trajetId)
             ->getQuery()
             ->getResult();
     }
+
 
     public function createQueryBuilder($alias, $indexBy = null): QueryBuilder
     {

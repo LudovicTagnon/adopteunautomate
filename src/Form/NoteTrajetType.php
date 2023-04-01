@@ -26,7 +26,7 @@ class NoteTrajetType extends AbstractType
                 'placeholder' => 'Choisissez un trajet',
                 'property_path' => 'trajet',
             ])
-            ->add('participant', EntityType::class, [
+            ->add('participant_id', EntityType::class, [
                 'class' => Utilisateurs::class,
                 'choice_label' => function (Utilisateurs $participant) {
                     return sprintf('%s %s', $participant->getNom(), $participant->getPrenom());
@@ -39,9 +39,6 @@ class NoteTrajetType extends AbstractType
 
             ->add('note', null, [
                 'label' => 'Note',
-            ])
-            ->add('commentaire', null, [
-                'label' => 'Commentaire',
             ]);
 
     }

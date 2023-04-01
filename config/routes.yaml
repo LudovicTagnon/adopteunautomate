@@ -19,3 +19,9 @@ note_participants:
     path: /note_participants/{trajetId}
     controller: App\Controller\NoteController::loadParticipants
     methods: [GET]
+
+save_rating:
+    path: /save_rating
+    controller: App\Controller\NoteController::saveRating
+    methods: [POST, GET]
+

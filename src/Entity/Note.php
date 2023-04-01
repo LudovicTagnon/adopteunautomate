@@ -10,33 +10,35 @@ use App\Repository\NoteRepository;
 
 class Note
 {
-    
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
+    #[ORM\Column(type: "integer", options: ["default" => null])]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Utilisateurs::class)
-     * @ORM\JoinColumn(name="Utilisateur_id", referencedColumnName="id")
-     */
+
+    #[ORM\ManyToOne(targetEntity: Utilisateurs::class)]
+    #[ORM\JoinColumn(name: "Utilisateur_id", referencedColumnName: "id", nullable: false)]
     private $utilisateur;
 
     /**
      * @ORM\ManyToOne(targetEntity=Trajets::class)
-     * @ORM\JoinColumn(name="Trajet_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="trajet_id", referencedColumnName="id", nullable=false)
      */
+    #[ORM\ManyToOne(targetEntity: Trajets::class)]
+    #[ORM\JoinColumn(name: "trajet_id", referencedColumnName: "id", nullable: false)]
     private $trajet;
 
 
     /**
      * @ORM\Column(type="integer")
      */
+    #[ORM\Column(type: "integer")]
     private $note;
 
     /**
      * @ORM\Column(type="text")
      */
+    #[ORM\Column(type: "text", nullable: true)]
     private $commentaire;
 
     // Getters and setters
@@ -89,10 +91,15 @@ class Note
 
     public function setCommentaire(string $commentaire): self
     {
+        if (empty($commentaire)) {
+            throw new \InvalidArgumentException("Commentaire cannot be empty");
+        }
+
         $this->commentaire = $commentaire;
 
         return $this;
     }
+
 
     public function getTrajet(): ?Trajets
     {

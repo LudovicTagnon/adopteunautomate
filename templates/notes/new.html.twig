@@ -1,26 +1,35 @@
-{% extends 'base.html.twig' %}
+    {% extends 'base.html.twig' %}
 
-{% block body %}
-    <h1>Afficher les participants du trajet</h1>
 
-    {{ form_start(participantForm, {'attr': {'id': 'form_trajet'}}) }}
-    {{ form_widget(participantForm.Trajet_id, {'attr': {'class': 'trajet-id'}}) }}
-    <button type="submit" class="btn btn-primary">Afficher les participants</button>
-    {{ form_end(participantForm) }}
+    {% block body %}
+        <h1>Afficher les participants du trajet</h1>
 
-    <h3>Participants :</h3>
-    <ul></ul>
-    <label for="selectParticipantsList"></label><select name="participants[]" multiple id="selectParticipantsList" style="display:none;"></select>
+        {{ form_start(participantForm, {'attr': {'id': 'form_trajet'}}) }}
+        {{ form_widget(participantForm.Trajet_id, {'attr': {'class': 'trajet-id'}}) }}
+        <button type="submit" class="btn btn-primary">Afficher les participants</button>
+        {{ form_end(participantForm) }}
 
-    {% if selectedTrajet is not null %}
-        {% if participants is not empty %}
-            {{ form_start(noteForm) }}
-            {{ form_widget(noteForm.Trajet_id, {'attr': {'style': 'display:none'}}) }}
-            <div id="participants-container"></div>
-            {{ form_row(noteForm.note) }}
-            {{ form_row(noteForm.commentaire) }}
-            <button type="submit" class="btn btn-primary">Attribuer une note</button>
-            {{ form_end(noteForm) }}
+        <h3>Participants :</h3>
+        <ul></ul>
+        <label for="selectParticipantsList"></label><select name="participants_id" id="selectParticipantsList" style="display:none;"></select>
+        <button id="confirmParticipant" type="button" class="btn btn-primary" style="display:none;">Confirmer la sélection du participant</button>
+        <div id="ratingContainer" style="display:none;">
+            <h4>Note:</h4>
+            <div id="ratingStars"></div>
+        </div>
+
+        {% if selectedTrajet is not null %}
+            {% if participants is not empty %}
+                {{ form_start(noteForm) }}
+                {{ form_widget(noteForm.Trajet_id, {'attr': {'style': 'display:none'}}) }}
+                <div id="participants-container"></div>
+                {{ form_row(noteForm.note) }}
+                {{ form_end(noteForm) }}
+            {% endif %}
         {% endif %}
-    {% endif %}
-{% endblock %}
+
+        <button id="confirmRating" type="button" class="btn btn-primary" style="display:none;">Confirmer la note</button>
+
+
+
+    {% endblock %}
