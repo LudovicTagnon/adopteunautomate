@@ -59,7 +59,9 @@
                                     <td>{{ trajet.getTrajet().nbPassagerMax }}</td>
                                     <td>{{ trajet.getTrajet().nbPassagerMax - trajet.getTrajet().nbPassagerCourant }}</td>
                                     <td>{{ trajet.getTrajet().public ? 'Oui' : 'Non' }}</td>
-                                    <td></td>
+                                    <td>
+                                        <a href="{{ path('app_trajets_show', {'id': trajet.getTrajet().id}) }}"class= "btn btn-info" title="Voir les détails de ce trajet"><i class="fa-solid fa-magnifying-glass"></i></a>
+                                    </td>
                                 </tr>
                             {% else %}
                                 <tr>
@@ -103,7 +105,7 @@
                                     <td>{{ trajet.getTrajet().nbPassagerMax - trajet.nbPassagerCourant }}</td>
                                     <td>{{ trajet.getTrajet().public ? 'Oui' : 'Non' }}</td>
                                     <td>
-                                        dd
+                                        <a href="{{ path('app_trajets_show', {'id': trajet.id}) }}"class= "btn btn-info" title="Voir les détails de ce trajet"><i class="fa-solid fa-magnifying-glass"></i></a>
                                     </td>
                                 </tr>
                             {% else %}
