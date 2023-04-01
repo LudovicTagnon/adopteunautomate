@@ -7,6 +7,7 @@ use App\Entity\Utilisateurs;
 use App\Repository\NoteRepository;
 
 #[ORM\Entity(repositoryClass: NoteRepository::class)]
+#[ORM\UniqueConstraint(name: "trajet_utilisateur_unique", columns: ["trajet_id", "utilisateur_id"])]
 
 class Note
 {
