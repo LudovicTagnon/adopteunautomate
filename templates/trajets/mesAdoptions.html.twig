@@ -48,6 +48,10 @@
                                 </thead>
                                 <tbody>
                                 {% for trajet in trajetsEnAttente %}
+                                    {% set skip_trajet = false %}
+                                    {% if user.id == trajet.utilisateur.id %}
+                                        {% set skip_trajet = true %}
+                                    {% endif %}
                                     <tr onclick="window.location.href='{{ path('app_trajets_show', {'id': trajet.getTrajet().id}) }}';">
                                         <td>{{ trajet.getTrajet().id }}</td>
                                         <td>{{ trajet.getTrajet().etat }}</td>

@@ -212,7 +212,7 @@ class TrajetsController extends AbstractController
     
 
     
-    #[Route('/{id}', name: 'app_trajets_delete', methods:  ['GET', 'POST'])]
+    #[Route('/{id}/supprimer', name: 'app_trajets_delete', methods:  ['GET', 'POST'])]
     //#[Route('/', name: 'app_trajets_index', methods: ['GET'])]
     public function delete(Request $request, Trajets $trajet, TrajetsRepository $trajetsRepository, EntityManagerInterface $manager,NotificationService $notificationService): Response
     {
