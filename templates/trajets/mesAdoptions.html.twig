@@ -75,7 +75,7 @@
                                                     {% endif %}
                                                 {% endfor %}
                                                 {% if (trajet.trajet.TDepart  > now)  %}
-                                                    {% if trajet_deja_adopte == false and not skip_trajet %}
+                                                    {% if trajet_deja_adopte == false and  skip_trajet == false %}
                                                         <a href="{{ path('app_trajet.adopter_trajet', {'trajetId': trajet.getTrajet().id, 'utilisateurId': user.id}) }}" class="btn btn-success">Adopter le trajet</a>                     
                                                     {% else %}
                                                         <a href="{{ path('app_trajet.abandonner_trajet', {'trajetId': trajet.getTrajet().id, 'utilisateurId': user.id}) }}" class="btn btn-danger">Abandonner le trajet</a>
@@ -139,7 +139,7 @@
                                                     {% endif %}
                                                 {% endfor %}
                                                 {% if (trajet.trajet.TDepart  > now)  %}
-                                                    {% if trajet_deja_adopte == false and not skip_trajet %}
+                                                    {% if trajet_deja_adopte == false and skip_trajet == false %}
                                                         <a href="{{ path('app_trajet.adopter_trajet', {'trajetId': trajet.getTrajet().id, 'utilisateurId': user.id}) }}" class="btn btn-success">Adopter le trajet</a>                     
                                                     {% else %}
                                                         <a href="{{ path('app_trajet.abandonner_trajet', {'trajetId': trajet.getTrajet().id, 'utilisateurId': user.id}) }}" class="btn btn-danger">Abandonner le trajet</a>
