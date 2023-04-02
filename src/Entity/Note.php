@@ -2,13 +2,11 @@
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use App\Entity\Utilisateurs;
 use App\Repository\NoteRepository;
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: NoteRepository::class)]
 #[ORM\UniqueConstraint(name: "trajet_utilisateur_unique", columns: ["trajet_id", "utilisateur_id"])]
-
 class Note
 {
     #[ORM\Id]

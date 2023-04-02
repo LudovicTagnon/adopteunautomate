@@ -148,6 +148,19 @@ class NoteController extends AbstractController
                 ], 400);
             }
 
+            // Check if the rating already exists
+            $existingRating = $this->entityManager->getRepository(Note::class)->findOneBy([
+                'trajet' => $trajet,
+                'utilisateur' => $participant
+            ]);
+
+            if ($existingRating) {
+                return new JsonResponse([
+                    'success' => false,
+                    'message' => 'You have already submitted a rating for this participant.'
+                ], 409); // Conflict
+            }
+
             if ($trajet && $participant) {
                 $note = new Note();
                 $note->setTrajet($trajet);
@@ -171,5 +184,6 @@ class NoteController extends AbstractController
             ], 500);
         }
     }
+
 
 }

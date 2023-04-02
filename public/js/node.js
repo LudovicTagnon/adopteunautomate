@@ -98,7 +98,11 @@ function submitRating() {
             }
         })
         .fail((jqXHR, textStatus, errorThrown) => {
-            console.error('Error:', textStatus, errorThrown);
+            if (jqXHR.status === 409) { // 409 Conflict - When the rating already exists
+                alert('You have already submitted a rating for this participant.');
+            } else {
+                console.error('Error:', textStatus, errorThrown);
+            }
         });
 }
 
