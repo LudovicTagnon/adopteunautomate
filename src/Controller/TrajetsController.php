@@ -6,6 +6,7 @@ use DateTime;
 use DateInterval;
 use App\Entity\Villes;
 use App\Entity\Trajets;
+use App\Entity\Groupes;
 use App\Form\TrajetsType;
 use App\Entity\EstAccepte;
 use App\Entity\Notification;
@@ -26,6 +27,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
+
 
 #[Route('/trajets')]
 class TrajetsController extends AbstractController
@@ -336,6 +339,7 @@ class TrajetsController extends AbstractController
         */
         // COndition non fonctionnelle 23 03
 
+
         if ($trajet->getAdopte()!=null)
         {
            // supprimer les passagers en attente - table Adopte
@@ -356,6 +360,21 @@ class TrajetsController extends AbstractController
             }
             */
         }
+
+        /* SUPPRESSION d'UN TRAJET PRIVE */
+        // on supprime les liens entre les groupes concernés et le trajet si il est privé
+        $groupes_trajet = $trajet->getGroupes();
+        // si le trajet est destiné à au moins un groupe
+        if (($groupes_trajet) != null ){
+            foreach ($groupes_trajet as $groupe){
+                $trajet->removeGroupe($groupe);
+            }
+        }
+        
+
+        //$manager->flush();
+
+        /* SUPPRESSION d'UN TRAJET PUBLIC */
         //on supprime toutes les notifications liées à ce trajet 
         $notifications = $manager->getRepository(Notification::class)->findBy(['TrajetQuiEstDemande' => $trajet]);
         $listeAcceptee = $manager->getRepository(EstAccepte::class)->findBy(['trajet' => $trajet]);
@@ -384,6 +403,8 @@ class TrajetsController extends AbstractController
             'success',
             'Ce trajet a été supprimé avec succès.'
         );
+
+         
         
 
         return $this->redirectToRoute('app_trajets_index', [], Response::HTTP_SEE_OTHER);
