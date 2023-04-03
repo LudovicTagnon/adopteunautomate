@@ -72,12 +72,10 @@
                                         <div class="tab-content" id="tabsContent">
                                             <div class="tab-pane fade show active text-center" id="propositions" role="tabpanel" aria-labelledby="propositions-tab">
                                                 <!-- Afficher les propositions de l'utilisateur -->
-                                                {% for trajet in trajets|slice(0, 3)%} <!-- Limitation à 3 notifications -->
-                                                    {% if trajet.publie == app.user %}          
-                                                        <a href="#" class="list-group-item list-group-item-action">{{ trajet.demarrea }} --> {{ trajet.arrivea }}</a>
-                                                    {% endif %}
+                                                {% for trajet in trajets|slice(0, 3)%} <!-- Limitation à 3 notifications -->       
+                                                    <a href="{{ path('app_trajets_show', {'id': trajet.id}) }}" class="list-group-item list-group-item-action">{{ trajet.getJourDepartString() }}&nbsp;&nbsp;{{ trajet.demarrea }} --> {{ trajet.arrivea }}</a>
                                                 {% else %} <!-- Si il n'y a pas de notifications dans la boucle--> 
-                                                    <div class="row justify-content-center"> Aucune proposition disponible. </div>
+                                                    <div class="list-group-item list-group-item-action"> Vous n'avez fait aucune proposition actuellement. </div>
                                                 {% endfor %}
                                                 
                                             </div>
@@ -85,22 +83,23 @@
                                                 <!-- Afficher les trajets en attente -->
                                                 {% for adoption in adopte|slice(0, 3)%} <!-- Limitation à 3 adoptions-->
                                                     {% if adoption.getUtilisateur() == user %}          
-                                                        <a href="#" class="list-group-item list-group-item-action">{{ adoption.getTrajet().demarrea }} --> {{ adoption.getTrajet().arrivea }}</a>
+                                                        <a href="{{ path('app_trajets_show', {'id': adoption.getTrajet().id}) }}" class="list-group-item list-group-item-action">{{ adoption.getTrajet().demarrea }} --> {{ adoption.getTrajet().arrivea }}</a>
                                                     {% endif %}
                                                 {% else %} <!-- Si il n'y a pas de notifications dans la boucle--> 
-                                                    <div class="row justify-content-center"> Aucun trajet en attente. </div>
+                                                    <div class="list-group-item list-group-item-action"> Vous n'avez adopté aucun trajet actuellement. </div>
                                                 {% endfor %}
                                             </div>
                                             <div class="tab-pane fade text-center" id="trajets-inscrits" role="tabpanel" aria-labelledby="trajets-inscrits-tab">
                                                 <!-- Afficher les trajets où l'utilisateur est inscrits  -->                          
                                                 {% for inscription in inscriptions|slice(0, 3)%} <!-- Limitation à 3 inscriptions -->
                                                     {% if inscription.getUtilisateur() == user %}          
-                                                        <a href="#" class="list-group-item list-group-item-action">{{ inscription.getTrajet().demarrea }} --> {{ inscription.getTrajet().arrivea }}</a>
+                                                        <a href="{{ path('app_trajets_show', {'id': inscription.getTrajet().id}) }}" class="list-group-item list-group-item-action">{{ inscription.getTrajet().demarrea }} --> {{ inscription.getTrajet().arrivea }}</a>
                                                     {% endif %}
                                                 {% else %} <!-- Si il n'y a pas de notifications dans la boucle--> 
-                                                    <div class="row justify-content-center"> Vous n'êtes inscrit à aucun trajet. </div>
+                                                    <div class="list-group-item list-group-item-action"> Vous n'êtes inscrit à aucun trajet actuellement. </div>
                                                 {% endfor %}   
                                             </div>
+                                            <small class="text-muted">Cliquez sur la ligne d'un trajet pour y voir ses détails</small>
                                         </div>
                                     </div>
                                 </div>
@@ -109,6 +108,8 @@
                     </div>
                 </div>
             </div>
+            </br>
+            </br>
         </div>
     {% else %} <!--Page visible par une personne non connecté -->
         <div class="example-wrapper">

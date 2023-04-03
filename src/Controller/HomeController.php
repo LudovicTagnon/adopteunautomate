@@ -23,13 +23,39 @@ class HomeController extends AbstractController
     public function index(Request $request, EntityManagerInterface $manager, NotificationService $notificationService,MailerInterface $mailer): Response
     {
         $user = $this->getUser();
+
         $villes = $manager->getRepository(Villes::class)->findAll();
-        $trajets = $manager->getRepository(Trajets::class)->findAll();
-        $adoptions = $manager->getRepository(Adopte::class)->findAll();
+
+        $trajets = $manager->getRepository(Trajets::class)
+            ->createQueryBuilder('t')
+            ->where('t.etat != :etat')
+            ->andWhere('t.publie = :user')
+            ->setParameter('etat', 'terminé')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getResult();
+
+        $adoptions = $manager->getRepository(Adopte::class)
+            ->createQueryBuilder('a')
+            ->join('a.trajet', 't')
+            ->where('t.etat != :etat')
+            ->setParameter('etat', 'terminé')
+            ->getQuery()
+            ->getResult();
+
+        $inscriptions = $manager->getRepository(EstAccepte::class)
+            ->createQueryBuilder('i')
+            ->join('i.trajet', 't')
+            ->where('t.etat != :etat')
+            ->setParameter('etat', 'terminé')
+            ->getQuery()
+            ->getResult();
+
         $form = $this->createForm(SearchTrajetType::class);
-        $inscriptions = $manager->getRepository(EstAccepte::class)->findAll();
+
         $form->handleRequest($request);
         $notifications = [];//null par défaut
+
         if ($this->getUser() != null) {
             $notifications = $notificationService->getNotifications($this->getUser());
         }
