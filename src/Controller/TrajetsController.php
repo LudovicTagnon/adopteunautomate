@@ -3,24 +3,27 @@
 namespace App\Controller;
 
 use DateTime;
-use Symfony\Component\VarDumper\VarDumper;
-use App\Entity\Trajets;
+use DateInterval;
 use App\Entity\Villes;
+use App\Entity\Trajets;
 use App\Form\TrajetsType;
-use App\Form\SearchTrajetType;
+use App\Entity\EstAccepte;
+use App\Entity\Notification;
 use App\Entity\Utilisateurs;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use App\Form\SearchTrajetType;
+use App\Service\NotificationService;
 use App\Repository\TrajetsRepository;
+use Symfony\Component\Form\FormError;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Common\Collections\Criteria;
+use Symfony\Component\VarDumper\VarDumper;
+use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Component\Form\FormError;
-use App\Service\NotificationService;
-use App\Entity\EstAccepte;
-use App\Entity\Notification;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/trajets')]
 class TrajetsController extends AbstractController
@@ -51,7 +54,30 @@ class TrajetsController extends AbstractController
         $form = $this->createForm(TrajetsType::class, $trajet);
         $form->handleRequest($request);
 
+        // si contraintes temporelles pas bonnes: refus et message d'erreur
+        // à améliorer : limiter aux trajets futurs !
         
+        $listeTrajets = [];
+        // récupération des trajets créés -
+        $trajetpresent = new Trajets();
+        //$trajetStockes = $manager->getRepository(Trajets::class)->findBy(['depart' => new \DateTime('now'), Criteria::GREATER_THAN]);
+        $trajetStockes = $manager->getRepository(Trajets::class)->findAll();
+        foreach ($trajetStockes as $stocke) {
+            $listeTrajets[] = $stocke  /*->getTrajet() */;
+        }
+        // ajout arbitraire d'une heure d'arrivée pour comparer le trajet courant
+        //$bientot = new DateTime();
+        //$bientot = '12 hours';
+        $bientot = new DateInterval('PT12H');
+        foreach ($listeTrajets as $comparaison){
+            // choix arbitraire: trajet de 12h maximum
+            if ($comparaison->getTArrivee() === null)
+                {
+                    $comparaison->setTArrivee = clone $comparaison->getTDepart();
+                    $comparaison->setTArrivee->add( $bientot)   ; 
+                }  
+        }
+
         if ($form->isSubmitted() && $form->isValid()) {
             //On récupère les données du formulaire
             $trajet = $form->getData();
@@ -63,6 +89,56 @@ class TrajetsController extends AbstractController
             $trajet->setArriveA($villeArrivee);
             $trajet->setDemarreA($villeDepart);
             $public = $form->get('public')->getData();
+
+            // verification des contraintes temporelles
+            // départ pendant un autre trajet
+            foreach ($listeTrajets as $comparaison){
+               
+                if (($trajet->getTDepart() <= $comparaison->getTArrivee() && $trajet->getTDepart() >= $comparaison->getTDepart()) )
+                   {
+                       $creaneau = false;
+                       $form->get('T_depart')->addError(new FormError('Vous avez déjà un trajet prévu. Veuillez modifier votre départ. '));
+                $this->addFlash(
+                    'warning',
+                    'Vous avez un autre trajet en cours à cette heure !'
+                );
+                return $this->render('trajets/new.html.twig', [
+                    'form' => $form->createView(),
+                    'trajet' => $trajet,
+                    'user' => $user,
+                ]);
+                    }  
+            }
+            // arrivee prévue pendant un autre trajet
+            if ($trajet->getTArrivee() != null){
+                foreach ($listeTrajets as $comparaison){
+                    //$difArrivee= $comparaison->getTArrivee()->diff($trajet->getTArrivee());
+                    //$difDepart = $comparaison->getTDepart()->diff($trajet->getTArrivee());
+                    if (($trajet->getTArrivee() <= $comparaison->getTArrivee() && $trajet->getTArrivee() >= $comparaison->getTDepart()) )
+                    
+                    //if ($difArrivee>0 and $difDepart <0)
+                    //if ( ($comparaison->getTArrivee() - $trajet->getTArrivee() >0 ) and ($comparaison->getTDepart() - $trajet->getTArrivee() <0 )  )
+                        {
+                           $creaneau = false;
+                           $form->get('T_arrivee')->addError(new FormError('Vous avez déjà un trajet prévu. Veuillez modifier votre arrivee. '));
+                    $this->addFlash(
+                        'warning',
+                        'Vous avez un autre trajet en cours à cette heure !'
+                    );
+                    return $this->render('trajets/new.html.twig', [
+                        'form' => $form->createView(),
+                        'trajet' => $trajet,
+                        'user' => $user,
+                    ]);
+                        }  
+                }
+            }
+
+            // départ très près d'un autre départ; objectif: éviter un usage professionnel
+
+
+
+
             if ($trajet->getPublic() === false && $form->get('groupes')->getData()->isEmpty()) {
                 $form->get('groupes')->addError(new FormError('Veuillez choisir au moins un groupe pour un trajet privé'));
                 $this->addFlash(
@@ -84,7 +160,6 @@ class TrajetsController extends AbstractController
                     }
                 }
             }
-
 
             // champs remplis d'office:
             $trajet->setPublie($this->getUser());
