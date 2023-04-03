@@ -71,7 +71,7 @@ class TrajetsType extends AbstractType
             ->add('arrivea', EntityType::class, [
                 'class' => Villes::class,
                 'choice_label' => 'nomVille',
-                'label' => "Ville d''arrivée"
+                'label' => "Ville d'arrivée"
             ])
 
 
