@@ -68,7 +68,12 @@ class HomeController extends AbstractController
 
             
             $current_user = $this->getUser();
-            $trajets = $manager->getRepository(Trajets::class)->findByCritere($current_user, $villeDepart, $villeArrivee,  $dateDepart);
+            if($villeDepart && $villeArrivee != null){
+                $trajets = $manager->getRepository(Trajets::class)->findByCritere($current_user, $villeDepart, $villeArrivee,  $dateDepart);
+            }
+            else if($dateDepart){
+                $trajets = $manager->getRepository(Trajets::class)->findByCritereDate($current_user,$dateDepart);
+            }
 
             $dateA = $dateDepart;
 
@@ -94,7 +99,6 @@ class HomeController extends AbstractController
             ]);
 
             $villes = $manager->getRepository(Villes::class)->findAll();
-            echo $villeDepart; //TODO: fonctionne à reprendre
             //echo $jourDepart;
         }
 
