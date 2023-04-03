@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
@@ -13,7 +15,7 @@ class Notification
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 300)]
     private ?string $message;
 
     #[ORM\Column]
@@ -25,6 +27,14 @@ class Notification
     #[ORM\ManyToOne(inversedBy: 'notifications')]
     private ?Utilisateurs $user = null;
 
+    #[ORM\Column(type: 'integer', options: ['default' => 1])]
+    private ?int $typeNotif = 1;
+
+    #[ORM\ManyToOne]
+    private ?Utilisateurs $userQuiDemandeTrajet = null;
+
+    #[ORM\ManyToOne]
+    private ?Trajets $TrajetQuiEstDemande = null;
 
     // GETTERS AND SETTERS 
     public function getId(): ?int
@@ -78,5 +88,60 @@ class Notification
 
         return $this;
     }
+
+    public function getTypeNotif(): ?int
+    {
+        return $this->typeNotif;
+    }
+
+    public function setTypeNotif(int $typeNotif): self
+    {
+        $this->typeNotif = $typeNotif;
+
+        return $this;
+    }
+
+    public function getUserQuiDemandeTrajet(): ?Utilisateurs
+    {
+        return $this->userQuiDemandeTrajet;
+    }
+
+    public function setUserQuiDemandeTrajet(?Utilisateurs $userQuiDemandeTrajet): self
+    {
+        $this->userQuiDemandeTrajet = $userQuiDemandeTrajet;
+
+        return $this;
+    }
+
+    public function getTrajetQuiEstDemande(): ?Trajets
+    {
+        return $this->TrajetQuiEstDemande;
+    }
+
+    public function setTrajetQuiEstDemande(?Trajets $TrajetQuiEstDemande): self
+    {
+        $this->TrajetQuiEstDemande = $TrajetQuiEstDemande;
+
+        return $this;
+    }
+
+    public function countUnreadNotifications(Utilisateurs $user): int
+{
+    $notifications = $user->getNotifications();
+
+    $unreadNotifications = 0;
+
+    foreach ($notifications as $notification) {
+        if (!$notification->getIsRead()) {
+            $unreadNotifications++;
+        }
+    }
+    dump($unreadNotifications);
+
+    return $unreadNotifications;
+}
+
+
+
 }
 ?>
