@@ -66,8 +66,6 @@ class TrajetsController extends AbstractController
             $listeTrajets[] = $stocke  /*->getTrajet() */;
         }
         // ajout arbitraire d'une heure d'arrivée pour comparer le trajet courant
-        //$bientot = new DateTime();
-        //$bientot = '12 hours';
         $bientot = new DateInterval('PT12H');
         foreach ($listeTrajets as $comparaison){
             // choix arbitraire: trajet de 12h maximum
@@ -133,7 +131,30 @@ class TrajetsController extends AbstractController
                         }  
                 }
             }
-
+            // trajet enjambant un autre
+            if ($trajet->getTArrivee() != null){
+                foreach ($listeTrajets as $comparaison){
+                    //$difArrivee= $comparaison->getTArrivee()->diff($trajet->getTArrivee());
+                    //$difDepart = $comparaison->getTDepart()->diff($trajet->getTArrivee());
+                    if (($trajet->getTArrivee() >= $comparaison->getTArrivee() && $trajet->getTDepart() <= $comparaison->getTDepart()) )
+                    
+                    //if ($difArrivee>0 and $difDepart <0)
+                    //if ( ($comparaison->getTArrivee() - $trajet->getTArrivee() >0 ) and ($comparaison->getTDepart() - $trajet->getTArrivee() <0 )  )
+                        {
+                           $creaneau = false;
+                           $form->get('T_arrivee')->addError(new FormError('Vous avez déjà un trajet prévu. Veuillez modifier votre arrivee. '));
+                    $this->addFlash(
+                        'warning',
+                        'Vous avez un autre trajet pendant celui-ci !'
+                    );
+                    return $this->render('trajets/new.html.twig', [
+                        'form' => $form->createView(),
+                        'trajet' => $trajet,
+                        'user' => $user,
+                    ]);
+                        }  
+                }
+            }
             // départ très près d'un autre départ; objectif: éviter un usage professionnel
 
 
