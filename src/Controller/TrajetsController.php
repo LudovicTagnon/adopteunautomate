@@ -11,6 +11,8 @@ use App\Entity\EstAccepte;
 use App\Entity\Notification;
 use App\Entity\Utilisateurs;
 use App\Form\SearchTrajetType;
+use App\Controller\AdopteController;
+use App\Entity\Adopte;
 use App\Service\NotificationService;
 use App\Repository\TrajetsRepository;
 use Symfony\Component\Form\FormError;
@@ -30,7 +32,7 @@ class TrajetsController extends AbstractController
 {
     
 
-    #[Route('/mes_propositions', name: 'app_trajets_index', methods: ['GET'])]
+    #[Route('/mes-propositions', name: 'app_trajets_index', methods: ['GET'])]
     #[IsGranted('ROLE_USER')]
     public function index(TrajetsRepository $trajetsRepository): Response
     {
@@ -45,7 +47,7 @@ class TrajetsController extends AbstractController
     }
 
     
-    #[Route('/créer_un_trajet', name: 'app_trajets_new', methods: ['GET', 'POST'])]
+    #[Route('/créer-un-trajet', name: 'app_trajets_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $manager ): Response
     {
         
@@ -209,6 +211,8 @@ class TrajetsController extends AbstractController
     #[Route('/{id}/visualiser', name: 'app_trajets_show', methods: ['GET'])]
     public function show(Trajets $trajet, Request $request, EntityManagerInterface $manager): Response
     {
+        $user = $this->getUser();
+
         if (!$trajet) {
             throw $this->createNotFoundException('The Trajets object was not found.');
         }
@@ -225,16 +229,6 @@ class TrajetsController extends AbstractController
         }
         
         $maintenant = new DateTime();
-        /*
-        if ($trajet->getTDepart() <$maintenant ) {
-            $trajet->setEtat('terminé');
-
-            $this->addFlash(
-                'succès',
-                'Votre trajet est terminé !'
-            );    
-        }
-        */
         
         $hier = new DateTime('-24 hours');
         if (( ($trajet->getTArrivee() !='null') and ($trajet->getTArrivee() <$maintenant))  or $trajet->getTDepart() <$hier )
@@ -252,11 +246,12 @@ class TrajetsController extends AbstractController
 
         return $this->render('trajets/show.html.twig', [
             'trajet' => $trajet,
+            'user' => $user,
         ]);
     }
 
     
-    #[Route('/{id}/edit', name: 'app_trajets_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/modifier', name: 'app_trajets_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Trajets $trajet, TrajetsRepository $trajetsRepository, EntityManagerInterface $manager, NotificationService $notificationService): Response
     {
         $trajetAncien = $trajet->__toString();
@@ -281,11 +276,6 @@ class TrajetsController extends AbstractController
         
         $form = $this->createForm(TrajetsType::class, $trajet);
 
-/*
-        if ($trajet->getTDepart() < $demain ) {
-            $form->remove('Modifier'); // supprimer le bouton "submit" pour désactiver le formulaire
-        }
-*/
         $form->handleRequest($request);
         $trajet = $form->getData();
         
@@ -318,7 +308,7 @@ class TrajetsController extends AbstractController
     
 
     
-    #[Route('/{id}', name: 'app_trajets_delete', methods:  ['GET', 'POST'])]
+    #[Route('/{id}/supprimer', name: 'app_trajets_delete', methods:  ['GET', 'POST'])]
     //#[Route('/', name: 'app_trajets_index', methods: ['GET'])]
     public function delete(Request $request, Trajets $trajet, TrajetsRepository $trajetsRepository, EntityManagerInterface $manager,NotificationService $notificationService): Response
     {
@@ -497,5 +487,20 @@ class TrajetsController extends AbstractController
 
     }
 
-    
+    #[Route('/mes-adoptions', name: 'app_trajets_my_adoptions', methods: ['GET'])]
+    #[IsGranted('ROLE_USER')]
+    public function afficher_mes_adoptions(EntityManagerInterface $manager): Response
+    {
+        $user = $this->getUser();
+        
+        $trajetsEnAttente = $manager->getRepository(Adopte::class)->findBy(['utilisateur'=> $this->getUser()]);
+        $trajetsInscrits = $manager->getRepository(EstAccepte::class)->findBy(['utilisateur'=> $this->getUser()]);
+
+        return $this->render('trajets/mesAdoptions.html.twig', [
+            'trajetsEnAttente' => $trajetsEnAttente,
+            'trajetsInscrits' => $trajetsInscrits,
+            'user' => $user,
+        ]);
+      
+    }
 }
