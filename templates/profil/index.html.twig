@@ -3,44 +3,82 @@
 {% block title %}Consultation de profil{% endblock %}
 {% block body %}
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    <h1 class ="center">Mon compte</h1>
-    {% if user.getFichierPhoto() is not null %}
-    <div class ="photo">
-      <img src="{{ asset('uploads/' ~ user.getFichierPhoto()) }}" alt="Profile-picture" style="margin-left :30%;margin-bottom:40px;border-radius: 50%; width: 100px; height: 100px;">
-    </div>
-    {% endif %}
-    <div class="profil">
-    <ul>
-        <li>Nom : {{ user.getNom() }}</li>
-        <li>Prénom : {{user.getPrenom}}</li>
-        <li>Numéro de Téléphone : {{user.getNumTel}}</li>
-        <li>Email : {{ user.email }}</li>
-        {% if user.vehicule == 1 %}
-            <li>Voiture :   Oui   </li>
-        {% else %}
-            <li>Voiture :   Non   </li>
-        {% endif %}
-        <li>Genre : {{ user.genre }}</li>
-        {% if user.getAutorisationMail() == 1 %}
-                <li>Autorisation de notification mail : Oui</li>
-        {% else %}
-                 <li>Autorisation de notification mail : Non</li>
-        {% endif %}
-        {% if user.getFichierPhoto() is not null %}
-          <li>Photo de profil : Oui</li>
-        {% else %}
-            <li>Photo de profil : Aucune photo de profil</li>
-        {% endif %}
-        <a href="{{ path('modif_profil') }}">
-            <button class="btn btn-primary">Modifier mon profil</button>
-        </a>
-        <a href="{{ path('supprimer_profil') }}">
-          <button class="btn btn-danger" onclick="return confirm('Êtes-vous sûr(e) de vouloir désactiver votre profil ? Cette action est irréversible !');">Désactiver mon profil</button> 
-        </a>
-    </ul>
-    </div>
 
+    <!-- contenu de la page -->
+    <div class = "container-fluid">
+        <div class="row justify-content-center">
+            </hr>
+            <div class="col-md-3"> <!-- Volets de navigation -->
+                {% include 'partials/_sidebar.html.twig' %}
+            </div>
 
-    
-    
+            <div class="col-md-9">
+                {% if user.getFichierPhoto() is not null %}
+                    <div class ="photo">
+                    <img src="{{ asset('uploads/' ~ user.getFichierPhoto()) }}" alt="Profile-picture" style="margin-left :30%;margin-bottom:40px;border-radius: 50%; width: 100px; height: 100px;">
+                    </div>
+                {% endif %}
+                <h1>Mon profil : </h1>
+                <hr/>
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header" style="background-color: #007bff; color: #fff">{{ 'Consultation'|trans }}</div>
+                                <div class="card-body" style="background-color: #f8f9fa;">
+                                    <div class="form-group">
+                                        <label for="mail">Adresse Mail</label>
+                                        <input type="text" class="form-control" id="mail" value="{{user.getEmail}}" disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-check-label" for="invalidCheck2">Autorisation de notification mail</label></br>
+                                        <div class="row justify-content-center">
+                                            {% if user.getAutorisationMail() == 1 %}
+                                                <input class="form-check-input" type="checkbox" value="" id="invalidCheck2" disabled checked>
+                                            {% else %}
+                                                <input class="form-check-input" type="checkbox" value="" id="invalidCheck2" disabled>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="nom">Nom</label>
+                                        <input type="text" class="form-control" id="nom" value="{{user.getNom}}" disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="prenom">Prenom</label>
+                                        <input type="text" class="form-control" id="prenom" value="{{user.getPrenom}}" disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="tel">Numéro de téléphone</label>
+                                        <input type="text" class="form-control" id="tel" value="{{user.getNumTel()}}" disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-check-label" for="invalidCheck3">Voiture</label></br>
+                                        <div class="row justify-content-center">
+                                            {% if user.vehicule == 1 %}
+                                                <input class="form-check-input" type="checkbox" value="" id="invalidCheck3" disabled checked>
+                                            {% else %}
+                                                <input class="form-check-input" type="checkbox" value="" id="invalidCheck3" disabled>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-check-label" for="invalidCheck3">Genre</label></br>
+                                        <select class="custom-select" disabled>
+                                            <option selected>{{ user.genre }}</option>
+                                        </select>
+                                    </div>
+                                    <a href="{{ path('modif_profil') }}">
+                                        <button class="btn btn-primary">Modifier mon profil</button>
+                                    </a>
+                                    <a href="{{ path('supprimer_profil') }}">
+                                        <button class="btn btn-danger" onclick="return confirm('Êtes-vous sûr(e) de vouloir désactiver votre profil ? Cette action est irréversible !');">Désactiver mon profil</button> 
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>  
 {% endblock %}

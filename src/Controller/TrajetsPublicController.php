@@ -18,7 +18,7 @@ class TrajetsPublicController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
-    #[Route('/public', name: 'app_trajets_publics')]
+    #[Route('/trajets/mes_trajets/publics', name: 'app_trajets_publics')]
     #[IsGranted('ROLE_USER')]
     public function index(): Response
     {

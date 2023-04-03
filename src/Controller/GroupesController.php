@@ -35,12 +35,27 @@ class GroupesController extends AbstractController
     {
         $groupe = new Groupes();
         
-        $form = $this->createForm(GroupesType::class, $groupe,);
+        $form = $this->createForm(GroupesType::class, $groupe);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $groupe = $form->getData();
             $groupe->setCreateur($this->getUser());
+            $utilisateurs = $form->get('utilisateurs')->getData();
+            foreach ($utilisateurs as $utilisateur) {
+                if (!$groupe || !$utilisateur) {
+                    throw $this->createNotFoundException('Groupe ou utilisateur introuvable.');
+                }
+                $estDansRepository = $manager->getRepository(EstDans::class);
+                $estDans = $estDansRepository->findOneBy(['groupes' => $groupe, 'utilisateurs' => $utilisateur]);
+                
+                if (!$estDans) {
+                    $estDans = new EstDans(); // create a new instance of EstDans for each utilisateur
+                    $estDans->setGroupes($groupe);
+                    $estDans->setUtilisateur($utilisateur);
+                    $manager->persist($estDans);
+                }
+            }
             $manager->persist($groupe);
             $manager->flush();
 
@@ -115,7 +130,7 @@ class GroupesController extends AbstractController
 
             return $this->redirectToRoute('app_groupes.group');
         }
-        foreach ($groupe->getUtilisateurs() as $membre) {//on parcout les membres du groupe que l'on supprime
+        foreach ($groupe->getUtilisateurs() as $membre) {//on parcourt les membres du groupe que l'on supprime
             $manager->remove($membre);//on les supprime du groupe qui va être supprimé
         }
 

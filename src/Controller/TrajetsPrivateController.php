@@ -22,7 +22,7 @@ class TrajetsPrivateController extends AbstractController
     {
         $this->entityManager = $entityManager;
     }
-    #[Route('/private', name: 'app_trajets_prive')]
+    #[Route('/trajets/mes_trajets/prives', name: 'app_trajets_prives')]
     #[IsGranted('ROLE_USER')]
     public function index(): Response
     {
@@ -34,10 +34,12 @@ class TrajetsPrivateController extends AbstractController
         $trajets = $trajetsRepository->findBy(['public' => false]); //on récupère les trajets privés
         $groupesUser = $user->getGroupes();
         $estAccepte = $estAccepteRepository->findAll();
+        $estDedans = false;
         if (count($lesgroupes) == 0) { //si aucun groupe pas de trajets privés
             return $this->render('trajets_private/index.html.twig', [
                 'trajets' => $trajets,
                 'user' => $user,
+                'estDedans' => $estDedans,
                 'groupes' => null,
             ]);
         }
@@ -47,7 +49,7 @@ class TrajetsPrivateController extends AbstractController
             }
             $estDans = array();
             $estDedans = false;
-            foreach ($groupes as $groupe) {
+            foreach ($groupes as $groupe) { //TODO:FAIRE PAGE CONSULTER LES TRAJETS OU ON EST ACCEPTES
                 if ($groupe->estDansGroupes($user->getId())) {
                     $estDedans = true;
                 }

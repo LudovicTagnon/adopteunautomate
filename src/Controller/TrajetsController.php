@@ -7,27 +7,29 @@ use Symfony\Component\VarDumper\VarDumper;
 use App\Entity\Trajets;
 use App\Entity\Villes;
 use App\Form\TrajetsType;
+use App\Form\SearchTrajetType;
+use App\Controller\AdopteController;
+use App\Entity\Adopte;
 use App\Entity\Utilisateurs;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use App\Repository\TrajetsRepository;
 use Doctrine\ORM\EntityManagerInterface;
-
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Form\FormError;
 use App\Service\NotificationService;
 use App\Entity\EstAccepte;
+use App\Entity\Notification;
 
 #[Route('/trajets')]
 class TrajetsController extends AbstractController
 {
     
 
-    #[Route('/', name: 'app_trajets_index', methods: ['GET'])]
+    #[Route('/mes-propositions', name: 'app_trajets_index', methods: ['GET'])]
     #[IsGranted('ROLE_USER')]
     public function index(TrajetsRepository $trajetsRepository): Response
     {
@@ -42,14 +44,12 @@ class TrajetsController extends AbstractController
     }
 
     
-    #[Route('/new', name: 'app_trajets_new', methods: ['GET', 'POST'])]
+    #[Route('/créer-un-trajet', name: 'app_trajets_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $manager ): Response
     {
         
         $user = $this->getUser();
         $trajet = new Trajets();
-        //$villedepart= new Villes();
-        //$villearrivee= new Villes();
         $form = $this->createForm(TrajetsType::class, $trajet);
         $form->handleRequest($request);
 
@@ -88,36 +88,7 @@ class TrajetsController extends AbstractController
             }
 
 
-            // Check if there is already a trip on the same day
-            $dateDepart = $trajet->getTDepart();
-            $dateArrivee= $trajet->getTArrivee();
-            $existingTrips = $manager->getRepository(Trajets::class)->findBy([
-                'publie' => $user,
-                'T_depart' => $dateDepart
-            ]);
-            if (count($existingTrips) > 0) {
-                $this->addFlash(
-                    'error',
-                    'Vous avez déjà créé un trajet pour cette date. Veuillez choisir une autre date.'
-                );
-                return $this->redirectToRoute('app_trajets_new');
-            }
-            $existingvoyage = $manager->getRepository(Trajets::class)->findBy([
-                'publie' => $user,
-            ]);
-            foreach($existingvoyage as $trip){
-                if($dateDepart->getTimestamp() <= $trip->getTArrivee()->getTimestamp()){
-                    $this->addFlash(
-                        'errordate',
-                        'Vous avez déjà un trajet prévu avant la date de départ'
-                    );
-                    return $this->redirectToRoute('app_trajets_new');
-                }
-            }
-
-
-
-
+            // champs remplis d'office:
             $trajet->setPublie($this->getUser());
             $trajet->setEtat('ouvert');
 
@@ -144,6 +115,8 @@ class TrajetsController extends AbstractController
     #[Route('/{id}/visualiser', name: 'app_trajets_show', methods: ['GET'])]
     public function show(Trajets $trajet, Request $request, EntityManagerInterface $manager): Response
     {
+        $user = $this->getUser();
+
         if (!$trajet) {
             throw $this->createNotFoundException('The Trajets object was not found.');
         }
@@ -158,17 +131,8 @@ class TrajetsController extends AbstractController
                 'Votre trajet ne peut plus être modifié !'
             );    
         }
+        
         $maintenant = new DateTime();
-        /*
-        if ($trajet->getTDepart() <$maintenant ) {
-            $trajet->setEtat('terminé');
-
-            $this->addFlash(
-                'succès',
-                'Votre trajet est terminé !'
-            );
-        }
-        */
 
         $hier = new DateTime('-24 hours');
         if (( ($trajet->getTArrivee() !='null') and ($trajet->getTArrivee() <$maintenant))  or $trajet->getTDepart() <$hier )
@@ -186,11 +150,12 @@ class TrajetsController extends AbstractController
 
         return $this->render('trajets/show.html.twig', [
             'trajet' => $trajet,
+            'user' => $user,
         ]);
     }
 
     
-    #[Route('/{id}/edit', name: 'app_trajets_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/modifier', name: 'app_trajets_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Trajets $trajet, TrajetsRepository $trajetsRepository, EntityManagerInterface $manager, NotificationService $notificationService): Response
     {
         $trajetAncien = $trajet->__toString();
@@ -212,23 +177,17 @@ class TrajetsController extends AbstractController
             return $this->redirectToRoute('app_trajets_index');
         }
 
-
+        
         $form = $this->createForm(TrajetsType::class, $trajet);
 
-/*
-        if ($trajet->getTDepart() < $demain ) {
-            $form->remove('Modifier'); // supprimer le bouton "submit" pour désactiver le formulaire
-        }
-*/
         $form->handleRequest($request);
         $trajet = $form->getData();
-
-
+        
+        
         if ($form->isSubmitted() && $form->isValid()) {
             $trajetsRepository->save($trajet, true);
             
             $manager->persist($trajet);
-
             $manager->flush();
 
             $users = [];
@@ -237,13 +196,14 @@ class TrajetsController extends AbstractController
             foreach ($estAcceptes as $estAccepte) {
                 $users[] = $estAccepte->getUtilisateur();
             }
-
+    
             foreach ($users as $user) {
                 $notificationService->addNotificationModifTrajet("Le trajet : ".$trajetAncien." a été modifié, voici le nouveau trajet : ".$trajet->__toString(),$user);
             }
             return $this->redirectToRoute('app_trajets_index', [], Response::HTTP_SEE_OTHER);
         }
 
+         
         return $this->render('trajets/edit.html.twig', [
             'trajet' => $trajet,
             'form' => $form,
@@ -252,49 +212,117 @@ class TrajetsController extends AbstractController
     
 
     
-    #[Route('/{id}', name: 'app_trajets_delete', methods: ['POST'])]
+    #[Route('/{id}/supprimer', name: 'app_trajets_delete', methods:  ['GET', 'POST'])]
     //#[Route('/', name: 'app_trajets_index', methods: ['GET'])]
-    public function delete(Request $request, Trajets $trajet, TrajetsRepository $trajetsRepository, EntityManagerInterface $manager): Response
+    public function delete(Request $request, Trajets $trajet, TrajetsRepository $trajetsRepository, EntityManagerInterface $manager,NotificationService $notificationService): Response
     {
-        $demain = new DateTime('tomorrow');
+        $demain = new DateTime('+24 hours');
         if ($trajet->getTDepart() <$demain ) {
             $trajet->setEtat('bloqué');
             $this->addFlash(
                 'warning',
                 'Vous ne pouvez plus supprimer ce trajet.'
             );
-
+            $manager->flush();
             return $this->redirectToRoute('app_trajets_index');
         }
+
 
         // si le trajet est terminé ou que son départ a eu lieu il y a plus de 24h
         // conditions à écrire, avec update de $trajet.etat
         // blocage de la suppression via effacement du bouton dans trajets/index
-
+        /*
         if ($this->isCsrfTokenValid('delete'.$trajet->getId(), $request->request->get('_token'))) {
             $trajet->setEtat('annulé');
             // si on l'enlève carrément:
             $trajetsRepository->remove($trajet, true);
         }
-        $manager->persist($trajet);
+        */
+        // COndition non fonctionnelle 23 03
+
+        if ($trajet->getAdopte()!=null)
+        {
+           // supprimer les passagers en attente - table Adopte
+            foreach ($trajet->getAdopte() as $adopte)
+            {//on parcourt les membres de l'entité Adopte que l'on supprime
+                $manager->remove($adopte);//on supprime le tuple
+
+                $manager->flush();
+            }
+
+            // supprimer les passagers acceptés - table EstAccepte
+            /* double emploi avec du code mis plus bas
+            foreach ($trajet->getEstAccepte() as $estAccepte)
+            {//on parcourt les membres de l'entité estAccepte que l'on supprime
+                $manager->remove($estAccepte);//on supprime le tuple
+
+                //$manager->flush();
+            }
+            */
+        }
+        //on supprime toutes les notifications liées à ce trajet
+        $notifications = $manager->getRepository(Notification::class)->findBy(['TrajetQuiEstDemande' => $trajet]);
+        $listeAcceptee = $manager->getRepository(EstAccepte::class)->findBy(['trajet' => $trajet]);
+        foreach ($notifications as $notification) {
+            $manager->remove($notification);
+        }
+        $users = null;
+        foreach ($listeAcceptee as $estAccepte) {
+            $users[] = $estAccepte->getUtilisateur();
+        }
+        if($users != null){
+        foreach ($users as $user) {
+            $notificationService->addNotificationDeleteTrajet("Le trajet : ".$trajet->__toString(). " a été supprimé",$user);
+        }
+        foreach ($listeAcceptee as $estAccepte) {
+            $manager->remove($estAccepte);
+        }
 
         $manager->flush();
+    }
+        $manager->remove($trajet);
+        $manager->flush();
+
+
+        $this->addFlash(
+            'success',
+            'Ce trajet a été supprimé avec succès.'
+        );
+
+
         return $this->redirectToRoute('app_trajets_index', [], Response::HTTP_SEE_OTHER);
     }
 
-   #[Route('/rechercher-trajet', name: 'app_trajets_search', methods: ['GET'])]
-    public function search(Request $request, EntityManagerInterface $manager): Response
+   #[Route('/rechercher-trajet', name: 'app_trajets_search', methods: ['GET', 'POST'])]
+    public function search(Request $request, EntityManagerInterface $manager,mixed $recherche): Response
     {
         $current_user = $this->getUser();
 
         if ($current_user) {
             $villes = $manager->getRepository(Villes::class)->findAll();
 
-            $villeDepart = $request->query->get('ville_depart');
-            $villeArrivee = $request->query->get('ville_arrivee');
-            $jourDepart = $request->query->get('date_depart');
+            $villeDepart = null;
+            $villeArrivee = null;
+            $jourDepart = null;
 
-            $trajets = $manager->getRepository(Trajets::class)->findByCritere($current_user, $villeDepart, $villeArrivee,  $jourDepart);
+            if($recherche != null){
+                $villeDepart = $recherche->getDemarreA();
+                $villeArrivee = $recherche->getArriveA();
+                $jourDepart = $recherche->getTDepart();
+            }
+
+            if ($villeDepart != null || $villeArrivee !=null){
+                $trajets = $manager->getRepository(Trajets::class)->findByCritere($current_user, $villeDepart, $villeArrivee,  $jourDepart);
+            }else{
+                $dateActuelle = new \DateTime();//Récupération de la date actuelle
+                $trajets = $manager->getRepository(Trajets::class)->createQueryBuilder('t')
+                    ->where('t.T_depart >= :dateActuelle')
+                    ->setParameter('dateActuelle', $dateActuelle)
+                    ->getQuery()
+                    ->getResult();
+            }
+            $estAccepteRepository = $manager->getRepository(EstAccepte::class);
+            $estAccepte = $estAccepteRepository->findAll();
 
             $dateA = DateTime::createFromFormat('Y-m-d', $jourDepart);
 
@@ -306,7 +334,11 @@ class TrajetsController extends AbstractController
                 // handle the case where the date string is invalid
             }
 
+            $form = $this->createForm(SearchTrajetType::class);
+            $form->handleRequest($request);
+
             return $this->render('trajets/search.html.twig', [
+                'user' => $current_user,
                 'trajets' => $trajets,
                 'nb_trajets' => count($trajets),
                 'villes' => $villes,
@@ -314,11 +346,29 @@ class TrajetsController extends AbstractController
                 'arrivee' => $villeArrivee,
                 'date' => $dateDepart,
                 'utilisateur_actuel' => $current_user,
+                'form' => $form->createView(),
+                'estAccepte' => $estAccepte,
             ]);
         } else {
-            return $this->render('home/index.html.twig', [
-                'controller_name' => 'HomeController',
+            return $this->redirectToRoute('app_home');
+        }
+    }
+
+    #[Route('/historique', name: 'app_trajets_history', methods: ['GET'])]
+    public function historique(Request $request, EntityManagerInterface $manager): Response{
+
+        $current_user = $this->getUser();
+
+        if ($current_user) {//Utilisateur connecté
+            $trajetsChauffeur = $manager->getRepository(Trajets::class)->findBy(['publie'=> $this->getUser()]);
+            $trajetsPassager = $manager->getRepository(EstAccepte::class)->findBy(['utilisateur'=> $this->getUser()]);
+
+            return $this->render('trajets/history.html.twig', [
+                'trajetsChauffeur' => $trajetsChauffeur,
+                'trajetsPassager' => $trajetsPassager,
             ]);
+        }else{//Utilisateur non connecté -> redirigé
+            return $this->redirectToRoute('app_home');
         }
     }
 
@@ -341,5 +391,20 @@ class TrajetsController extends AbstractController
 
     }
 
+    #[Route('/mes-adoptions', name: 'app_trajets_my_adoptions', methods: ['GET'])]
+    #[IsGranted('ROLE_USER')]
+    public function afficher_mes_adoptions(EntityManagerInterface $manager): Response
+    {
+        $user = $this->getUser();
 
+        $trajetsEnAttente = $manager->getRepository(Adopte::class)->findBy(['utilisateur'=> $this->getUser()]);
+        $trajetsInscrits = $manager->getRepository(EstAccepte::class)->findBy(['utilisateur'=> $this->getUser()]);
+
+        return $this->render('trajets/mesAdoptions.html.twig', [
+            'trajetsEnAttente' => $trajetsEnAttente,
+            'trajetsInscrits' => $trajetsInscrits,
+            'user' => $user,
+        ]);
+
+    }
 }
