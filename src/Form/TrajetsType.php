@@ -63,16 +63,8 @@ class TrajetsType extends AbstractType
                 'required'   => false,
                 'label' => 'Jour et heure d\'arrivée    :      '
             ]) 
-            ->add('demarrea', EntityType::class, [
-                'class' => Villes::class,
-                'choice_label' => 'nomVille',
-                'label' => 'Ville de départ'
-            ])
-            ->add('arrivea', EntityType::class, [
-                'class' => Villes::class,
-                'choice_label' => 'nomVille',
-                'label' => "Ville d'arrivée"
-            ])
+            ->add('demarrea', VillesDepartAutocompleteField::class)
+            ->add('arrivea', VillesDepartAutocompleteField::class)
 
 
 
