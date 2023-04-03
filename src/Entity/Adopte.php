@@ -24,6 +24,9 @@ class Adopte
     #[ORM\JoinColumn(nullable:false)]
     private $trajet;
 
+    //#[ORM\ManyToOne(inversedBy: 'Adopte')]
+    //private ?Trajets $trajetConcerne = null;
+
     public function getUtilisateur(): ?Utilisateurs
     {
         return $this->utilisateur;
@@ -44,6 +47,18 @@ class Adopte
     public function setTrajet(Trajets $trajet): self
     {
         $this->trajet = $trajet;
+
+        return $this;
+    }
+
+    public function getTrajetConcerne(): ?Trajets
+    {
+        return $this->trajetConcerne;
+    }
+
+    public function setTrajetConcerne(?Trajets $trajetConcerne): self
+    {
+        $this->trajetConcerne = $trajetConcerne;
 
         return $this;
     }

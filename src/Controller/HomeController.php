@@ -23,13 +23,39 @@ class HomeController extends AbstractController
     public function index(Request $request, EntityManagerInterface $manager, NotificationService $notificationService,MailerInterface $mailer): Response
     {
         $user = $this->getUser();
+
         $villes = $manager->getRepository(Villes::class)->findAll();
-        $trajets = $manager->getRepository(Trajets::class)->findAll();
-        $adoptions = $manager->getRepository(Adopte::class)->findAll();
+
+        $trajets = $manager->getRepository(Trajets::class)
+            ->createQueryBuilder('t')
+            ->where('t.etat != :etat')
+            ->andWhere('t.publie = :user')
+            ->setParameter('etat', 'terminé')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getResult();
+
+        $adoptions = $manager->getRepository(Adopte::class)
+            ->createQueryBuilder('a')
+            ->join('a.trajet', 't')
+            ->where('t.etat != :etat')
+            ->setParameter('etat', 'terminé')
+            ->getQuery()
+            ->getResult();
+
+        $inscriptions = $manager->getRepository(EstAccepte::class)
+            ->createQueryBuilder('i')
+            ->join('i.trajet', 't')
+            ->where('t.etat != :etat')
+            ->setParameter('etat', 'terminé')
+            ->getQuery()
+            ->getResult();
+
         $form = $this->createForm(SearchTrajetType::class);
-        $inscriptions = $manager->getRepository(EstAccepte::class)->findAll();
+
         $form->handleRequest($request);
         $notifications = [];//null par défaut
+
         if ($this->getUser() != null) {
             $notifications = $notificationService->getNotifications($this->getUser());
         }
@@ -42,7 +68,12 @@ class HomeController extends AbstractController
 
             
             $current_user = $this->getUser();
-            $trajets = $manager->getRepository(Trajets::class)->findByCritere($current_user, $villeDepart, $villeArrivee,  $dateDepart);
+            if($villeDepart && $villeArrivee != null){
+                $trajets = $manager->getRepository(Trajets::class)->findByCritere($current_user, $villeDepart, $villeArrivee,  $dateDepart);
+            }
+            else if($dateDepart){
+                $trajets = $manager->getRepository(Trajets::class)->findByCritereDate($current_user,$dateDepart);
+            }
 
             $dateA = $dateDepart;
 
@@ -68,7 +99,6 @@ class HomeController extends AbstractController
             ]);
 
             $villes = $manager->getRepository(Villes::class)->findAll();
-            echo $villeDepart; //TODO: fonctionne à reprendre
             //echo $jourDepart;
         }
 
