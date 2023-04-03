@@ -76,4 +76,22 @@ class TrajetsRepository extends ServiceEntityRepository
 
         return $query->getResult();
     }
+
+    public function findByCritereDate($user,$jourDepart)
+    {
+        $queryBuilder = $this->entityManager->createQueryBuilder();
+        //dump($villeDepartEntity);
+        //dump($villeArriveeEntity);
+
+        $queryBuilder->select('t')
+            ->from(Trajets::class, 't')
+            ->where('t.publie != :user')
+            ->setParameter('user',$user)
+            ->andWhere('t.T_depart >= :dateDepart')
+            ->setParameter('dateDepart', $jourDepart);
+
+        $query = $queryBuilder->getQuery();
+
+        return $query->getResult();
+    }
 }
