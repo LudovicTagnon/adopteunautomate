@@ -18,24 +18,15 @@ Maybe you can mention me or this repo in the acknowledgements too
 <!-- Badges -->
 <!-- TODO :  faire les badges pour notre projet (version gitlab)-->
 <p>
-  <a href="https://gitlab.univ-lorraine.fr/antunes26u/adopteunautomate/-/graphs/main">
-    <img src="https://img.shields.io/badge/contributors-9-red" alt="contributors" />
-  </a>
-  <a href="">
-    <img src="https://gitlab.univ-lorraine.fr/antunes26u/adopteunautomate/-/commits/main" alt="last update" />
-  </a>
-  <a href="https://gitlab.univ-lorraine.fr/antunes26u/adopteunautomate/-/forks">
-    <img src="https://img.shields.io/github/forks/Louis3797/awesome-readme-template" alt="forks" />
-  </a>
-  <a href="https://gitlab.univ-lorraine.fr/antunes26u/adopteunautomate/-/starrers">
-    <img src="https://img.shields.io/github/stars/Louis3797/awesome-readme-template" alt="stars" />
-  </a>
-  <!-- <a href="https://github.com/Louis3797/awesome-readme-template/issues/">
-    <img src="https://img.shields.io/github/issues/Louis3797/awesome-readme-template" alt="open issues" />
-  </a> -->
-  <a href="https://github.com/Louis3797/awesome-readme-template/blob/master/LICENSE">
-    <img src="https://img.shields.io/github/license/Louis3797/awesome-readme-template.svg" alt="license" />
-  </a>
+    <a href="https://gitlab.univ-lorraine.fr/antunes26u/adopteunautomate/-/graphs/main">
+      <img src="https://img.shields.io/badge/contributors-9-red" alt="contributors" />
+    </a>
+    <a href="https://gitlab.univ-lorraine.fr/antunes26u/adopteunautomate/-/commits/main">
+      <img src="https://img.shields.io/badge/-last%20update-yellow" alt="last update" />
+    </a>
+    <a href="https://github.com/Louis3797/awesome-readme-template/blob/master/LICENSE">
+      <img src="https://img.shields.io/badge/licence-MIT-green" alt="license" />
+    </a>
 </p>
    
 </div>
@@ -138,16 +129,6 @@ Maybe you can mention me or this repo in the acknowledgements too
 | Accent Color | ![#00ADB5](https://via.placeholder.com/10/00ADB5?text=+) #00ADB5 |
 | Text Color | ![#EEEEEE](https://via.placeholder.com/10/EEEEEE?text=+) #EEEEEE |
 
-
-<!-- Env Variables -->
-### :key: Environment Variables
-
-To run this project, you will need to add the following environment variables to your .env file
-
-`API_KEY`
-
-`ANOTHER_API_KEY`
-
 <!-- Getting Started -->
 ## 	:toolbox: Getting Started
 
@@ -246,11 +227,60 @@ function App() {
 * [x] Todo 1
 * [ ] Todo 2
 
+<details>
+<summary>Sprint 1 :</summary>
+* [x] Créer un compte
+* [x] Connexion/Déconnexion
+* [x] Consulter son compte
+* [x] Modifier son compte
+* [x] Supprimer son compte
+* [x] Proposer un voyage
+* [x] Créer un groupe d’amis
+</details>
+
+<details>
+<summary>Sprint 2 :</summary>
+* []Mot de passe oublié
+* [x]Consulter notifications
+* [x]Supprimer notification
+* [x]Modifier/supprimer photo
+* [x]S’inscrire à/se rétracter d’un trajet
+* [x]Accepter/refuser un passager
+* [x]Modifier/supprimer un trajet
+</details>
+
+<details>
+<summary>Sprint 3 :</summary>
+* [x]Rechercher un voyage
+* [x]Voir les détails d’un trajet
+* [x]Voir les trajets existants
+* [x]Voir les trajets auxquels le passager a été accepté
+* [x]Voir les trajets auxquels le passager est inscrit
+* [x]Historique trajet
+* [x]Valider fin trajet
+* []Ajouter note de satisfaction individuelle après trajet
+* []Modifier note de satisfaction individuelle après trajet
+</details>
+
+<details>
+<summary>Sprint 4 :</summary>
+* [x]Consulter ses groupes d’amis
+* [x]Supprimer un groupe d’amis
+* [x]Modifier groupe d’amis
+* [x]Accéder aux données et groupes d’un utilisateur
+* [x]Accéder à un trajet précis
+* [x]Modifier le trajet
+* [x]Supprimer le trajet
+</details>
+
+
+
+
 
 <!-- Contributing -->
 ## :wave: Contributing
 
-<a href="https://gitlab.univ-lorraine.fr/rosio1u/adopteautomate/-/graphs/main">
+<a href="https://gitlab.univ-lorraine.fr/antunes26u/adopteunautomate/-/graphs/main">
   <img src="" />
 </a>
 
