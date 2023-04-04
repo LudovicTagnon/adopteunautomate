@@ -229,6 +229,7 @@ function App() {
 
 <details>
 <summary>Sprint 1 :</summary>
+<ul>
 * [x] Créer un compte
 * [x] Connexion/Déconnexion
 * [x] Consulter son compte
@@ -236,10 +237,12 @@ function App() {
 * [x] Supprimer son compte
 * [x] Proposer un voyage
 * [x] Créer un groupe d’amis
+</ul>
 </details>
 
 <details>
 <summary>Sprint 2 :</summary>
+<ul>
 * []Mot de passe oublié
 * [x]Consulter notifications
 * [x]Supprimer notification
@@ -247,10 +250,12 @@ function App() {
 * [x]S’inscrire à/se rétracter d’un trajet
 * [x]Accepter/refuser un passager
 * [x]Modifier/supprimer un trajet
+</ul>
 </details>
 
 <details>
 <summary>Sprint 3 :</summary>
+<ul>
 * [x]Rechercher un voyage
 * [x]Voir les détails d’un trajet
 * [x]Voir les trajets existants
@@ -258,12 +263,14 @@ function App() {
 * [x]Voir les trajets auxquels le passager est inscrit
 * [x]Historique trajet
 * [x]Valider fin trajet
-* []Ajouter note de satisfaction individuelle après trajet
-* []Modifier note de satisfaction individuelle après trajet
+* [ ]Ajouter note de satisfaction individuelle après trajet
+* [ ]Modifier note de satisfaction individuelle après trajet
+</ul>
 </details>
 
 <details>
 <summary>Sprint 4 :</summary>
+<ul>
 * [x]Consulter ses groupes d’amis
 * [x]Supprimer un groupe d’amis
 * [x]Modifier groupe d’amis
@@ -271,6 +278,7 @@ function App() {
 * [x]Accéder à un trajet précis
 * [x]Modifier le trajet
 * [x]Supprimer le trajet
+</ul>
 </details>
 
 
