@@ -2,31 +2,34 @@
     <div class="container-fluid" >
         <a class="navbar-brand" id="nav_logo">
         {# LOGO #}
-        <img src="{{ asset('images/logo1.jpeg') }}" alt="Logo" width="70" height="50">
+        <img src="{{ asset('images/logo1.png') }}" alt="Logo" width="100" height="50">
         Adopte Auto-Mate       
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarColor01">
+        <div class="collapse navbar-collapse justify-content-center" id="navbarColor01">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ path('app_home') }}">Accueil
+                    <a class="nav-link" href="{{ path('app_trajets_search') }}">
+                        <i class="fa-solid fa-road"></i> Rechercher un trajet
                     </a>
                 </li>
-                {% if app.user %}
+            </ul>
+            <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{path('app_trajets_index')}}">Trajets</a>
+                    <!--<a class="nav-link" href="{{ path('app_home') }}">
+                        A propos
+                    </a>-->
                 </li>
+            </ul>
+            <ul class="navbar-nav mx-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{path('app_groupes.group')}}">Groupes</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{path('app_notification')}}">Notifications</a>
-                </li>
-                {% endif %}
-                <li class="nav-item">
-                    <a class="nav-link" href="#">A propos</a>
+                    <span class="nav-link text-white text-center">
+                        {{ "now"|date("d/m/Y", "Europe/Paris") }}
+                        </br>
+                        {{ "now"|date("H:i", "Europe/Paris") }}
+                    </span>
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
@@ -35,8 +38,15 @@
                 <li class="nav-item">
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('profil') }}">Mon profil</a>
+                        <a class="nav-link" href="{{ path('app_profil') }}">
+                            <i class="fa-solid fa-user"></i> {{app.user.prenom}} {{app.user.nom}}
+                        </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{path('app_notification')}}"><i class="fas fa-bell fa-lg"></i><span class="badge badge-pill badge-danger notification-count" id="notification-count">{% if notificationCount>0 %}{{ notificationCount }}{% endif%}</span></a>
+                    </li>
+                    <div style="border-left:1px solid  #EEEEEE;"></div>
+
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('app_logout') }}">Se déconnecter</a>
                     </li>
@@ -52,3 +62,4 @@
         </div>
     </div>
 </nav>
+</br>
