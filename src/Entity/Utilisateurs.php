@@ -79,6 +79,9 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Notification::class)]
     private Collection $notifications;
 
+    #[ORM\Column(type: "string", length: 100 , nullable: true)]
+    private ?string $resetToken = null;
+
     #[ORM\OneToMany(targetEntity:"App\Entity\Adopte", mappedBy:"utilisateur")]
     private $adoptions;
 
@@ -287,6 +290,26 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->nom;
     }
+
+    /**
+     * @return string|null
+     */
+    public function getResetToken(): ?string
+    {
+        return $this->resetToken;
+    }
+
+    /**
+     * @param string|null $resetToken
+     */
+    public function setResetToken(?string $resetToken): self
+    {
+        $this->resetToken = $resetToken;
+
+        return $this ;
+    }
+
+
 
     /**
      * @return Collection<int, Notification>

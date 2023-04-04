@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Recherche de trajet</h1>
+
+    <form action="{{ path('app_recherche_trajet') }}">
+        <div class="form-group">
+            <label for="startingCity">Ville de départ:</label>
+            <input type="text" class="form-control" id="startingCity" name="startingCity" required>
+        </div>
+
+        <div class="form-group">
+            <label for="destinationCity">Ville d'arrivée:</label>
+            <input type="text" class="form-control" id="destinationCity" name="destinationCity" required>
+        </div>
+
+        <div class="form-group">
+            <label for="date">Date de départ:</label>
+            <input type="date" class="form-control" id="date" name="date" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Rechercher</button>
+    </form>
+
+    {% if trajets is not empty %}
+        <h2>Résultats:</h2>
+
+        <ul>
+            {% for trajet in trajets %}
+                <li>{{ trajet.T_depart|date('d/m/Y H:i') }} - {{ trajet.demarrea.nom_ville }} - {{ trajet.arrivea.nom_ville }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <h2>il y a pas de trajet:</h2>
+    {% endif %}
+
+
+{% endblock %}

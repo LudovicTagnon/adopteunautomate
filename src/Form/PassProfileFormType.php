@@ -20,6 +20,7 @@ class PassProfileFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+
             ->add('oldPassword', PasswordType::class, [
                 'label' => 'Ancien mot de passe',
                 'mapped' => false,
@@ -32,6 +33,7 @@ class PassProfileFormType extends AbstractType
                         'max' => 4096,
                     ]),
                 ],
+
             ])
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
@@ -53,6 +55,7 @@ class PassProfileFormType extends AbstractType
                         'message' => 'Le mot de passe doit contenir 8 caractères dont au moins 1 minuscule, 1 majuscule, 1 chiffre et 1 caractère spécial',
                     ]),
                 ],
+
             ])
    
         ;

@@ -12,6 +12,26 @@
             </hr>
             <div class="col-md-3"> <!-- Volets de navigation -->
                 {% include 'partials/_sidebar.html.twig' %}
+       {% if app.flashes('error') is not empty %}
+           <div class="alert alert-danger">
+               <p>Vous avez déjà créé un trajet pour cette date. Veuillez choisir une autre date</p>
+           </div>
+       {% endif %}
+       {% if app.flashes('errordate') is not empty %}
+           <div class="alert alert-danger">
+               <p>Vous avez un trajet prévu avant la date de départ de celui ci.</p>
+           </div>
+       {% endif %}
+
+         {{ form_start(form) }}
+
+
+        {#   Champ inutile à la création - le trajet est forcément de statut ouvert
+            <div class= 'form-group'>
+            {{ form_label(form.etat)}}
+            {{ form_widget(form.etat)}}
+            <div>
+                {{form_errors(form.etat)}}
             </div>
 
             <div class="col-md-9">
@@ -20,7 +40,7 @@
                     <hr>
 
                     {{ form_start(form) }}
-                    
+
                     <div class="form-row justify-content-center">
                     <div class="form-group col-md-4">
                         {{ form_label(form.T_depart) }}
@@ -32,9 +52,9 @@
                         {{ form_label(form.T_arrivee) }}
                         {{ form_widget(form.T_arrivee, {'attr': {'class': 'form-control'}}) }}
                         <div>{{ form_errors(form.T_arrivee) }}</div>
-                    </div> 
                     </div>
-                        
+                    </div>
+
                     <div class="form-row justify-content-center">
                         <div class="form-group col-md-4">
                             {{ form_label(form.demarrea) }}
@@ -90,7 +110,7 @@
                         <div class="form-group col-md-4">
                             <a href="{{ path('app_trajets_index') }}" class="btn btn-secondary">Retour à la liste de vos trajets</a>
                         </div>
-                    </div> 
+                    </div>
                 </div>
             </div>
 
