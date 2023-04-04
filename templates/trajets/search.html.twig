@@ -14,12 +14,18 @@
             <div class="col-md-3"> <!-- Volets de navigation -->
                 {% include 'partials/_sidebar.html.twig' %}
             </div>
-
+           
             <div class="col-md-9">
             <!-- Formulaire de recherche -->
                 {% include "trajets/search_bar.html.twig" %}
+                 <style>
+                .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif;  }
+                .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+            </style>
+            <div class="example-wrapper">
                 <div class="container justify-content-center">
                     <div class="col-4">
+
                         <!-- Panneau de filtre -->
                         <!--
                         <div class="filter-panel">
@@ -42,6 +48,8 @@
                                 <h3 class="my-0 font-weight-normal">{{date}}</h3>
                             {% endif %}
                         </div>
+                        <hr>
+                        </br>
                         <div class="row"> 
                             {% if depart is null %}
                                 <small class="text-muted">non renseigné</small>
