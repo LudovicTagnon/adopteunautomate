@@ -104,17 +104,149 @@ class AppFixtures extends Fixture
         $voyage->setArriveA($manager->getRepository(Villes::class)->find(['id' => 75]));
         $manager->persist($voyage);
         $manager->flush();
-        /* // Ajout de la ville de Nancy
-        $ville = new Villes();
-        $ville->setNomVille("Nancy");
-        $ville->setCP(54000);
-        $manager->persist($ville);
+        // Voyage 3
+        // Auxerre -> Avignon
+        // Dans 70h
+        // 3 places
+        // 50€
+        // Public
+        $voyage = new Trajets();
+        $voyage->setEtat('ouvert');
+        $voyage->setTDepart(new DateTime('+70 hours'));
+        $voyage->setTArrivee(new DateTime('+80 hours'));
+        $voyage->setPrix(50.0);
+        $voyage->setNbPassagerMax(3);
+        $voyage->setPublic(true);
+        $voyage->setPublie($manager->getRepository(Utilisateurs::class)->find(['id' => 4]));
+        $voyage->setDemarreA($manager->getRepository(Villes::class)->find(['id' => 89]));
+        $voyage->setArriveA($manager->getRepository(Villes::class)->find(['id' => 84]));
+        $manager->persist($voyage);
         $manager->flush();
-        // Ajout de la ville de Metz
-        $ville = new Villes();
-        $ville->setNomVille("Metz");
-        $ville->setCP(57000);
-        $manager->persist($ville);
-        $manager->flush(); */
+        // Voyage 4
+        // Angouleme -> Annecy
+        // Dans 60h
+        // 2 places
+        // 15€
+        // Public
+        $voyage = new Trajets();
+        $voyage->setEtat('ouvert');
+        $voyage->setTDepart(new DateTime('+60 hours'));
+        $voyage->setTArrivee(new DateTime('+73 hours'));
+        $voyage->setPrix(30.0);
+        $voyage->setNbPassagerMax(2);
+        $voyage->setPublic(true);
+        $voyage->setPublie($manager->getRepository(Utilisateurs::class)->find(['id' => 5]));
+        $voyage->setDemarreA($manager->getRepository(Villes::class)->find(['id' => 17]));
+        $voyage->setArriveA($manager->getRepository(Villes::class)->find(['id' => 74]));
+        $manager->persist($voyage);
+        $manager->flush();
+        // Voyage 5
+        // Bar-le-duc -> Beauvais
+        // Dans 49h
+        // 2 places
+        // 15€
+        // Public
+        $voyage = new Trajets();
+        $voyage->setEtat('ouvert');
+        $voyage->setTDepart(new DateTime('+49 hours'));
+        $voyage->setTArrivee(new DateTime('+53 hours'));
+        $voyage->setPrix(100.0);
+        $voyage->setNbPassagerMax(7);
+        $voyage->setPublic(true);
+        $voyage->setPublie($manager->getRepository(Utilisateurs::class)->find(['id' => 6]));
+        $voyage->setDemarreA($manager->getRepository(Villes::class)->find(['id' => 55]));
+        $voyage->setArriveA($manager->getRepository(Villes::class)->find(['id' => 60]));
+        $manager->persist($voyage);
+        $manager->flush();
+        // Voyage 6
+        // Bordeaux -> Bourg-en-bresse
+        // Dans 49h
+        // 1 places
+        // 40€
+        // Public
+        $voyage = new Trajets();
+        $voyage->setEtat('ouvert');
+        $voyage->setTDepart(new DateTime('+95 hours'));
+        $voyage->setTArrivee(new DateTime('+53 hours'));
+        $voyage->setPrix(40.0);
+        $voyage->setNbPassagerMax(1);
+        $voyage->setPublic(true);
+        $voyage->setPublie($manager->getRepository(Utilisateurs::class)->find(['id' => 7]));
+        $voyage->setDemarreA($manager->getRepository(Villes::class)->find(['id' => 33]));
+        $voyage->setArriveA($manager->getRepository(Villes::class)->find(['id' => 1]));
+        $manager->persist($voyage);
+        $manager->flush();
+        // Voyage 7
+        // Nancy -> Paris
+        // Dans 49h
+        // 2 places
+        // 15€
+        // Public
+        $voyage = new Trajets();
+        $voyage->setEtat('ouvert');
+        $voyage->setTDepart(new DateTime('+70 hours'));
+        $voyage->setTArrivee(new DateTime('+75 hours'));
+        $voyage->setPrix(10.0);
+        $voyage->setNbPassagerMax(6);
+        $voyage->setPublic(true);
+        $voyage->setPublie($manager->getRepository(Utilisateurs::class)->find(['id' => 8]));
+        $voyage->setDemarreA($manager->getRepository(Villes::class)->find(['id' => 12]));
+        $voyage->setArriveA($manager->getRepository(Villes::class)->find(['id' => 95]));
+        $manager->persist($voyage);
+        $manager->flush();
+        // Voyage 8
+        // Blois -> Bobigny
+        // Dans 49h
+        // 2 places
+        // 15€
+        // Public
+        $voyage = new Trajets();
+        $voyage->setEtat('ouvert');
+        $voyage->setTDepart(new DateTime('+60 hours'));
+        $voyage->setTArrivee(new DateTime('+70 hours'));
+        $voyage->setPrix(60.0);
+        $voyage->setNbPassagerMax(6);
+        $voyage->setPublic(true);
+        $voyage->setPublie($manager->getRepository(Utilisateurs::class)->find(['id' => 9]));
+        $voyage->setDemarreA($manager->getRepository(Villes::class)->find(['id' => 41]));
+        $voyage->setArriveA($manager->getRepository(Villes::class)->find(['id' => 93]));
+        $manager->persist($voyage);
+        $manager->flush();
+        // Voyage 9
+        // Dijon -> Epinal
+        // Dans 49h
+        // 2 places
+        // 15€
+        // Public
+        $voyage = new Trajets();
+        $voyage->setEtat('ouvert');
+        $voyage->setTDepart(new DateTime('+90 hours'));
+        $voyage->setTArrivee(new DateTime('+95 hours'));
+        $voyage->setPrix(1000.0);
+        $voyage->setNbPassagerMax(4);
+        $voyage->setPublic(true);
+        $voyage->setPublie($manager->getRepository(Utilisateurs::class)->find(['id' => 11]));
+        $voyage->setDemarreA($manager->getRepository(Villes::class)->find(['id' => 21]));
+        $voyage->setArriveA($manager->getRepository(Villes::class)->find(['id' => 88]));
+        $manager->persist($voyage);
+        $manager->flush();
+        // Voyage 10
+        // Evry -> Foix
+        // Dans 49h
+        // 2 places
+        // 15€
+        // Public
+        $voyage = new Trajets();
+        $voyage->setEtat('ouvert');
+        $voyage->setTDepart(new DateTime('+39 hours'));
+        $voyage->setTArrivee(new DateTime('+44 hours'));
+        $voyage->setPrix(80.0);
+        $voyage->setNbPassagerMax(4);
+        $voyage->setPublic(true);
+        $voyage->setPublie($manager->getRepository(Utilisateurs::class)->find(['id' => 2]));
+        $voyage->setDemarreA($manager->getRepository(Villes::class)->find(['id' => 91]));
+        $voyage->setArriveA($manager->getRepository(Villes::class)->find(['id' => 10]));
+        $manager->persist($voyage);
+        $manager->flush();
     }
 }
