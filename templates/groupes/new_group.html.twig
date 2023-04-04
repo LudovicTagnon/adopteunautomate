@@ -3,17 +3,26 @@
 {% block title %}Creation de groupe {% endblock %}
 {#// PROB7MES de LIENS ET PB de CLE ETRANGERE #}
 {% block body %}
-    <style>
-        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-    </style>
+<!-- contenu de la page -->
+    <div class = "container-fluid">
+        <div class="row justify-content-center">
+            </hr>
+            <div class="col-md-3"> <!-- Volets de navigation -->
+                {% include 'partials/_sidebar.html.twig' %}
+            </div>
+            <style>
+                    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+                    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+                </style>
 
 
 
-    <div class="example-wrapper">
-        <h1>Les groupes:</h1>
+                <div class="example-wrapper">
+                        
+                <h1>Créer un groupe :</h1>
+                <hr/>
 
-        {{ form_start(form) }}
+                {{ form_start(form) }}
 
         <div class= 'form-group'>
             {{ form_label(form.nom_groupe)}}
@@ -28,8 +37,8 @@
         </div>
         <div class='form-group'>
             <div>
-                <!--{//{form_label(form.utilisateurs)}}-->
-                <!--{//{form_widget(form.utilisateurs)}}-->
+                {{form_label(form.utilisateurs)}}
+                {{form_widget(form.utilisateurs)}}
             </div>
             <div>
                 
@@ -39,7 +48,6 @@
         </br>
             <button type="submit" class="btn btn-primary" style="background-color:blue;">Créer le groupe</button>
         </div>
-
         {{ form_end(form) }}
     </div>
 {% endblock %}
