@@ -14,11 +14,12 @@
                 <div class="card-header" style="background-color: #007bff; color: #fff">{{ 'Modification'|trans }}</div>
                 <div class="card-body" style="background-color: #f8f9fa;">
     {{form_start(form)}}
-    {{ form_errors(form) }}
+    
         {# EMAIL #} 
         <div class="form-group">
             {{ form_label(form.email, 'Adresse Mail') }}
             {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.email)}}
         </div>
         {# AUTORISATION MAIL #}
         <div class="form-group">
@@ -29,16 +30,20 @@
         <div class="form-group">
         {{ form_label(form.nom, 'Nom') }}
         {{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.nom)}}
         </div>
         {# PRENOM #}
         <div class="form-group">
         {{ form_label(form.prenom, 'Prénom') }}
         {{ form_widget(form.prenom, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.prenom)}}
         </div>
         {# NUM_TEL #}
         <div class="form-group">
+        
         {{ form_label(form.num_tel, 'Numéro de téléphone') }}
         {{ form_widget(form.num_tel, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.num_tel)}}
         </div>
         {# VOITURE #}
         <div class="form-group">
