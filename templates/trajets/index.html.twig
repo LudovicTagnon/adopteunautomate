@@ -5,14 +5,23 @@
 {% block body %}
 
 <div class = "container-fluid">
-    <div class="row justify-content-center">
+    <div class="row justify-content-left">
         </hr>
         <div class="col-md-3"> <!-- Volets de navigation -->
             {% include 'partials/_sidebar.html.twig' %}
         </div>
+        </div>
 
-        <div class="col-md-9"> <!-- Tableau des trajets -->
+       </br>
+<div class="row justify-content-center">
+         <!-- Tableau des trajets -->
+        <style>
+    .example-wrapper { margin: 0px; max-width: 1300px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+<div class="example-wrapper">
             <h1>Liste de mes propositions de trajets</h1>
+            </br>
             <div class="container">
                 {# flash message si succes#}
                 {% for message in app.flashes('succes')  %}
@@ -21,17 +30,6 @@
                     </div>
                 {% endfor  %}
             </div>
-    <h1>Liste de vos trajets</h1>
-
-
-    <div class="container">
-        {# flash message si succes#}
-        {% for message in app.flashes('succes')  %}
-            <div class= "alert alert-success mt-4">
-                {{message}}
-            </div>
-        {% endfor  %}
-    </div>
 
             <div class="container">
                 <table class="table table-hover">
@@ -57,10 +55,10 @@
                             <td>{{ trajet.etat }}</td>
                             <td>{{ trajet.TDepart ? trajet.TDepart|date('Y-m-d H:i') : '' }}</td>
                             <td>{{ trajet.TArrivee ? trajet.TArrivee|date('Y-m-d H:i') : '' }}</td>
-
+                            
                             <td>{{ trajet.demarrea.nomville }}</td>
                             <td>{{ trajet.arrivea.nomville }}</td>
-
+                            
                             <td>{{ trajet.prix }}</td>
                             <td>{{ trajet.nbPassagerMax }}</td>
                             <td>{{ trajet.nbPassagerMax - trajet.nbPassagerCourant }}</td>
@@ -83,7 +81,7 @@
                             {% set demain = date('+24 hours') %}
                             {% if ((trajet.getTArrivee() is not null and trajet.getTArrivee() < now and trajet.getTArrivee() > hier ) or ( trajet.getTDepart() < hier and (trajet.getTDepart() > avanthier )) ) %}
                             <!-- si trajet terminé, le chauffeur peut l'indiquer , cela permettra à la notation de commencer -->
-
+                            
                             <a href="{{ path('app_trajets_edit', {'id': trajet.id}) }}"class= "btn btn-danger" title="clôturer le trajet"><i class="fa-solid fa-lock"></i></a>
                             {% endif %}
 
@@ -101,5 +99,6 @@
             <a href="{{ path('app_trajets_new') }}"class= "btn btn-info" >Ajouter un trajet </a>
         <div>
     </div>
+</div>
 
 {% endblock %}
