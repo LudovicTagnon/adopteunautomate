@@ -3,11 +3,20 @@
 {% block body %}
     <!-- contenu de la page -->
     <div class = "container-fluid">
-        <div class="row justify-content-center">
+        <div class="row justify-content-left">
             </hr>
             <div class="col-md-3"> <!-- Volets de navigation -->
                 {% include 'partials/_sidebar.html.twig' %}
             </div>
+            </div>
+            </br>
+            <div class="row justify-content-center">
+            <style>
+                .example-wrapper { margin: 0px; max-width: 1300px; width: 95%; font: 18px/1.5 sans-serif; }
+                .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+            </style>
+            <div class="example-wrapper">
+
             <div class="col-md-9">
                 <h1>Liste des trajets public</h1>
                 {% if trajets|length == 0 %}
