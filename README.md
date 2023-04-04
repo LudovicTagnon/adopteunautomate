@@ -243,41 +243,41 @@ function App() {
 <details>
 <summary>Sprint 2 :</summary>
   <ul>
-    <li>* [ ]Mot de passe oublié</li>
-    <li>* [x]Consulter notifications</li>
-    <li>* [x]Supprimer notification</li>
-    <li>* [x]Modifier/supprimer photo</li>
-    <li>* [x]S’inscrire à/se rétracter d’un trajet</li>
-    <li>* [x]Accepter/refuser un passager</li>
-    <li>* [x]Modifier/supprimer un trajet</li>
+    <li>* [ ] Mot de passe oublié</li>
+    <li>* [x] Consulter notifications</li>
+    <li>* [x] Supprimer notification</li>
+    <li>* [x] Modifier/supprimer photo</li>
+    <li>* [x] S’inscrire à/se rétracter d’un trajet</li>
+    <li>* [x] Accepter/refuser un passager</li>
+    <li>* [x] Modifier/supprimer un trajet</li>
   </ul>
 </details>
 
 <details>
 <summary>Sprint 3 :</summary>
   <ul>
-    <li>* [x]Rechercher un voyage</li>
-    <li>* [x]Voir les détails d’un trajet</li>
-    <li>* [x]Voir les trajets existants</li>
-    <li>* [x]Voir les trajets auxquels le passager a été accepté</li>
-    <li>* [x]Voir les trajets auxquels le passager est inscrit</li>
-    <li>* [x]Historique trajet</li>
-    <li>* [x]Valider fin trajet</li>
-    <li>* [ ]Ajouter note de satisfaction individuelle après trajet</li>
-    <li>* [ ]Modifier note de satisfaction individuelle après trajet</li>
+    <li>* [x] Rechercher un voyage</li>
+    <li>* [x] Voir les détails d’un trajet</li>
+    <li>* [x] Voir les trajets existants</li>
+    <li>* [x] Voir les trajets auxquels le passager a été accepté</li>
+    <li>* [x] Voir les trajets auxquels le passager est inscrit</li>
+    <li>* [x] Historique trajet</li>
+    <li>* [x] Valider fin trajet</li>
+    <li>* [ ] Ajouter note de satisfaction individuelle après trajet</li>
+    <li>* [ ] Modifier note de satisfaction individuelle après trajet</li>
   </ul>
 </details>
 
 <details>
 <summary>Sprint 4 :</summary>
   <ul>
-    <li>* [x]Consulter ses groupes d’amis</li>
-    <li>* [x]Supprimer un groupe d’amis</li>
-    <li>* [x]Modifier groupe d’amis</li>
-    <li>* [x]Accéder aux données et groupes d’un utilisateur</li>
-    <li>* [x]Accéder à un trajet précis</li>
-    <li>* [x]Modifier le trajet</li>
-    <li>* [x]Supprimer le trajet</li>
+    <li>* [x] Consulter ses groupes d’amis</li>
+    <li>* [x] Supprimer un groupe d’amis</li>
+    <li>* [x] Modifier groupe d’amis</li>
+    <li>* [x] Accéder aux données et groupes d’un utilisateur</li>
+    <li>* [x] Accéder à un trajet précis</li>
+    <li>* [x] Modifier le trajet</li>
+    <li>* [x] Supprimer le trajet</li>
   </ul>
 </details>
 
