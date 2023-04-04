@@ -89,10 +89,12 @@ function submitRating() {
     })
         .done(data => {
             if (data.success) {
-                alert('Rating saved successfully');
+                alert('Vous avez attribué une note à ce participant.');
+                console.log('Success:', 'Rating saved successfully', '100');
                 $('#ratingContainer input[name="rating"]').prop('checked', false);
                 $('#ratingContainer textarea').val('');
                 $('#ratingContainer').hide();
+                window.location.href = '/';
             } else {
                 alert('Error saving rating');
             }
@@ -105,6 +107,8 @@ function submitRating() {
             }
         });
 }
+
+
 
 $(document).ready(function() {
     $('#form_trajet').submit(function(event) {

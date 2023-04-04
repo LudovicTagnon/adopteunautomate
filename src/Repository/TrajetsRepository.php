@@ -76,4 +76,15 @@ class TrajetsRepository extends ServiceEntityRepository
 
         return $query->getResult();
     }
+
+    public function findPastTrajets()
+    {
+        $currentDate = new \DateTime();
+
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.T_arrivee < :currentDate')
+            ->setParameter('currentDate', $currentDate)
+            ->getQuery()
+            ->getResult();
+    }
 }

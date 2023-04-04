@@ -33,7 +33,7 @@ class NoteController extends AbstractController
     #[Route('/notes', name: 'notes')]
     public function index(Request $request): Response
     {
-        $trajets = $this->trajetsRepository->findAll();
+        $trajets = $this->trajetsRepository->findPastTrajets();
 
         $participantForm = $this->createFormBuilder()
             ->add('Trajet_id', EntityType::class, [
@@ -120,69 +120,44 @@ class NoteController extends AbstractController
     #[Route('/save_rating', name: 'save_rating', methods: ['POST'])]
     public function saveRating(Request $request, TrajetsRepository $trajetsRepository, UtilisateursRepository $utilisateursRepository): JsonResponse
     {
-        dump($request->getMethod()); // Log the request method
+        dump($request->getMethod());
 
-        try {
-            $data = json_decode($request->getContent(), true);
+        $data = json_decode($request->getContent(), true);
 
-            dump($data);
-            if (!isset($data['trajet_id'], $data['participant_id'], $data['note'])) {
-                return new JsonResponse(['success' => false, 'message' => 'Invalid data received.'], 400);
-            }
-            $participantId = is_array($data['participant_id']) ? reset($data['participant_id']) : $data['participant_id'];
+        dump($data);
 
-            var_dump($data);
+        var_dump($data);
 
-            $trajet = $trajetsRepository->find($data['trajet_id']);
-            if (!$trajet) {
-                return new JsonResponse([
-                    'success' => false,
-                    'message' => 'Invalid trajet ID',
-                ], 400);
-            }
-            $participant = $utilisateursRepository->find($data['participant_id']);
-            if (!$participant) {
-                return new JsonResponse([
-                    'success' => false,
-                    'message' => 'Invalid participant ID',
-                ], 400);
-            }
+        $trajet = $trajetsRepository->find($data['trajet_id']);
+        $participant = $utilisateursRepository->find($data['participant_id']);
+        $existingRating = $this->entityManager->getRepository(Note::class)->findOneBy([
+            'trajet' => $trajet,
+            'utilisateur' => $participant
+        ]);
 
-            // Check if the rating already exists
-            $existingRating = $this->entityManager->getRepository(Note::class)->findOneBy([
-                'trajet' => $trajet,
-                'utilisateur' => $participant
-            ]);
-
-            if ($existingRating) {
-                return new JsonResponse([
-                    'success' => false,
-                    'message' => 'You have already submitted a rating for this participant.'
-                ], 409); // Conflict
-            }
-
-            if ($trajet && $participant) {
-                $note = new Note();
-                $note->setTrajet($trajet);
-                $note->setUtilisateur($participant);
-                $note->setNote($data['note']);
-
-                $entityManager = $this->entityManager;
-                $entityManager->persist($note);
-                $entityManager->flush();
-
-                return new JsonResponse(['success' => true]);
-            } else {
-                return new JsonResponse(['success' => false], 400);
-            }
-        } catch (\Throwable $exception) {
+        if ($existingRating) {
             return new JsonResponse([
                 'success' => false,
-                'message' => $exception->getMessage(),
-                'file' => $exception->getFile(),
-                'line' => $exception->getLine(),
-            ], 500);
+                'message' => 'Erreur: Vous avez déjà attribué une note à ce participant.'
+            ], 409);
         }
+
+        if ($trajet && $participant) {
+            $note = new Note();
+            $note->setTrajet($trajet);
+            $note->setUtilisateur($participant);
+            $note->setNote($data['note']);
+
+            $entityManager = $this->entityManager;
+            $entityManager->persist($note);
+            $entityManager->flush();
+
+            return new JsonResponse([
+                'success' => true,
+                'message' => 'Your rating has been successfully submitted.'
+            ]);
+        }
+
     }
 
 
