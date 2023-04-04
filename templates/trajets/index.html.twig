@@ -73,7 +73,7 @@
                             {% if ((trajet.getTArrivee() is not null and trajet.getTArrivee() < now and trajet.getTArrivee() > hier ) or ( trajet.getTDepart() < hier and (trajet.getTDepart() > avanthier )) ) %}
                             <!-- si trajet terminé, le chauffeur peut l'indiquer , cela permettra à la notation de commencer -->
                             
-                            <a href="{{ path('app_trajets_edit', {'id': trajet.id}) }}"class= "btn btn-danger" title="clôturer le trajet"><i class="fa-solid fa-lock"></i></a>
+                            <a href="{{ path('app_trajets_edit', {'id': trajet.id}) }}"class= "btn btn-danger" title="clôturer le trajet" onclick="return confirm('Êtes-vous sûr de vouloir clôturer ce trajet ?')"><i class="fa-solid fa-lock"></i></a>
                             {% endif %}
 
                             <a href="{{ path('app_trajets_show', {'id': trajet.id}) }}"class= "btn btn-info" title="Voir les détails de ce trajet"><i class="fa-solid fa-magnifying-glass"></i></a>
