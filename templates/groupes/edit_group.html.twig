@@ -5,7 +5,10 @@
 {% block title %}Creation de groupe {% endblock %}
 
 {% block body %}
-    <style>
+       <style>
+        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+
         .users_viewer{
             min-height: 500px;
             width: 45%;
@@ -30,7 +33,7 @@
                 {% include 'partials/_sidebar.html.twig' %}
             </div>
 
-            <div class="col-md-9">
+            <div class="example-wrapper">
                 <h1>Modification du groupe : </h1>
                 <hr/>
 
