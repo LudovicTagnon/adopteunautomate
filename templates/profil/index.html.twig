@@ -3,49 +3,85 @@
 {% block title %}Consultation de profil{% endblock %}
 {% block body %}
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-   <div class="profil">
-    <h1 class ="center" style="margin-top:30px;">Mon compte</h1>
-    <div class="photo">
-      <img src="{{ asset('uploads/profil.jpg' ~ user.getFichierPhoto()) }}" alt="Profile-picture" style="margin-left :10px;margin-bottom:40px; margin-top:30px; border-radius: 50%; width: 150px; height: 150px;border: solid black; background-color: #FFFFFF;">
-    </div>
-    
-    <fieldset>
-    <legend >Contact</legend>
-    
-        <label>Nom : {{ user.getNom() }}</label>
-        <label>Prénom : {{user.getPrenom}}</label>
-        <label>Numéro de Téléphone : {{user.getNumTel}}</label>
-        <label>Email : {{ user.email }}</label>
-        </fieldset>
-        <fieldset>
-    <legend>Information personnelles</legend>
-        {% if user.vehicule == 1 %}
-            <label>Voiture :   Oui   </label>
-        {% else %}
-            <label>Voiture :   Non   </liabel>
-        {% endif %}
-        <label>Genre : {{ user.genre }}</label>
-        {% if user.getAutorisationMail() == 1 %}
-                <label>Autorisation de notification mail : Oui</label>
-        {% else %}
-                 <label>Autorisation de notification mail : Non</label>
-        {% endif %}
-        {% if user.getFichierPhoto() is not null %}
-          <label>Photo de profil : Oui</label>
-        {% else %}
-            <label>Photo de profil : Aucune photo de profil</label>
-        {% endif %}
-         </fieldset>
-        <a href="{{ path('modif_profil') }}">
-            <button class="btn btn-primary">Modifier mon profil</button>
-        </a>
-        <a href="{{ path('supprimer_profil') }}">
-          <button class="btn btn-danger" onclick="return confirm('Êtes-vous sûr(e) de vouloir désactiver votre profil ? Cette action est irréversible !');">Désactiver mon profil</button> 
-        </a>
-    
-    </div>
 
+    <!-- contenu de la page -->
+    <div class = "container-fluid">
+        <div class="row justify-content-center">
+            </hr>
+            <div class="col-md-3"> <!-- Volets de navigation -->
+                {% include 'partials/_sidebar.html.twig' %}
+            </div>
 
-    
-    
+           
+                <style>
+    .example-wrapper { margin: 1em auto; max-width: 700px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+<div class="example-wrapper">
+                <h1>Mon profil : </h1>
+                <hr/>
+                 <div class="col-md-9">
+                {% if user.getFichierPhoto() is not null %}
+                    <div class ="photo">
+                    <img src="{{ asset('uploads/' ~ user.getFichierPhoto()) }}" alt="Profile-picture" style="margin-left :10px;margin-bottom:40px; margin-top:30px; border-radius: 50%; width: 150px; height: 150px;border: solid black; background-color: #FFFFFF;">
+                    </div>
+                {% endif %}
+             
+                            
+                                    <div class="form-group">
+                                        <label for="mail">Adresse Mail</label>
+                                        <input type="text" class="form-control" id="mail" value="{{user.getEmail}}" disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-check-label" for="invalidCheck2">Autorisation de notification mail</label></br>
+                                        <div class="row justify-content-center">
+                                            {% if user.getAutorisationMail() == 1 %}
+                                                <input class="form-check-input" type="checkbox" value="" id="invalidCheck2" disabled checked>
+                                            {% else %}
+                                                <input class="form-check-input" type="checkbox" value="" id="invalidCheck2" disabled>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="nom">Nom</label>
+                                        <input type="text" class="form-control" id="nom" value="{{user.getNom}}" disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="prenom">Prenom</label>
+                                        <input type="text" class="form-control" id="prenom" value="{{user.getPrenom}}" disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="tel">Numéro de téléphone</label>
+                                        <input type="text" class="form-control" id="tel" value="{{user.getNumTel()}}" disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-check-label" for="invalidCheck3">Voiture</label></br>
+                                        <div class="row justify-content-center">
+                                            {% if user.vehicule == 1 %}
+                                                <input class="form-check-input" type="checkbox" value="" id="invalidCheck3" disabled checked>
+                                            {% else %}
+                                                <input class="form-check-input" type="checkbox" value="" id="invalidCheck3" disabled>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-check-label" for="invalidCheck3">Genre</label></br>
+                                        <select class="custom-select" disabled>
+                                            <option selected>{{ user.genre }}</option>
+                                        </select>
+                                    </div>
+                                    <a href="{{ path('modif_profil') }}">
+                                        <button class="btn btn-primary">Modifier mon profil</button>
+                                    </a>
+                                    <a href="{{ path('supprimer_profil') }}">
+                                        <button class="btn btn-danger" onclick="return confirm('Êtes-vous sûr(e) de vouloir désactiver votre profil ? Cette action est irréversible !');">Désactiver mon profil</button> 
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>  
 {% endblock %}
