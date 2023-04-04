@@ -67,14 +67,18 @@ class SecurityController extends AbstractController
                 $context = compact('url','user');
 
                 // envoie mail
-                $mail->send(
-                    'no-reply@adopteunautomate.com',
-                    $user->getEmail(),
-                    'réinitialisation dde mot de passe',
-                    'password_reset',
-                    $context
-                );
-                $this->addFlash('success' , 'email envoyé avec succes');
+                try {
+                    $mail->send(
+                        'no-reply@adopteunautomate.com',
+                        $user->getEmail(),
+                        'réinitialisation de mot de passe',
+                        'password_reset',
+                        $context
+                    );
+                    $this->addFlash('success' , 'email envoyé avec succes');
+                }catch (\Symfony\Component\Mailer\Exception\TransportExceptionInterface $e){
+                    $this->addFlash('danger', "Le message n'a pas été envoyé : problème avec le serveur smtp");
+                }
                 return $this->redirectToRoute('app_login');
             }
 
