@@ -39,7 +39,7 @@ class TrajetsType extends AbstractType
         //$this->utilisateursRepository = $utilisateursRepository;
        // $this->security = $security;
        $this->utilisateursRepository = $utilisateursRepository;
-       $this->groupesRepository = $groupesRepository;
+       $this->groupesRepository = $groupesRepository;//groupes
        $this->security = $security;
     }
 
