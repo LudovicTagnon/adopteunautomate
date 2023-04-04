@@ -167,7 +167,7 @@ class AppFixtures extends Fixture
         $voyage = new Trajets();
         $voyage->setEtat('ouvert');
         $voyage->setTDepart(new DateTime('+95 hours'));
-        $voyage->setTArrivee(new DateTime('+53 hours'));
+        $voyage->setTArrivee(new DateTime('+97 hours'));
         $voyage->setPrix(40.0);
         $voyage->setNbPassagerMax(1);
         $voyage->setPublic(true);
