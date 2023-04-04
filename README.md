@@ -224,8 +224,9 @@ function App() {
 <!-- Roadmap -->
 ## :scroll: Roadmap
 
-* [x] Todo 1
-* [ ] Todo 2
+* [x] Fonctionnalité chauffeur
+* [x] Fonctionnalité passager
+* [ ] Fonctionnalité administrateur
 
 <details>
 <summary>Sprint 1 :</summary>
@@ -289,14 +290,21 @@ function App() {
 ## :wave: Contributing
 
 <a href="https://gitlab.univ-lorraine.fr/antunes26u/adopteunautomate/-/graphs/main">
-  <img src="" />
+  Liste des contribution sur le main :
 </a>
-
-
-Contributions are always welcome!
-
-See `contributing.md` for ways to get started.
-
+<ul>
+  <li><a href="https://gitlab.univ-lorraine.fr/aitouali1u">AIT OUALI Marouane</a> : 0 commit</li>
+  <li><a href="https://gitlab.univ-lorraine.fr/altaweel3u">ALTAWEEL Mohamad</a> : 3 commits</li>
+  <li><a href="https://gitlab.univ-lorraine.fr/antunes26u">ANTUNES Alexandre</a> : 124 commits</li>
+  <li><a href="https://gitlab.univ-lorraine.fr/guerrier8u">COGNOT Hélène</a> : 59 commits</li>
+  <li><a href="https://gitlab.univ-lorraine.fr/franco369u">FRANÇOIS Nicolas</a> : 5 commits (Testeur + Fixtures + Rédacteur)</li>
+  <li><a href="https://gitlab.univ-lorraine.fr/ritter23u">RITTER Luca</a> : 0 commit</li>
+  <li><a href="https://gitlab.univ-lorraine.fr/rosio1u">ROSIO Maxime</a> : 45 commits</li>
+  <li><a href="https://gitlab.univ-lorraine.fr/suel1u">SUEL Benjamin</a> : 68 commits</li>
+  <li><a href="https://gitlab.univ-lorraine.fr/tagnon3u">TAGNON Ludovic</a> : 8 commits (Dernier commit le 26/02/2023)</li>
+  <li><a href="https://gitlab.univ-lorraine.fr/tatoglu2u">TATOGLU Emel</a> : 0 commit</li>
+  <li><a href="https://gitlab.univ-lorraine.fr/villaum55u">VILLAUME Lucas</a> : 0 commit</li>
+</ul>
 
 <!-- Code of Conduct -->
 ### :scroll: Code of Conduct
