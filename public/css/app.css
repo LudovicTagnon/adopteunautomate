@@ -1,196 +1,299 @@
 h1.center{
-    text-align: center;
+  text-align: center;
+  color: black;
+  
+  
 }
 
-div.profil{
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    height: 100vh;
-    text-align: left;
-    padding-top: 0;
-    
+.nav-link{
+  color: #000000;
+}
+
+
+
+th{
+background-color: darkgrey;
+border: solid;
+border-color: gray;
+border-collapse : collapse;
+border: 1px solid black;
+
+
+}
+
+td{
+border: 1px solid black;
+background-color: white;
+}
+
+.profil {
+  margin: 20px auto;
+  width: 80%;
+  max-width: 600px;
+  border: solid;
+  border-color: yellow;
+  
+  border-radius: 10px;
+  padding: 20px;
+  background-color: #FFFFFF;
+}
+
+
+.link{
+  color: #000000;
+}
+
+fieldset {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 20px;
+  
+}
+
+legend {
+  font-weight: bold;
+  font-size: 30px;
+  margin-bottom: 10px;
+}
+
+
+.example-wrapper{
+display: block;
+margin: 10px auto;
+width: 80%;
+max-width: 400px;
+border: solid;
+border-radius: 10px;
+border-color: yellow;
+padding: 70px;
+background-color: #FFFFFF;
+
+}
+.example-wrapper1{
+display: block;
+margin: 10px auto;
+width: 80%;
+max-width: 400px;
+border: solid;
+border-radius: 10px;
+border-color: yellow;
+padding: 70px;
+background-color: #FFFFFF;
+
+}
+
+
+.profil label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+.navbar{
+  border: #000000 solid;
+}
+
+.profil ul {
+  list-style: none;
+  padding: 0;
+}
+
+.profil a {
+  display: block;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.profil button {
+  margin: 0 10px;
+}
+
+#fond{
+  background-image: url("/images/route7.jpg");
+  background-size: cover;
 }
 
 ul{
-    margin : 0;
-    padding: 0;
+  margin : 0;
+  padding: 0;
 }
 
 /* Style pour le groupe de boutons radio */
 .radio-group {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-  }
-  
-  /* Style pour chaque bouton radio */
-  .radio-group label {
-    margin-right: 20px;
-  }
-  
-  /* Style pour la case à cocher */
-  .radio-group input[type="radio"] {
-    appearance: none;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    border: 2px solid #ccc;
-    margin-right: 10px;
-  }
-  
-  /* Style pour la case à cocher activée */
-  .radio-group input[type="radio"]:checked {
-    background-color: #007bff;
-    border-color: #007bff;
-  }
-  
-  /* Style pour le texte */
-  .radio-group label span {
-    font-size: 16px;
-    color: #333;
-  }
-  
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+
+/* Style pour chaque bouton radio */
+.radio-group label {
+  margin-right: 20px;
+}
+
+/* Style pour la case à cocher */
+.radio-group input[type="radio"] {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  margin-right: 10px;
+}
+
+/* Style pour la case à cocher activée */
+.radio-group input[type="radio"]:checked {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+/* Style pour le texte */
+.radio-group label span {
+  font-size: 16px;
+  color: #333;
+}
+
 
 /* Bouton enregistrer modif */
 .buttonok {
-  font-family: arial;
-  font-weight: bold;
-  color: #000000 !important;
-  font-size: 14px;
-  text-shadow: 1px 1px 0px #33ADFF;
-  box-shadow: 1px 1px 1px #000000;
-  padding: 10px 25px;
-  border-radius: 10px;
-  border: 2px solid #000000;
-  background: #63B8EE;
+font-family: arial;
+font-weight: bold;
+color: #000000 !important;
+font-size: 14px;
+text-shadow: 1px 1px 0px #33ADFF;
+box-shadow: 1px 1px 1px #000000;
+padding: 10px 25px;
+border-radius: 10px;
+border: 2px solid #000000;
+background: #63B8EE;
 }
 .buttonok:hover {
-  color: #FFFFFF !important;
-  background: #38BDFF;
+color: #FFFFFF !important;
+background: #38BDFF;
 }
 
 
 /* Form */
 .form-group {
-  margin-bottom: 20px;
+margin-bottom: 20px;
 }
 
 .form-label {
-  font-weight: bold;
+font-weight: bold;
 }
 
 .form-control {
-  display: block;
-  width: 100%;
-  padding: 0.5rem 0.75rem;
-  font-size: 1rem;
-  line-height: 1.5;
-  color: #495057;
-  background-color: #fff;
-  background-clip: padding-box;
-  border: 1px solid #ced4da;
-  border-radius: 0.25rem;
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+display: block;
+width: 100%;
+padding: 0.5rem 0.75rem;
+font-size: 1rem;
+line-height: 1.5;
+color: #495057;
+background-color: #fff;
+background-clip: padding-box;
+border: 1px solid #ced4da;
+border-radius: 0.25rem;
+transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
 .form-control:focus {
-  border-color: #80bdff;
-  outline: 0;
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+border-color: #80bdff;
+outline: 0;
+box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 
 .btn-primary {
-  color: #fff;
-  background-color: #007bff;
-  border-color: #007bff;
+color: #fff;
+background-color: blue;
+border-color: yellow;
 }
 
 .btn-primary:hover {
-  color: #fff;
-  background-color: #0069d9;
-  border-color: #0062cc;
+color: #fff;
+background-color: #0069d9;
+border-color: #0062cc;
 }
 /* style the main password field */
 #form_password_first {
-  margin-bottom: 0;
+margin-bottom: 0;
 }
 
 /* style the repeated password field */
 #form_password_second {
-  margin-top: 0;
+margin-top: 0;
 }
 
 /* Style the label that wraps the checkbox */
 .checkbox-label {
-  display: block;
-  position: relative;
-  padding-left: 30px;
-  margin-bottom: 12px;
-  cursor: pointer;
-  font-size: 18px;
-  user-select: none;
+display: block;
+position: relative;
+padding-left: 30px;
+margin-bottom: 12px;
+cursor: pointer;
+font-size: 18px;
+user-select: none;
 }
 
 /* Hide the default checkbox input */
 .checkbox-label input {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
+position: absolute;
+opacity: 0;
+cursor: pointer;
 }
 
 /* Create a custom checkbox */
 .checkbox-label .checkmark {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 24px;
-  width: 24px;
-  border: 2px solid #ccc;
-  border-radius: 5px;
+position: absolute;
+top: 0;
+left: 0;
+height: 24px;
+width: 24px;
+border: 2px solid #ccc;
+border-radius: 5px;
 }
 
 /* Style the checked state of the custom checkbox */
 .checkbox-label input:checked + .checkmark {
-  background-color: #2196F3;
-  border-color: #2196F3;
+background-color: #2196F3;
+border-color: #2196F3;
 }
 
 /* Create a checkmark icon */
 .checkbox-label .checkmark:after {
-  content: "";
-  position: absolute;
-  display: none;
+content: "";
+position: absolute;
+display: none;
 }
 
 /* Show the checkmark icon when the checkbox is checked */
 .checkbox-label input:checked + .checkmark:after {
-  display: block;
+display: block;
 }
 
 /* Style the checkmark icon */
 .checkbox-label .checkmark:after {
-  left: 8px;
-  top: 3px;
-  width: 6px;
-  height: 12px;
-  border: solid white;
-  border-width: 0 3px 3px 0;
-  transform: rotate(45deg);
+left: 8px;
+top: 3px;
+width: 6px;
+height: 12px;
+border: solid white;
+border-width: 0 3px 3px 0;
+transform: rotate(45deg);
 }
 
 .read-notification {
-  color: red;
-  opacity: 0.6;
+color: red;
+opacity: 0.6;
 }
 .badge-pill {
-  font-size: 0.8em;
-  padding: 0.2em 0.5em;
-  margin-left: 5px;
+font-size: 0.8em;
+padding: 0.2em 0.5em;
+margin-left: 5px;
 }
 
 .badge-danger {
-  background-color: #dc3545;
+background-color: #dc3545;
 }
+
+
 
 
