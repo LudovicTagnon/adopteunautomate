@@ -69,6 +69,19 @@ legend {
   background-color: #FFFFFF;
  
 }
+.example-wrapper1{
+  display: block;
+  margin: 10px auto;
+  width: 80%;
+  max-width: 400px;
+  border: solid;
+  border-radius: 10px;
+  border-color: yellow;
+  padding: 70px;
+  background-color: #FFFFFF;
+ 
+}
+
   
   .profil label {
     display: block;
@@ -268,9 +281,19 @@ ul{
 }
 
 .read-notification {
-  color: grey;
+  color: red;
   opacity: 0.6;
 }
+.badge-pill {
+  font-size: 0.8em;
+  padding: 0.2em 0.5em;
+  margin-left: 5px;
+}
+
+.badge-danger {
+  background-color: #dc3545;
+}
+
 
 
 
