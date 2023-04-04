@@ -1,0 +1,114 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Historique des trajets{% endblock %}
+
+{% block body %}
+    <!-- bootstrap-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+
+    <!-- contenu de la page -->
+    <div class = "container-fluid">
+        <div class="row justify-content-left">
+            </hr>
+            <div class="col-md-3"> <!-- Volets de navigation -->
+                {% include 'partials/_sidebar.html.twig' %}
+            </div>
+            </div>
+            </br>
+            <div class="row justify-content-center">
+             <style>
+                .example-wrapper { margin: 0px; max-width: 1300px; width: 95%; font: 18px/1.5 sans-serif; }
+                .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+            </style>
+             
+            <div class="example-wrapper">
+            <div class="col-md-9"> <!-- Affichage historique -->
+               
+                        <h4 class="card-title">Historique des trajets </h4>
+                        <hr>
+                    </div>
+                    <div class="card-body">
+                        <ul class="nav nav-tabs justify-content-center" id="tabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="trajets-passager-tab" data-toggle="tab" href="#trajets-passager" role="tab" aria-controls="trajets-passager" aria-selected="true">En tant que passager</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="trajets-chauffeur-tab" data-toggle="tab" href="#trajets-chauffeur" role="tab" aria-controls="trajets-chauffeur" aria-selected="false">En tant que chauffeur</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="tabsContent">
+                        <div class="tab-pane fade show active text-center" id="trajets-passager" role="tabpanel" aria-labelledby="trajets-passager-tab">
+                            <!-- Trajets en tant que passagers --> 
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Date</th>
+                                        <th scope="col">Ville de départ</th>
+                                        <th scope="col">Ville d'arrivée</th>
+                                        <th scope="col">Prix</th>
+                                        <th scope="col">Note donnée</th>
+                                        <th scope="col">Statut</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for trajet in trajetsPassager%}
+                                        {% if trajet.getTrajet().etat == 'terminé' %}
+                                            <tr>
+                                                <th scope="row">{{trajet.id}}</th>
+                                                <td>{{trajet.getTrajet().getJourDepartString()}}</td>
+                                                <td>{{trajet.getTrajet().demarrea}}</td>
+                                                <td>{{trajet.getTrajet().arrivea}}</td>
+                                                <td>{{trajet.getTrajet().prix}}<small class="text-muted">€</small></td>
+                                                <td></td>
+                                                <td>/10</td>
+                                                <td>{{trajet.getTrajet().etat}}</td>
+                                            </tr>
+                                        {% endif %}
+                                    {% else %} <!-- Si il n'y a pas de trajets dans la boucle--> 
+                                        </tr><td colspan="7">Vous n'avez effecuté aucun trajet en tant que passager</td></tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tab-pane fade text-center" id="trajets-chauffeur" role="tabpanel" aria-labelledby="trajets-chauffeur-tab">
+                            <!-- Trajets en tant que chauffeur --> 
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Date</th>
+                                        <th scope="col">Ville de départ</th>
+                                        <th scope="col">Ville d'arrivée</th>
+                                        <th scope="col">Prix</th>
+                                        <!--<th scope="col">Groupe</th>-->
+                                        <th scope="col">Note reçue</th>
+                                        <th scope="col">Statut</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for trajet in trajetsChauffeur%}
+                                        {% if trajet.etat == 'terminé' %}
+                                            <tr>
+                                                <th scope="row">{{trajet.id}}</th>
+                                                <td>{{trajet.getJourDepartString()}}</td>
+                                                <td>{{trajet.demarrea}}</td>
+                                                <td>{{trajet.arrivea}}</td>
+                                                <td>{{trajet.prix}}<small class="text-muted">€</small></td>
+                                                <td>groupe</td>
+                                                <td>/10</td>
+                                                <td>{{trajet.etat}}</tdh>
+                                            </tr>
+                                        {% endif %}
+                                    {% else %} <!-- Si il n'y a pas de trajets dans la boucle--> 
+                                        </tr><td colspan="8">Vous n'avez effecuté aucun trajet en tant que chauffeur</td></tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
