@@ -20,7 +20,7 @@ class VillesDepartAutocompleteField extends AbstractType
             'class' => Villes::class,
             'multiple' => false,
             'required' => false,
-            'label' => 'Ville de départ:',
+            'label' => 'Ville de départ * :',
             'choice_label' => function(Villes $ville) {
                 return sprintf('%s', $ville->getnomVille());
             },
