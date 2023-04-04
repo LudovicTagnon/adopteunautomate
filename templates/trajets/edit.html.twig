@@ -9,8 +9,11 @@
             <div class="col-md-3"> <!-- Volets de navigation -->
                 {% include 'partials/_sidebar.html.twig' %}
             </div>
-            <div class="col-md-9">
-                <div class="container justify-content-center">
+             <style>
+        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    </style>
+<div class="example-wrapper">
                     <h1>Modification de votre trajet</h1>
                     <hr/>
                     {{ include('trajets/_form.html.twig', {'button_label': 'Modifier'}) }}
