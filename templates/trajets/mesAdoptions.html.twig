@@ -5,18 +5,28 @@
 {% block body %}
 
 <div class = "container-fluid">
-    <div class="row justify-content-center">
+    <div class="row justify-content-left">
         </hr>
         <div class="col-md-3"> <!-- Volets de navigation -->
             {% include 'partials/_sidebar.html.twig' %}
         </div>
-
+        </div>
+         </br>
+<div class="row justify-content-center">
         {% set now = date() %}
-
+       
+       
+            <style>
+                .example-wrapper { margin: 0px; max-width: 1300px; width: 95%; font: 18px/1.5 sans-serif; }
+                .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+            </style>
+             
+            <div class="example-wrapper">
         <div class="col-md-9"> <!-- Tableau des trajets -->
-            <div class="card text-dark bg-light">
-                <div class="card-header bg-primary text-left text-white">
+            
+                
                     <h4 class="card-title">Liste de mes trajets adoptés </h4>
+                    <hr>
                 </div>
                 <div class="card-body">
                     <ul class="nav nav-tabs justify-content-center" id="tabs" role="tablist">
