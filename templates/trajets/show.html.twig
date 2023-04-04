@@ -3,52 +3,96 @@
 {% block title %}Trajets{% endblock %}
 
 {% block body %}
-    <h1>Trajets</h1>
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ trajet.id }}</td>
-            </tr>
-            <tr>
-                <th>Etat</th>
-                <td>{{ trajet.etat }}</td>
-            </tr>
-            <tr>
-                <th>T_depart</th>
-                <td>{{ trajet.TDepart ? trajet.TDepart|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>T_arrivee</th>
-                <td>{{ trajet.TArrivee ? trajet.TArrivee|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Prix</th>
-                <td>{{ trajet.prix }}</td>
-            </tr>
-            <tr>
-                <th>Nb_passager_max</th>
-                <td>{{ trajet.nbPassagerMax }}</td>
-            </tr>
-            <tr>
-                <th>Nb_passager_courant</th>
-                <td>{{ trajet.nbPassagerCourant }}</td>
-            </tr>
-            <tr>
-                <th>Public</th>
-                <td>{{ trajet.public ? 'Yes' : 'No' }}</td>
-            </tr>
-            <tr>
-                <th>Renseignement</th>
-                <td>{{ trajet.renseignement }}</td>
-            </tr>
-        </tbody>
-    </table>
+<!-- contenu de la page -->
+    <div class = "container-fluid">
+        <div class="row justify-content-center">
+            </hr>
+            <div class="col-md-3"> <!-- Volets de navigation -->
+                {% include 'partials/_sidebar.html.twig' %}
+            </div>
 
-    <a href="{{ path('app_trajets_index') }}">back to list</a>
+            <div class="col-md-9">
+                <h1>Détails de votre trajet</h1>
 
-    <a href="{{ path('app_trajets_edit', {'id': trajet.id}) }}">edit</a>
-
-    {{ include('trajets/_delete_form.html.twig') }}
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th>Id</th>
+                            <td>{{ trajet.id }}</td>
+                        </tr>
+                        <tr>
+                            <th>Etat</th>
+                            <td>{{ trajet.etat }}</td>
+                        </tr>
+                        <tr>
+                            <th>T_depart</th>
+                            <td>{{ trajet.TDepart ? trajet.TDepart|date('Y-m-d H:i:s') : '' }}</td>
+                        </tr>
+                        <tr>
+                            <th>T_arrivee</th>
+                            <td>{{ trajet.TArrivee ? trajet.TArrivee|date('Y-m-d H:i:s') : '' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Prix</th>
+                            <td>{{ trajet.prix }}</td>
+                        </tr>
+                        <tr>
+                            <th>Nb_passager_max</th>
+                            <td>{{ trajet.nbPassagerMax }}</td>
+                        </tr>
+                        <tr>
+                            <th>Nb_passager_courant</th>
+                            <td>{{ trajet.nbPassagerCourant }}</td>
+                        </tr>
+                        <tr>
+                            <th>Public</th>
+                            <td>{{ trajet.public ? 'Oui' : 'Non' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Renseignement</th>
+                            <td>{{ trajet.renseignement }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                {% if trajet.publie == user%}
+                    <div class="form-row justify-content-center">
+                        <div class="form-group col-md-4">
+                            <a href="{{ path('app_trajets_edit', {'id': trajet.id}) }}" class="btn btn-primary">Modifier ce trajet</a>
+                        </div>
+                        <div class="form-group col-md-4">
+                            {{ include('trajets/_delete_form.html.twig') }}
+                        </div>
+                    </div>
+                {% else %}
+                    {% set now = date() %}
+                      <!-- initialisation du skip_trajet -->
+                    {% set skip_trajet = true %}
+                                    
+                    {% if not is_granted('ROLE_ADMIN') %}
+                        {% set trajet_deja_adopte = false %}
+                        {% for adoption in user.getAdoptions() %}
+                            {% if adoption.getTrajet().id == trajet.id %}
+                                {% set trajet_deja_adopte = true %}
+                            {% endif %}
+                            
+                        {% endfor %}
+                        {% if (trajet.TDepart  > now)  %}
+                            {% if trajet_deja_adopte == false and  skip_trajet== false %}
+                                <a href="{{ path('app_trajet.adopter_trajet', {'trajetId': trajet.id, 'utilisateurId': user.id}) }}" class="btn btn-success">Adopter le trajet</a>                     
+                            {% else %}
+                                <a href="{{ path('app_trajet.abandonner_trajet', {'trajetId': trajet.id, 'utilisateurId': user.id}) }}" class="btn btn-danger">Abandonner le trajet</a>
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+                <!-- Bouton permettant de revenir en arrière -->
+                <a href="#" onclick="javascript:history.back();" class="btn btn-secondary">Retour à la liste de vos trajets</a>
+            </div>
+        </div>
+    </div>
 {% endblock %}
