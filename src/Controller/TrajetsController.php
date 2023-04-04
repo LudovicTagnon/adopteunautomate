@@ -320,9 +320,10 @@ class TrajetsController extends AbstractController
         $form->handleRequest($request);
         $trajet = $form->getData();
         $user = $this->getUser();
-        
+        $ancienDepart = $trajet->getTDepart();
         // ne pas pouvoir modifier un trajet qui part dans moins de 24h
         $demain = new DateTime('+24 hours');
+        
         if ($trajet->getTDepart() <$demain ) {
             $trajet->setEtat('bloqué');
             $this->addFlash(
@@ -341,6 +342,11 @@ class TrajetsController extends AbstractController
         $form->handleRequest($request);
         $trajet = $form->getData();
         
+        //nouvelle date à moins de 24h de maintenant
+        
+        
+       
+        
         
         if ($form->isSubmitted() && $form->isValid()) {
             $trajetsRepository->save($trajet, true);
@@ -349,6 +355,17 @@ class TrajetsController extends AbstractController
             $existingvoyage = $manager->getRepository(Trajets::class)->findBy([
                 'publie' => $user,
             ]);
+
+            $nouveauDepart = $form['T_depart']->getData();
+            if ($nouveauDepart <$demain ){
+                $this->addFlash(
+                    'warning',
+                    'Cette date est trop tôt.'
+                );
+                $trajet->setTDepart($ancienDepart)  ;
+                return $this->redirectToRoute('app_trajets_index');
+            }
+
             foreach($existingvoyage as $voyage){
                 //si heure arrivée du trajet en BDD = null on le set à HDepart +24heures
                 if($voyage->getTArrivee() == 'null'){
