@@ -1,16 +1,25 @@
 {% block body %}
 
+<style>
+    .example-wrapper1 { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; border-color: blue; }
+    .example-wrapper1 code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+<div class="example-wrapper1">
 {{ form_start(form) }}
+<h4 class="card-title"> Rechercher un trajet :</h4>
+<hr>
 <div class="form-group row align-items-center">
     <div class="col-sm-3">{{ form_row(form.demarrea, {'attr': {'class': 'form-control'}}) }}</div>
     <div class="col-sm-3">{{ form_row(form.arrivea, {'attr': {'class': 'form-control'}}) }}</div>
     <div class="col-sm-3">{{ form_row(form.T_depart, {'attr': {'class': 'form-control'}}) }}</div>
         <div class="col-sm-2">
-        <button type="submit" class="btn btn-primary btn-block">
+        <button type="submit" class="btn btn-primary btn-block" style="height: 70px; width: 120px";>
             <i class="fa fa-search"></i> Rechercher
         </button>
     </div>
 </div>
+</div>
+
 {{ form_end(form) }}
 
 {% endblock %}
