@@ -6,7 +6,8 @@
 </style>
 <div class="example-wrapper1">
 {{ form_start(form) }}
-
+<h4 class="card-title"> Rechercher un trajet :</h4>
+<hr>
 <div class="form-group row align-items-center">
     <div class="col-sm-3">{{ form_row(form.demarrea, {'attr': {'class': 'form-control'}}) }}</div>
     <div class="col-sm-3">{{ form_row(form.arrivea, {'attr': {'class': 'form-control'}}) }}</div>
@@ -18,6 +19,7 @@
     </div>
 </div>
 </div>
+
 {{ form_end(form) }}
 
 {% endblock %}
