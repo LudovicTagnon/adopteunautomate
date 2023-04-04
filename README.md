@@ -19,7 +19,7 @@ Maybe you can mention me or this repo in the acknowledgements too
 <!-- TODO :  faire les badges pour notre projet (version gitlab)-->
 <p>
   <a href="https://gitlab.univ-lorraine.fr/antunes26u/adopteunautomate/-/graphs/main">
-    <img src="https://img.shields.io/github/contributors/Louis3797/awesome-readme-template" alt="contributors" />
+    <img src="https://img.shields.io/badge/contributors-9-red" alt="contributors" />
   </a>
   <a href="">
     <img src="https://gitlab.univ-lorraine.fr/antunes26u/adopteunautomate/-/commits/main" alt="last update" />
