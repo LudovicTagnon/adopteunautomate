@@ -6,6 +6,8 @@ namespace App\Entity;
 #use Assert\Choice;
 
 use App\Entity\Villes;
+use App\Entity\Adopte;
+use App\Entity\EstAccepte;
 use Doctrine\DBAL\Types\Types;
 use Monolog\DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
@@ -121,12 +123,28 @@ class Trajets
     #[ORM\ManyToOne(inversedBy: 'arrivant', cascade:["persist"])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Villes $arrivea = null;
+/*  relations non fonctionnelles 23 03
+    #[ORM\OneToMany( mappedBy: 'adopte', targetEntity: Adopte::class, cascade:["persist", "remove"])]
+    private Collection $adopte;
+    
+    #[ORM\OneToMany(mappedBy: 'estAccepte', targetEntity: EstAccepte::class, cascade:["persist", "remove"])]
+    private Collection $estAccepte;
+    */
+    #[ORM\OneToMany(targetEntity: Adopte::class, mappedBy: 'trajet',  orphanRemoval: true)]
+    private $adopte;
+
+    #[ORM\OneToMany(targetEntity: EstAccepte::class, mappedBy: 'trajet',  orphanRemoval: true)]
+    private $estAccepte;
+   
 
     #[ORM\OneToMany(mappedBy: 'trajets', targetEntity: Groupes::class)]
     private Collection $groupes;
+    
     public function __construct()
     {
-        $this->groupes = new ArrayCollection();
+        $this->groupes     = new ArrayCollection();
+        $this->adopte      = new ArrayCollection();
+        $this->estAccepte  = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -351,10 +369,21 @@ class Trajets
         return $this->public;
     }
 
+    
+   
+    public function getAdopte(): Collection
+    {
+        return $this->adopte;
+    }
+
+    public function getEstAccepte(): Collection
+    {
+        return $this->estAccepte;
+    }
+
     public function incrementNbPassagerCourant(): self
 {
     $this->nb_passager_courant++;
-    $this->nb_passager_max--;
     return $this;
 }
 
@@ -362,7 +391,6 @@ public function decrementNbPassagerCourant(): self
 {
     if($this->nb_passager_courant!=0){
         $this->nb_passager_courant--;
-        $this->nb_passager_max++;
     }
     return $this;
 }

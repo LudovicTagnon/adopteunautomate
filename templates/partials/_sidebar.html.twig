@@ -1,0 +1,41 @@
+<div class="list-group">
+    <a href="{{path('app_home')}}" class="list-group-item list-group-item-action active" aria-current="true">
+    <i class="fa-solid fa-house"></i> Accueil
+    </a>
+    <a href="{{path('app_profil')}}" class="list-group-item list-group-item-action">
+        <i class="fa-solid fa-user"></i> Profil
+    </a>
+    <a href="#" class="list-group-item list-group-item-action" data-bs-toggle="collapse" data-bs-target="#submenu">
+        <i class="fa-solid fa-car"></i> Trajets
+    </a>
+    <div class="collapse" id="submenu">
+        <a href="#" class="list-group-item list-group-item-action" data-bs-toggle="collapse" data-bs-target="#subsubmenu">
+            &nbsp;&nbsp;&nbsp;<i class="fa-solid fa-bookmark"></i> Voir les trajets
+        </a>
+        <div class="collapse" id="subsubmenu">
+            <a href="{{path('app_trajets_search')}}" class="list-group-item list-group-item-action">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-magnifying-glass"></i> Rechercher
+            </a>
+            <a href="{{path('app_trajets_publics')}}" class="list-group-item list-group-item-action">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-lock-open"></i> Publics
+            </a>
+            <a href="{{path('app_trajets_prives')}}" class="list-group-item list-group-item-action">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-lock"></i> Privés
+            </a>
+        </div>
+        <a href="{{path('app_trajets_my_adoptions')}}" class="list-group-item list-group-item-action">
+            &nbsp;&nbsp;&nbsp;<i class="fa-solid fa-thumbtack"></i> Mes adoptions
+        </a>
+        <a href="{{path('app_trajets_index')}}" class="list-group-item list-group-item-action">
+            &nbsp;&nbsp;&nbsp;<i class="fa-solid fa-paper-plane"></i> Mes propositions
+        </a>
+        <a href="{{path('app_trajets_history')}}" class="list-group-item list-group-item-action">
+            <i class="fa-solid fa-clock-rotate-left"></i> Mon historique
+        </a>
+        <!--<a href="#" class="list-group-item list-group-item-action">Voir tous les trajets</a>-->
+    </div>
+    <a href="{{path('app_groupes.group')}}" class="list-group-item list-group-item-action" >
+        <i class="fa-solid fa-users"></i> Mes groupes
+    </a>
+    <!--<a href="#" class="list-group-item list-group-item-action">Voir tous les groupes</a>-->
+</div>
