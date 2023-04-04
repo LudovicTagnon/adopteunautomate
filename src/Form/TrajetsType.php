@@ -77,7 +77,7 @@ class TrajetsType extends AbstractType
                 ]
             ]) 
             ->add('demarrea', VillesDepartAutocompleteField::class)
-            ->add('arrivea', VillesDepartAutocompleteField::class)
+            ->add('arrivea', VillesArriveeAutocompleteField::class)
 
 
 
