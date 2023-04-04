@@ -144,9 +144,9 @@
                                                                 {% endif %}
                                                             {% endfor %}
                                                             {% if trajet_deja_adopte == false and not skip_trajet  %}
-                                                                <button type="button" class="btn btn-lg btn-block btn-primary" onclick="adopterTrajet({{ utilisateur_actuel.id }}, {{ trajet.id }})">Adopter ce trajet</button>
+                                                                <button type="button" class="btn btn-lg btn-block btn-primary" onclick="adopterTrajet({{ utilisateur_actuel.id }}, {{ trajet.id }})" onclick="return confirm('Êtes-vous sûr de vouloir adopter ce trajet ?')">Adopter ce trajet</button>
                                                             {% else %}
-                                                                <button type="button" class="btn btn-lg btn-block btn-primary" onclick="abandonnerTrajet({{ utilisateur_actuel.id }}, {{ trajet.id }})">Abandonner ce trajet</button>
+                                                                <button type="button" class="btn btn-lg btn-block btn-primary" onclick="abandonnerTrajet({{ utilisateur_actuel.id }}, {{ trajet.id }})" onclick="return confirm('Êtes-vous sûr de vouloir abandonner ce trajet ?')">Abandonner ce trajet</button>
                                                             {% endif %}
                                                         </div> 
                                                     </div>
