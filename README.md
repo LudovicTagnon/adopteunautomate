@@ -230,54 +230,54 @@ function App() {
 <details>
 <summary>Sprint 1 :</summary>
 <ul>
-* [x] Créer un compte
-* [x] Connexion/Déconnexion
-* [x] Consulter son compte
-* [x] Modifier son compte
-* [x] Supprimer son compte
-* [x] Proposer un voyage
-* [x] Créer un groupe d’amis
+<li>* [x] Créer un compte </li>
+<li>* [x] Connexion/Déconnexion</li>
+<li>* [x] Consulter son compte</li>
+<li>* [x] Modifier son compte</li>
+<li>* [x] Supprimer son compte</li>
+<li>* [x] Proposer un voyage</li>
+<li>* [x] Créer un groupe d’amis</li>
 </ul>
 </details>
 
 <details>
 <summary>Sprint 2 :</summary>
 <ul>
-* []Mot de passe oublié
-* [x]Consulter notifications
-* [x]Supprimer notification
-* [x]Modifier/supprimer photo
-* [x]S’inscrire à/se rétracter d’un trajet
-* [x]Accepter/refuser un passager
-* [x]Modifier/supprimer un trajet
+<li>* []Mot de passe oublié</li>
+<li>* [x]Consulter notifications</li>
+<li>* [x]Supprimer notification</li>
+<li>* [x]Modifier/supprimer photo</li>
+<li>* [x]S’inscrire à/se rétracter d’un trajet</li>
+<li>* [x]Accepter/refuser un passager</li>
+<li>* [x]Modifier/supprimer un trajet</li>
 </ul>
 </details>
 
 <details>
 <summary>Sprint 3 :</summary>
 <ul>
-* [x]Rechercher un voyage
-* [x]Voir les détails d’un trajet
-* [x]Voir les trajets existants
-* [x]Voir les trajets auxquels le passager a été accepté
-* [x]Voir les trajets auxquels le passager est inscrit
-* [x]Historique trajet
-* [x]Valider fin trajet
-* [ ]Ajouter note de satisfaction individuelle après trajet
-* [ ]Modifier note de satisfaction individuelle après trajet
+<li>* [x]Rechercher un voyage</li>
+<li>* [x]Voir les détails d’un trajet</li>
+<li>* [x]Voir les trajets existants</li>
+<li>* [x]Voir les trajets auxquels le passager a été accepté</li>
+<li>* [x]Voir les trajets auxquels le passager est inscrit</li>
+<li>* [x]Historique trajet</li>
+<li>* [x]Valider fin trajet</li>
+<li>* [ ]Ajouter note de satisfaction individuelle après trajet</li>
+<li>* [ ]Modifier note de satisfaction individuelle après trajet</li>
 </ul>
 </details>
 
 <details>
 <summary>Sprint 4 :</summary>
 <ul>
-* [x]Consulter ses groupes d’amis
-* [x]Supprimer un groupe d’amis
-* [x]Modifier groupe d’amis
-* [x]Accéder aux données et groupes d’un utilisateur
-* [x]Accéder à un trajet précis
-* [x]Modifier le trajet
-* [x]Supprimer le trajet
+<li>* [x]Consulter ses groupes d’amis</li>
+<li>* [x]Supprimer un groupe d’amis</li>
+<li>* [x]Modifier groupe d’amis</li>
+<li>* [x]Accéder aux données et groupes d’un utilisateur</li>
+<li>* [x]Accéder à un trajet précis</li>
+<li>* [x]Modifier le trajet</li>
+<li>* [x]Supprimer le trajet</li>
 </ul>
 </details>
 
