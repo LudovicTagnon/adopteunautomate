@@ -46,6 +46,12 @@ class UserProfileFormType extends AbstractType
             ->add('num_tel',TextType::class,[
                 'required' => true,
                 'attr' => ['autocomplete' => 'num_tel'],
+                'constraints'=>[
+                    new Assert\Regex([
+                        'pattern' => '/^0[1-9](\d{2}){4}$/',
+                        'message' => 'Le numéro de téléphone doit être un numéro de téléphone français.',
+                    ]),
+                ],
             ])
             ->add('vehicule',CheckboxType::class,[
                 'required' => false,
