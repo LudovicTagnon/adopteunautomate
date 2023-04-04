@@ -4,121 +4,114 @@
 
 {% block body %}
 
-    {% if user.vehicule %}
-        <!-- contenu de la page -->
-    
+    {% if user is defined and user is not null and user.vehicule %}
+        <!-- contenu de la page que si l'utilisateur est connecté et possède une voiture -->
 
-    <style>
-        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-    </style>
-
-   <div class="example-wrapper">
-
-        <h1>Ajouter un trajet </h1>
-
-         {{ form_start(form) }}
-
-       
-        {#   Champ inutile à la création - le trajet est forcément de statut ouvert
-            <div class= 'form-group'>
-            {{ form_label(form.etat)}}
-            {{ form_widget(form.etat)}}
-            <div>
-                {{form_errors(form.etat)}}
+       <div class = "container-fluid">
+        <div class="row justify-content-center">
+            </hr>
+            <div class="col-md-3"> <!-- Volets de navigation -->
+                {% include 'partials/_sidebar.html.twig' %}
             </div>
-            </div>
-            #}
-        
-        <div class= 'form-group'>
-            {{ form_label(form.T_depart)}}
-            {{ form_widget(form.T_depart)}}
-            <div>
-                {{form_errors(form.T_depart)}}
-            </div>
-        </div>
 
-        <div class= 'form-group'>
-            {{ form_label(form.T_arrivee)}}
-            {{ form_widget(form.T_arrivee)}}
-            <div>
-                {{form_errors(form.T_arrivee)}}
-            </div>
-        </div>
-   
-        <div class= 'form-group'>
-            {{ form_label(form.demarrea)}}
-            {{ form_widget(form.demarrea)}}
-            <div>
-                {{form_errors(form.demarrea)}}
-            </div>
-        </div>
-      
-        <div class= 'form-group'>
-            {{ form_label(form.arrivea)}}
-            {{ form_widget(form.arrivea)}}
-            <div>
-                {{form_errors(form.arrivea)}}
-            </div>
-        </div>
+            <div class="col-md-9">
+                <div class="container justify-content-center">
+                    <h1 class="mb-4">Ajouter un trajet</h1>
+                    <hr>
 
-        <div class= 'form-group'>
-            {{ form_label(form.prix)}}
-            {{ form_widget(form.prix)}}
-            <div>
-                {{form_errors(form.prix)}}
-            </div>
-        </div>
+                    {{ form_start(form) }}
+                    
+                    <div class="form-row justify-content-center">
+                    <div class="form-group col-md-4">
+                        {{ form_label(form.T_depart) }}
+                        {{ form_widget(form.T_depart, {'attr': {'class': 'form-control'}}) }}
+                        <div>{{ form_errors(form.T_depart) }}</div>
+                    </div>
 
-        <div class= 'form-group'>
-            {{ form_label(form.nb_passager_max)}}
-            {{ form_widget(form.nb_passager_max)}}
-            <div>
-                {{form_errors(form.nb_passager_max)}}
-            </div>
-        </div>
-{#
-        <div class= 'form-group'>
-            {{ form_label(form.demarrea)}}
-            {{ form_widget(form.demarrea)}}
-            <div>
-                {{form_errors(form.demarrea)}}
-            </div>
-        </div>
-#}
-        {# exclure l'attribut 'nb_passager_courant' #}
-        {#    {{ form_row(form.nb_passager_courant, {'mapped': false}) }}   #} 
+                    <div class="form-group col-md-4">
+                        {{ form_label(form.T_arrivee) }}
+                        {{ form_widget(form.T_arrivee, {'attr': {'class': 'form-control'}}) }}
+                        <div>{{ form_errors(form.T_arrivee) }}</div>
+                    </div> 
+                    </div>
+                        
+                    <div class="form-row justify-content-center">
+                        <div class="form-group col-md-4">
+                            {{ form_label(form.demarrea) }}
+                            {{ form_widget(form.demarrea, {'attr': {'class': 'form-control'}}) }}
+                            <div>{{ form_errors(form.demarrea) }}</div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            {{ form_label(form.arrivea) }}
+                            {{ form_widget(form.arrivea, {'attr': {'class': 'form-control'}}) }}
+                            <div>{{ form_errors(form.arrivea) }}</div>
+                        </div>
+                    </div>
 
-        <div class= 'form-group'>
-            {{ form_label(form.public)}}
-            {{ form_widget(form.public)}}
-            <div>
-                {{form_errors(form.public)}}
+                    <div class="form-row justify-content-center">
+                        <div class="form-group col-md-4">
+                            {{ form_label(form.nb_passager_max) }}
+                            {{ form_widget(form.nb_passager_max, {'attr': {'class': 'form-control'}}) }}
+                            <div class="text-danger">{{ form_errors(form.nb_passager_max) }}</div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            {{ form_label(form.prix) }}
+                            {{ form_widget(form.prix, {'attr': {'class': 'form-control'}}) }}
+                            <div>{{ form_errors(form.prix) }}</div>
+                        </div>
+                    </div>
+
+                    <div class="form-row justify-content-center">
+                        <div class="form-group col-md-4">
+                            {{ form_label(form.public) }}
+                            {{ form_widget(form.public, {'attr': {'class': 'form-control'}}) }}
+                            <div class="text-danger">{{ form_errors(form.public) }}</div>
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            {{ form_label(form.groupes) }}
+                            {{ form_widget(form.groupes, {'attr': {'class': 'form-control'}}) }}
+                            <div class="text-danger">{{ form_errors(form.groupes) }}</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        {{ form_label(form.renseignement) }}
+                        {{ form_widget(form.renseignement, {'attr': {'class': 'form-control'}}) }}
+                        <div class="text-danger">{{ form_errors(form.renseignement) }}</div>
+                    </div>
+
+                    <div class="form-row justify-content-center">
+                        <div class="form-group col-md-4">
+                            <button class="btn btn-primary">{{ button_label|default('Enregistrer ce nouveau trajet') }}</button>
+                            {{ form_end(form) }}
+                        </div>
+                        <div class="form-group col-md-4">
+                            <a href="{{ path('app_trajets_index') }}" class="btn btn-secondary">Retour à la liste de vos trajets</a>
+                        </div>
+                    </div> 
+                </div>
             </div>
-        </div>
-
-        <div class= 'form-group'>
-            {{ form_label(form.renseignement)}}
-            {{ form_widget(form.renseignement)}}
-            <div>
-                {{form_errors(form.renseignement)}}
-            </div>
-        </div>
-
-         <div class= 'form-group'>
-             {{ form_widget(form) }}
-             </br>
-                 <button class= "btn btn-info" style="background-color:blue;">{{ button_label|default('Enregistrer ce nouveau trajet') }}</button>
-        </div>
-
-        {{ form_end(form) }}
-        </br>
-        <a href="{{ path('app_trajets_index') }}" class= "btn btn-info" style="background-color:blue;">Retour à la liste de vos trajets</a>
-    </div>
 
 
     {% else %}
         <p>Vous devez posséder une voiture pour accéder à cette page.</p>
     {% endif %}
     
+
+    <script>
+    const publicField = document.querySelector('#form_public');
+    const groupesContainer = document.querySelector('.form-group');
+
+    publicField.addEventListener('change', function() {
+        if (publicField.checked) {
+            groupesContainer.classList.add('groupes-hidden');
+            groupesContainer.classList.remove('groupes-visible');
+        } else {
+            groupesContainer.classList.add('groupes-visible');
+            groupesContainer.classList.remove('groupes-hidden');
+        }
+    });
+</script>
+
 {% endblock %}
