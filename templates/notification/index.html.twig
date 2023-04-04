@@ -9,11 +9,17 @@
 {% endblock %}
 <!-- contenu de la page -->
     <div class = "container-fluid">
-        <div class="row justify-content-center">
+        <div class="row justify-content-left">
             </hr>
             <div class="col-md-3"> <!-- Volets de navigation -->
                 {% include 'partials/_sidebar.html.twig' %}
             </div>
+            
+            <style>
+                .example-wrapper { margin: 1em auto; max-width: 700px; width: 95%; font: 18px/1.5 sans-serif; }
+                .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+            </style>
+            <div class="example-wrapper">
 
             <div class="col-md-9">
                 <h1>Mes notifications : </h1>
@@ -28,7 +34,8 @@
                 <a  href="{{ path('app_delete_all_notifications') }}">
                 <button id="delete-all" class="btn btn-danger mb-2">Supprimer tout</button>
                 </a>
-                <br>
+                </br>
+                <hr>
                 <h2> Notifications non-lues : </h2>
                     <ul>
                         {% for notification in notifications %}
@@ -51,7 +58,8 @@
                             {% endif %}
                         </div>
                         {% endfor %}
-                        <br>
+                         </br>
+                        <hr>
                         <h2> Notifications lues : </h2> 
                         {% for notification in notifications %}
                         <div class="notifications {% if notification.isRead() %}read-notification{% endif %}"> 
