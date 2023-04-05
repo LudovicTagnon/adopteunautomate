@@ -66,7 +66,7 @@ class TrajetsController extends AbstractController
         // récupération des trajets créés -
         $trajetpresent = new Trajets();
         //$trajetStockes = $manager->getRepository(Trajets::class)->findBy(['depart' => new \DateTime('now'), Criteria::GREATER_THAN]);
-        $trajetStockes = $manager->getRepository(Trajets::class)->findAll();
+        $trajetStockes = $manager->getRepository(Trajets::class)->findBy(['publie' => $user]);
         foreach ($trajetStockes as $stocke) {
             $listeTrajets[] = $stocke  /*->getTrajet() */;
         }

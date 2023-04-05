@@ -12,27 +12,8 @@
             </hr>
             <div class="col-md-3"> <!-- Volets de navigation -->
                 {% include 'partials/_sidebar.html.twig' %}
-       {% if app.flashes('error') is not empty %}
-           <div class="alert alert-danger">
-               <p>Vous avez déjà créé un trajet pour cette date. Veuillez choisir une autre date</p>
-           </div>
-       {% endif %}
-       {% if app.flashes('errordate') is not empty %}
-           <div class="alert alert-danger">
-               <p>Vous avez un trajet prévu avant la date de départ de celui ci.</p>
-           </div>
-       {% endif %}
-
-         {{ form_start(form) }}
-
-
-        {#   Champ inutile à la création - le trajet est forcément de statut ouvert
-            <div class= 'form-group'>
-            {{ form_label(form.etat)}}
-            {{ form_widget(form.etat)}}
-            <div>
-                {{form_errors(form.etat)}}
             </div>
+
 
             <div class="col-md-9">
                 <div class="container justify-content-center">
@@ -94,6 +75,7 @@
                             <div class="text-danger">{{ form_errors(form.groupes) }}</div>
                         </div>
                     </div>
+                    <small class="text-muted">Les champs munis d'un * sont obligatoires.</small>
 
                     <div class="form-group">
                         {{ form_label(form.renseignement) }}

@@ -21,17 +21,6 @@
                     </div>
                 {% endfor  %}
             </div>
-    <h1>Liste de vos trajets</h1>
-
-
-    <div class="container">
-        {# flash message si succes#}
-        {% for message in app.flashes('succes')  %}
-            <div class= "alert alert-success mt-4">
-                {{message}}
-            </div>
-        {% endfor  %}
-    </div>
 
             <div class="container">
                 <table class="table table-hover">
@@ -75,7 +64,7 @@
                             {% set now = date() %}
                             {% if (trajet.TDepart  > now|date_modify('+24 hours'))  %}
                                 <a href="{{ path('app_trajets_edit', {'id': trajet.id}) }}"class= "btn btn-warning" title="Modifier"><i class="fa-solid fa-pen"></i></a>
-                                <a href="{{ path('app_trajets_delete', {'id': trajet.id}) }}"class= "btn btn-danger" title="Supprimer"><i class="fa-solid fa-trash-can"></i></a>
+                                <a href="{{ path('app_trajets_delete', {'id': trajet.id}) }}"class= "btn btn-danger" title="Supprimer" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce trajet ?')"><i class="fa-solid fa-trash-can"></i></a>
                             {% endif %}
 
                             {% set hier = date('-24 hours') %}
@@ -83,8 +72,8 @@
                             {% set demain = date('+24 hours') %}
                             {% if ((trajet.getTArrivee() is not null and trajet.getTArrivee() < now and trajet.getTArrivee() > hier ) or ( trajet.getTDepart() < hier and (trajet.getTDepart() > avanthier )) ) %}
                             <!-- si trajet terminé, le chauffeur peut l'indiquer , cela permettra à la notation de commencer -->
-
-                            <a href="{{ path('app_trajets_edit', {'id': trajet.id}) }}"class= "btn btn-danger" title="clôturer le trajet"><i class="fa-solid fa-lock"></i></a>
+                            
+                            <a href="{{ path('app_trajets_edit', {'id': trajet.id}) }}"class= "btn btn-danger" title="clôturer le trajet" onclick="return confirm('Êtes-vous sûr de vouloir clôturer ce trajet ?')"><i class="fa-solid fa-lock"></i></a>
                             {% endif %}
 
                             <a href="{{ path('app_trajets_show', {'id': trajet.id}) }}"class= "btn btn-info" title="Voir les détails de ce trajet"><i class="fa-solid fa-magnifying-glass"></i></a>

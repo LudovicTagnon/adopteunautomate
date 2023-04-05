@@ -57,11 +57,51 @@
                         {{ form_label(registrationForm.agreeTerms, null, {
                             'label_attr': {'class': 'form-check-label'}
                         }) }}
+                        :<button type="button" class="btn btn-link" data-toggle="modal" data-target="#termsModal">
+                                cliquez ici pour les lire
+                        </button>
+
+                        <!-- Affichage des termes à accepter -->
+                        <div class="modal fade" id="termsModal" tabindex="-1" role="dialog" aria-labelledby="termsModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="termsModalLabel">Termes et conditions</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <!-- Contenu de la modale -->
+                                        <p>Lors de votre inscription sur AdopteUnAutomate, vous acceptez nos termes et conditions. Ces termes incluent les points suivants :
+                                            <ul>
+                                                <li>Votre nom, prénom et adresse mail seront visibles par les autres inscrits sur la plateforme, cela permettra de faciliter la communication entre les membres lors de l'organisation des trajets. </li>
+                                                <li>Votre numéro de téléphone sera communiqué aux passagers que vous aurez acceptés pour le trajet, afin de faciliter la coordination lors de l'échange avant le départ. </li>
+                                                <li>Vous vous engagez à n'utiliser les données des autres inscrits qu'afin de bénéficier du service de covoiturage proposé par AdopteUnAutomate. Vous ne pourrez en aucun cas utiliser ces données à d'autres fins sans l'accord préalable de la personne concernée. </li>
+                                            </ul>
+                                            En acceptant ces termes et conditions, vous confirmez votre engagement à respecter les règles de notre plateforme et à contribuer à un service de covoiturage de qualité pour tous ses membres.</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- script pour ouvrir la page des termes -->
+                        <script>
+                            $(document).ready(function() {
+                                $('#termsModal').modal('show');
+                            });
+                        </script>
+
+                        <!--Fin des termes -->
+
+
                     </div>
                     <button type="submit" class="btn btn-primary" style="background-color: #007bff;">{{ 'S\'inscrire'|trans }}</button>
                     {{ form_end(registrationForm) }}
                 </div>
-                <div class="required-fields">* Les champs sont obligatoires</div>
+                <small class="form-text text-muted">Les champs possédant un * sont obligatoires</small>
             </div>
         </div>
     </div>

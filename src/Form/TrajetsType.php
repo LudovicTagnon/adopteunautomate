@@ -25,6 +25,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeImmutableType;
+use Symfony\Component\Validator\Constraints\GreaterThan;
 
 // ajout en ligne de commande: composer require doctrine/doctrine-bundle
 
@@ -47,8 +48,8 @@ class TrajetsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         //$user = $this->security->getUser();
-        $tomorrow = new \DateTime('tomorrow');
-        $demain = new \DateTime('+24 hours');
+        $nowPlus24h = new \DateTime();
+        $nowPlus24h->modify('+24 hours');
         $user = new Utilisateurs();
         $userConnected = $this->security->getUser();
 
@@ -56,15 +57,27 @@ class TrajetsType extends AbstractType
             //->add('etat')
             ->add('T_depart', DateTimeType::class, [
                 'widget' => 'single_text',
-                'label' => 'Jour et heure de départ :   '
+                'label' => 'Jour et heure de départ * :   ',
+                'attr' => [
+                    'min' => $nowPlus24h->format('Y-m-d\TH:i')
+                ],
+                'constraints' => [
+                    new GreaterThan('now +24 hours')
+                ]
             ])
             ->add('T_arrivee', DateTimeType::class, [
                 'widget' => 'single_text',
                 'required'   => false,
-                'label' => 'Jour et heure d\'arrivée    :      '
+                'label' => 'Jour et heure d\'arrivée    :      ',
+                'attr' => [
+                    'min' => $nowPlus24h->format('Y-m-d\TH:i')
+                ],
+                'constraints' => [
+                    new GreaterThan('now +24 hours')
+                ]
             ]) 
             ->add('demarrea', VillesDepartAutocompleteField::class)
-            ->add('arrivea', VillesDepartAutocompleteField::class)
+            ->add('arrivea', VillesArriveeAutocompleteField::class)
 
 
 
@@ -120,7 +133,7 @@ class TrajetsType extends AbstractType
                 'required' => true,
                 'expanded' => true,
                 'multiple' => false,
-                'label' => 'Trajet public ou privé :   '
+                'label' => 'Trajet public ou privé * :   '
             ])
             
             ->add('groupes', EntityType::class, [
