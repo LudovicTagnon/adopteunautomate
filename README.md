@@ -18,24 +18,15 @@ Maybe you can mention me or this repo in the acknowledgements too
 <!-- Badges -->
 <!-- TODO :  faire les badges pour notre projet (version gitlab)-->
 <p>
-  <a href="https://gitlab.univ-lorraine.fr/antunes26u/adopteunautomate/-/graphs/main">
-    <img src="https://img.shields.io/github/contributors/Louis3797/awesome-readme-template" alt="contributors" />
-  </a>
-  <a href="">
-    <img src="https://gitlab.univ-lorraine.fr/antunes26u/adopteunautomate/-/commits/main" alt="last update" />
-  </a>
-  <a href="https://gitlab.univ-lorraine.fr/antunes26u/adopteunautomate/-/forks">
-    <img src="https://img.shields.io/github/forks/Louis3797/awesome-readme-template" alt="forks" />
-  </a>
-  <a href="https://gitlab.univ-lorraine.fr/antunes26u/adopteunautomate/-/starrers">
-    <img src="https://img.shields.io/github/stars/Louis3797/awesome-readme-template" alt="stars" />
-  </a>
-  <!-- <a href="https://github.com/Louis3797/awesome-readme-template/issues/">
-    <img src="https://img.shields.io/github/issues/Louis3797/awesome-readme-template" alt="open issues" />
-  </a> -->
-  <a href="https://github.com/Louis3797/awesome-readme-template/blob/master/LICENSE">
-    <img src="https://img.shields.io/github/license/Louis3797/awesome-readme-template.svg" alt="license" />
-  </a>
+    <a href="https://gitlab.univ-lorraine.fr/antunes26u/adopteunautomate/-/graphs/main">
+      <img src="https://img.shields.io/badge/contributors-9-red" alt="contributors" />
+    </a>
+    <a href="https://gitlab.univ-lorraine.fr/antunes26u/adopteunautomate/-/commits/main">
+      <img src="https://img.shields.io/badge/-last%20update-yellow" alt="last update" />
+    </a>
+    <a href="https://github.com/Louis3797/awesome-readme-template/blob/master/LICENSE">
+      <img src="https://img.shields.io/badge/licence-MIT-green" alt="license" />
+    </a>
 </p>
    
 </div>
@@ -138,16 +129,6 @@ Maybe you can mention me or this repo in the acknowledgements too
 | Accent Color | ![#00ADB5](https://via.placeholder.com/10/00ADB5?text=+) #00ADB5 |
 | Text Color | ![#EEEEEE](https://via.placeholder.com/10/EEEEEE?text=+) #EEEEEE |
 
-
-<!-- Env Variables -->
-### :key: Environment Variables
-
-To run this project, you will need to add the following environment variables to your .env file
-
-`API_KEY`
-
-`ANOTHER_API_KEY`
-
 <!-- Getting Started -->
 ## 	:toolbox: Getting Started
 
@@ -243,22 +224,87 @@ function App() {
 <!-- Roadmap -->
 ## :scroll: Roadmap
 
-* [x] Todo 1
-* [ ] Todo 2
+* [x] Fonctionnalité chauffeur
+* [x] Fonctionnalité passager
+* [ ] Fonctionnalité administrateur
+
+<details>
+<summary>Sprint 1 :</summary>
+  <ul>
+    <li>* [x] Créer un compte </li>
+    <li>* [x] Connexion/Déconnexion</li>
+    <li>* [x] Consulter son compte</li>
+    <li>* [x] Modifier son compte</li>
+    <li>* [x] Supprimer son compte</li>
+    <li>* [x] Proposer un voyage</li>
+    <li>* [x] Créer un groupe d’amis</li>
+  </ul>
+</details>
+
+<details>
+<summary>Sprint 2 :</summary>
+  <ul>
+    <li>* [ ] Mot de passe oublié</li>
+    <li>* [x] Consulter notifications</li>
+    <li>* [x] Supprimer notification</li>
+    <li>* [x] Modifier/supprimer photo</li>
+    <li>* [x] S’inscrire à/se rétracter d’un trajet</li>
+    <li>* [x] Accepter/refuser un passager</li>
+    <li>* [x] Modifier/supprimer un trajet</li>
+  </ul>
+</details>
+
+<details>
+<summary>Sprint 3 :</summary>
+  <ul>
+    <li>* [x] Rechercher un voyage</li>
+    <li>* [x] Voir les détails d’un trajet</li>
+    <li>* [x] Voir les trajets existants</li>
+    <li>* [x] Voir les trajets auxquels le passager a été accepté</li>
+    <li>* [x] Voir les trajets auxquels le passager est inscrit</li>
+    <li>* [x] Historique trajet</li>
+    <li>* [x] Valider fin trajet</li>
+    <li>* [ ] Ajouter note de satisfaction individuelle après trajet</li>
+    <li>* [ ] Modifier note de satisfaction individuelle après trajet</li>
+  </ul>
+</details>
+
+<details>
+<summary>Sprint 4 :</summary>
+  <ul>
+    <li>* [x] Consulter ses groupes d’amis</li>
+    <li>* [x] Supprimer un groupe d’amis</li>
+    <li>* [x] Modifier groupe d’amis</li>
+    <li>* [x] Accéder aux données et groupes d’un utilisateur</li>
+    <li>* [x] Accéder à un trajet précis</li>
+    <li>* [x] Modifier le trajet</li>
+    <li>* [x] Supprimer le trajet</li>
+  </ul>
+</details>
+
+
+
 
 
 <!-- Contributing -->
 ## :wave: Contributing
 
-<a href="https://gitlab.univ-lorraine.fr/rosio1u/adopteautomate/-/graphs/main">
-  <img src="" />
+<a href="https://gitlab.univ-lorraine.fr/antunes26u/adopteunautomate/-/graphs/main">
+  Liste des contribution sur le main :
 </a>
-
-
-Contributions are always welcome!
-
-See `contributing.md` for ways to get started.
-
+<ul>
+  <li><a href="https://gitlab.univ-lorraine.fr/aitouali1u">AIT OUALI Marouane</a> : 0 commit</li>
+  <li><a href="https://gitlab.univ-lorraine.fr/altaweel3u">ALTAWEEL Mohamad</a> : 3 commits</li>
+  <li><a href="https://gitlab.univ-lorraine.fr/antunes26u">ANTUNES Alexandre</a> : 124 commits</li>
+  <li><a href="https://gitlab.univ-lorraine.fr/guerrier8u">COGNOT Hélène</a> : 59 commits</li>
+  <li><a href="https://gitlab.univ-lorraine.fr/franco369u">FRANÇOIS Nicolas</a> : 5 commits (Testeur + Fixtures + Rédacteur)</li>
+  <li><a href="https://gitlab.univ-lorraine.fr/ritter23u">RITTER Luca</a> : 0 commit</li>
+  <li><a href="https://gitlab.univ-lorraine.fr/rosio1u">ROSIO Maxime</a> : 45 commits</li>
+  <li><a href="https://gitlab.univ-lorraine.fr/suel1u">SUEL Benjamin</a> : 68 commits</li>
+  <li><a href="https://gitlab.univ-lorraine.fr/tagnon3u">TAGNON Ludovic</a> : 8 commits (Dernier commit le 26/02/2023)</li>
+  <li><a href="https://gitlab.univ-lorraine.fr/tatoglu2u">TATOGLU Emel</a> : 0 commit</li>
+  <li><a href="https://gitlab.univ-lorraine.fr/villaum55u">VILLAUME Lucas</a> : 0 commit</li>
+</ul>
 
 <!-- Code of Conduct -->
 ### :scroll: Code of Conduct
